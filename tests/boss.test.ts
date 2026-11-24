@@ -266,7 +266,8 @@ describe('victory, chest and the loop (PRD Section 3)', () => {
     expect(r.bossDefeated).toBe(true);
     expect(r.gold).toBeGreaterThan(500);
     expect(w.run.exp).toBeCloseTo(expForKill(b, 12, 12, 200), 3);
-    expect(r.loot.length).toBeGreaterThan(0);
+    expect(r.chest!.items.length).toBeGreaterThanOrEqual(2);
+    expect(r.chest!.items.some((i) => ['rare', 'epic', 'legendary'].includes(i.rarity))).toBe(true);
   });
 
   it('"Grind again" returns to the field with the gauge reset and keeps the run totals', () => {

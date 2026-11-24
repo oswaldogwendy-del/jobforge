@@ -2,7 +2,19 @@ import { render } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import type { DebugStats } from '../debug/api';
 import { strings } from '../data/schema';
-import { LoadoutPanel } from './LoadoutPanel';
+import { stackMap } from '../data/content';
+import type { DropRoll } from '../sim/loot';
+import { defOf, itemTitle, RARITY_COLOR } from './itemText';
+import { Create } from './screens/Create';
+import { GuildHall } from './screens/GuildHall';
+import { Inventory } from './screens/Inventory';
+import { Loadout } from './screens/Loadout';
+import { Oracle, Shop } from './screens/Shop';
+import { Credits, Settings } from './screens/Settings';
+import { Status } from './screens/Status';
+import { Title } from './screens/Title';
+import { TownHub } from './screens/TownHub';
+import { WorldMap } from './screens/WorldMap';
 import type { GameApi } from './api';
 import { hudStore, useHud } from './store';
 import { dismissToast, subscribeToast, type ToastState } from './toast';
@@ -29,6 +41,9 @@ function Bars() {
         <span>
           {Math.floor(h.sp)} / {Math.floor(h.maxSp)}
         </span>
+      </div>
+      <div class="exp-bar">
+        <i style={{ width: `${Math.round(h.exp * 100)}%` }} />
       </div>
       <div class="buffs">
         {h.buffs.map((b) => (
@@ -131,28 +146,53 @@ function PauseMenu({ api }: { api: GameApi }) {
 
 function Town({ api }: { api: GameApi }) {
   const h = useHud();
-  const [loadout, setLoadout] = useState(false);
+  if (h.screen === 'title') return <Title api={api} />;
+  if (h.screen === 'create') return <Create api={api} slot={h.createSlot} />;
   if (h.screen !== 'town') return null;
-  if (loadout) return <LoadoutPanel api={api} onClose={() => setLoadout(false)} />;
+  switch (h.menu) {
+    case 'status':
+      return <Status api={api} />;
+    case 'guild':
+      return <GuildHall api={api} />;
+    case 'loadout':
+      return <Loadout api={api} />;
+    case 'inventory':
+      return <Inventory api={api} />;
+    case 'shop':
+      return <Shop api={api} />;
+    case 'oracle':
+      return <Oracle api={api} />;
+    case 'map':
+      return <WorldMap api={api} />;
+    case 'settings':
+      return <Settings api={api} />;
+    case 'credits':
+      return <Credits onClose={() => hudStore.set({ menu: null })} />;
+    default:
+      return <TownHub api={api} />;
+  }
+}
+
+/** Items by rarity and stacks, for the chest and results screens. */
+function Loot({ drops, title }: { drops: DropRoll; title: string }) {
+  if (drops.items.length === 0 && drops.stacks.length === 0) return null;
   return (
-    <div class="town">
-      <div class="town-card">
-        <div class="logo">Jobforge</div>
-        <div class="dim">
-          {h.name} · Lv {h.level} · {h.title}
-        </div>
-        <button type="button" class="big primary" onClick={() => api.startAdventure()}>
-          Adventure: Meadowmere Fields (Lv 1–12)
-        </button>
-        <button type="button" class="big" onClick={() => setLoadout(true)}>
-          Loadout (dev)
-        </button>
-        <button type="button" class="big" onClick={() => api.startYard()}>
-          Training Yard
-        </button>
-        <div class="dim small">
-          Status, Guild Hall, shop and saves arrive in M2. Use Loadout to pick stats and skills.
-        </div>
+    <div class="loot">
+      <div class="dim small">{title}</div>
+      <div class="loot-list">
+        {drops.items.map((i) => (
+          <span
+            class="loot-item"
+            style={{ color: RARITY_COLOR[i.rarity], borderColor: RARITY_COLOR[i.rarity] }}
+          >
+            {defOf(i) ? itemTitle(defOf(i)!, i) : i.defId}
+          </span>
+        ))}
+        {drops.stacks.map((st) => (
+          <span class="loot-item">
+            {stackMap.get(st.id)?.name ?? st.id} ×{st.n}
+          </span>
+        ))}
       </div>
     </div>
   );
@@ -167,13 +207,12 @@ function Chest({ api }: { api: GameApi }) {
       <h2>Victory!</h2>
       <div class="dim">Queen Gelatina is defeated</div>
       <ul>
-        {r.loot.map((l) => (
-          <li class={l.kind}>{l.text}</li>
-        ))}
+        <li>{r.gold} gold</li>
         <li>
           {r.exp} EXP ({(r.expPct * 100).toFixed(0)}% of a level)
         </li>
       </ul>
+      {r.chest && <Loot drops={r.chest} title="Chest" />}
       <div class="row">
         <button type="button" class="big primary" onClick={() => api.grindAgain()}>
           Grind again
@@ -232,6 +271,8 @@ function Results({ api }: { api: GameApi }) {
           </tr>
         </tbody>
       </table>
+      <Loot drops={r.drops} title="Dropped in the field" />
+      {r.chest && <Loot drops={r.chest} title="Chest" />}
       {r.outcome === 'death' && <div class="dim">You keep your loot and EXP.</div>}
       <div class="dim small">Seed {r.seed}</div>
       <button type="button" class="big primary" onClick={() => api.returnToTown()}>
@@ -334,6 +375,15 @@ function DebugPanel({ api }: { api: GameApi }) {
               {god ? 'ON' : 'OFF'}
             </button>
           </div>
+          <div class="dbg-row">
+            <span>Hero</span>
+            <button type="button" onClick={() => api.cheat.levelUp()}>
+              Level up
+            </button>
+            <button type="button" onClick={() => api.cheat.gold()}>
+              +10k gold
+            </button>
+          </div>
           {h.screen === 'run' && (
             <div class="dbg-row">
               <span>Cheats</span>
@@ -385,6 +435,27 @@ function Toast() {
   );
 }
 
+function Potions({ api }: { api: GameApi }) {
+  const h = useHud();
+  if (h.potions.length === 0) return null;
+  return (
+    <div class="potions">
+      {h.potions.map((p) => (
+        <button
+          type="button"
+          class={`potion ${p.count < 1 ? 'empty' : ''} ${p.cd > 0 ? 'cd' : ''}`}
+          aria-label={p.name}
+          onClick={() => api.usePotion(p.slot)}
+        >
+          <span>{p.id.includes('mana') ? 'MP' : p.id === 'panacea' ? 'PN' : 'HP'}</span>
+          <i>{p.count}</i>
+          {p.cd > 0 && <u style={{ height: `${Math.round(p.cd * 100)}%` }} />}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 function RunHud({ api }: { api: GameApi }) {
   const h = useHud();
   if (h.screen !== 'run') return null;
@@ -394,6 +465,7 @@ function RunHud({ api }: { api: GameApi }) {
       <TopCenter />
       <TopRight api={api} />
       <Banner />
+      <Potions api={api} />
     </>
   );
 }

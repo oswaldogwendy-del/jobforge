@@ -340,7 +340,7 @@ export function updateMonster(w: SimWorld, m: Unit, dt: number): void {
   const def = defOf(w, m);
   if (!def) return;
   for (const k of Object.keys(ai.cooldowns)) ai.cooldowns[k] = Math.max(0, ai.cooldowns[k] - dt);
-  if (m.staggerT > 0 || !canAct(m)) {
+  if (m.staggerT > 0 || m.hitStunT > 0 || !canAct(m)) {
     cancelWindup(w, m);
     return;
   }

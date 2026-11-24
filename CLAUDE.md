@@ -17,4 +17,6 @@ Repo layout notes:
 - `tools/assets/build-models.mjs` converts the originals into compressed `.glb` files in `public/assets/models/` (committed).
 - Pages deploys from `main` through `.github/workflows/deploy.yml`. Work on the session's feature branch and never push to `main` directly.
 
-Commands: `npm run dev -- --host` (phones on the same Wi-Fi), `npm test`, `npm run lint`, `npm run build`, `npm run assets` (rebuild models), `npm run sim` (headless balance bot).
+Commands: `npm run dev -- --host` (phones on the same Wi-Fi), `npm test`, `npm run lint`, `npm run build`, `npm run assets` (rebuild models), `npm run sim` (headless balance bot, `-- --progress` for levels 1 to 15), `node tools/gen-items.mjs` (rebuild `items.json`).
+
+Saves live in `src/save/` (versioned: bump `SAVE_VERSION`, add a migration and a fixture in `tests/fixtures/`). Progression and inventory rules are pure functions in `src/sim/profile.ts`; the screens in `src/ui/screens/` call them through `Game.mutate`.

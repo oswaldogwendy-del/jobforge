@@ -4,9 +4,21 @@ import { bosses, monsters, summons, zones, skillMap } from '../data/content';
 import type { Balance } from '../data/schema';
 import type { BossDef, EffectDef, MonsterDef, SkillDef, SummonDef, ZoneDef } from '../data/types';
 import { updateMonster } from './ai';
-import { applyDamage, dealHit, forEachEnemyOf, killUnit, nearestEnemy, targetable } from './combat';
+import {
+  applyDamage,
+  dealHit,
+  forEachEnemyOf,
+  healUnit,
+  killUnit,
+  nearestEnemy,
+  targetable,
+} from './combat';
+import { rollChest, rollMonsterDrops, type DropRoll } from './loot';
+import type { Pickup } from './types';
+import { stackMap } from '../data/content';
 import {
   displaceUnit,
+  tickDisplacement,
   heroBasicAttack,
   rebuildSlots,
   refreshHero,
@@ -102,6 +114,8 @@ export class SimWorld {
   boss: Unit | null = null;
   bossDef: BossDef | null = null;
   packs: Pack[] = [];
+  pickups: Pickup[] = [];
+  readonly lootRng: Rng;
   /** Sim time of the last damage dealt or taken, for out-of-combat regen. */
   lastCombat = -999;
 
@@ -109,6 +123,7 @@ export class SimWorld {
     this.b = o.b ?? balance;
     this.seed = o.seed;
     this.rng = new Rng(o.seed);
+    this.lootRng = new Rng((o.seed ^ 0x9e3779b9) >>> 0);
     this.content = o.content ?? defaultContent;
     this.skillDefs = this.content.skills;
     this.build = o.build;
@@ -269,6 +284,7 @@ export class SimWorld {
       exp: this.run.exp,
       elites: this.run.elites,
       elapsed: this.run.elapsed,
+      drops: this.run.drops,
     };
     this.startField(this.zone.id);
     Object.assign(this.run, keep);
@@ -594,8 +610,16 @@ export class SimWorld {
         ? m.elite.exp
         : 1;
     const variance = 1 + (this.rng.next() * 2 - 1) * this.b.gold.variance;
-    r.gold += Math.round(goldForKill(this.b, u.level, mult) * variance);
-    r.exp += expForKill(this.b, this.build.level, u.level, expMult);
+    const gold = Math.round(
+      goldForKill(this.b, u.level, mult) * variance * (1 + this.hs.goldBonus),
+    );
+    const exp = expForKill(this.b, this.build.level, u.level, expMult);
+    r.gold += gold;
+    r.exp += exp;
+    this.emit({ t: 'reward', exp, gold, level: u.level, boss });
+    if (this.hs.healOnKillPct > 0 && this.hero.alive)
+      healUnit(this, this.hero, this.hero.maxHp * this.hs.healOnKillPct);
+    if (!boss) this.dropLoot(u);
     r.kills++;
     if (u.elite) r.elites++;
     if (this.mode === 'field' && this.zone && r.phase === 'field') {
@@ -617,26 +641,122 @@ export class SimWorld {
     if (boss) this.bossDefeated();
   }
 
+  /** Rolls a kill's drops and lays them on the ground around it. */
+  private dropLoot(u: Unit): void {
+    const zone = this.zone;
+    const roll = rollMonsterDrops(
+      this.b,
+      this.lootRng,
+      { level: u.level, elite: u.elite, materialId: zone?.materialId ?? 'iron_shard' },
+      this.hs.dropBonus,
+    );
+    this.layDrops(roll, u.x, u.z);
+  }
+
+  private layDrops(roll: DropRoll, x: number, z: number): void {
+    const all: Pickup[] = [];
+    const rarityOf = (id: string): string => (id === 'boss_sigil' ? 'epic' : 'common');
+    for (const item of roll.items) {
+      all.push({
+        payload: { kind: 'item', item },
+        x,
+        z,
+        t: 0,
+        rarity: item.rarity,
+        label: item.defId,
+      });
+    }
+    for (const st of roll.stacks)
+      all.push({
+        payload: { kind: 'stack', id: st.id, n: st.n },
+        x,
+        z,
+        t: 0,
+        rarity: rarityOf(st.id),
+        label: st.id,
+      });
+    for (const p of all) {
+      const a = this.lootRng.next() * Math.PI * 2;
+      p.x += Math.cos(a) * 0.7;
+      p.z += Math.sin(a) * 0.7;
+      if (this.pickups.length >= 120) this.pickups.shift();
+      this.pickups.push(p);
+    }
+  }
+
+  /** Drops fly to the hero once they have lain for a moment, then are collected. */
+  private updatePickups(dt: number): void {
+    const d = this.b.items.drops;
+    const h = this.hero;
+    for (let i = this.pickups.length - 1; i >= 0; i--) {
+      const p = this.pickups[i];
+      p.t += dt;
+      if (p.t < d.flyDelay || !h.alive) continue;
+      const dx = h.x - p.x;
+      const dz = h.z - p.z;
+      const dd = Math.hypot(dx, dz);
+      const step = d.flySpeed * dt;
+      if (dd <= d.pickupRadius || dd <= step) {
+        this.emit({ t: 'pickup', pickup: p.payload, x: p.x, z: p.z });
+        if (p.payload.kind === 'item') this.run.drops.items.push(p.payload.item);
+        else {
+          const st = this.run.drops.stacks.find((x) => x.id === (p.payload as { id: string }).id);
+          if (st) st.n += p.payload.n;
+          else this.run.drops.stacks.push({ id: p.payload.id, n: p.payload.n });
+        }
+        this.pickups.splice(i, 1);
+      } else {
+        p.x += (dx / dd) * step;
+        p.z += (dz / dd) * step;
+      }
+    }
+  }
+
+  /** Uses the potion in a consumable slot. Returns false when it cannot be used right now. */
+  usePotion(slot: number): boolean {
+    const id = this.build.consumables?.[slot];
+    const def = id ? stackMap.get(id) : undefined;
+    const have = id ? (this.build.stacks?.[id] ?? 0) : 0;
+    const h = this.hero;
+    if (!id || !def?.effect || have < 1 || !h.alive || this.mode === 'town') return false;
+    const e = def.effect;
+    const group = e.type === 'sp' ? 'sp' : e.type === 'hp' ? 'hp' : null;
+    if (group && this.hs.potionCd[group] > 0) return false;
+    if (e.type === 'hp') healUnit(this, h, h.maxHp * (e.pct ?? 0));
+    else if (e.type === 'sp') h.sp = Math.min(h.maxSp, h.sp + h.maxSp * (e.pct ?? 0));
+    else if (e.type === 'cleanse') {
+      h.statuses.length = 0;
+      for (let i = h.buffs.length - 1; i >= 0; i--) if (h.buffs[i].debuff) h.buffs.splice(i, 1);
+      refreshHero(this);
+    } else return false;
+    if (group) this.hs.potionCd[group] = this.b.items.potion.cooldown;
+    this.build.stacks![id] = have - 1;
+    this.emit({ t: 'potion', id });
+    return true;
+  }
+
   private bossDefeated(): void {
     const r = this.run;
     if (r.phase !== 'boss') return;
     r.phase = 'chest';
-    const loot: RunResult['loot'] = [{ kind: 'gold', text: `${Math.round(r.gold)} gold` }];
-    loot.push({
-      kind: 'note',
-      text: 'Items, cards and the unique drops arrive with inventory in M2.',
-    });
-    r.result = this.makeResult('victory', true, loot);
+    r.chest = rollChest(
+      this.b,
+      this.lootRng,
+      {
+        level: this.bossDef?.level ?? 12,
+        elite: false,
+        materialId: this.zone?.materialId ?? 'iron_shard',
+        legendaryIds: this.bossDef?.legendaryIds ?? [],
+      },
+      this.hs.dropBonus,
+    );
+    r.result = this.makeResult('victory', true);
     this.projectiles.forEach((p) => (p.active = false));
     this.areas.forEach((a) => (a.active = false));
     this.telegraphs.forEach((t) => (t.active = false));
   }
 
-  private makeResult(
-    outcome: RunResult['outcome'],
-    bossDefeated: boolean,
-    loot: RunResult['loot'] = [],
-  ): RunResult {
+  private makeResult(outcome: RunResult['outcome'], bossDefeated: boolean): RunResult {
     const r = this.run;
     return {
       outcome,
@@ -647,7 +767,8 @@ export class SimWorld {
       expPct: r.exp / expToNext(this.b, this.build.level),
       gold: Math.round(r.gold),
       bossDefeated,
-      loot: loot.length ? loot : [{ kind: 'gold', text: `${Math.round(r.gold)} gold` }],
+      drops: r.drops,
+      chest: r.chest,
       seed: this.seed,
     };
   }
@@ -725,6 +846,9 @@ export class SimWorld {
     }
     updateProjectiles(this, dt);
     updateAreas(this, dt);
+    this.updatePickups(dt);
+    this.hs.potionCd.hp = Math.max(0, this.hs.potionCd.hp - dt);
+    this.hs.potionCd.sp = Math.max(0, this.hs.potionCd.sp - dt);
     for (const t of this.telegraphs) if (t.active) t.t += dt;
     spawnerUpdate(this, dt);
     if (
@@ -763,6 +887,7 @@ export class SimWorld {
       }
     }
     if (changed) refreshUnit(this, u);
+    tickDisplacement(this, u, dt);
     // A debuffed unit's status power (slow etc.) is already folded into moveMult.
   }
 
@@ -1048,6 +1173,10 @@ export function newHeroState(): HeroState {
     lowHpArmed: true,
     castMult: 1,
     cdrPct: 0,
+    dropBonus: 0,
+    goldBonus: 0,
+    healOnKillPct: 0,
+    potionCd: { hp: 0, sp: 0 },
   };
 }
 

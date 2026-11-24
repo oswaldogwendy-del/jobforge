@@ -11,7 +11,7 @@ npm install
 npm run dev -- --host   # open the printed Network URL on a phone on the same Wi-Fi
 ```
 
-Other commands: `npm test`, `npm run lint`, `npm run build`, `npm run preview`, `npm run sim` for the headless balance bot, and `npm run assets` to rebuild the compressed models from `assets-src/`.
+Other commands: `npm test`, `npm run lint`, `npm run build`, `npm run preview`, `npm run sim` for the headless balance bot (`npm run sim -- --progress` plays levels 1 to 15), and `npm run assets` to rebuild the compressed models from `assets-src/`.
 
 ## Play the deployed build
 

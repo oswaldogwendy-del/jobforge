@@ -15,20 +15,38 @@ export interface HeroBuild {
   gold: number;
   /** Base stats, each starting at 1 and raised with points. */
   stats: StatBlock;
-  weapon: { type: SkillWeapon; tier: number };
+  weapon: { type: SkillWeapon; tier: number; atk?: number; matk?: number; refine?: number };
   armorTier: number;
+  /** Totals from equipped items. When set they replace the tier-based weapon and armor numbers. */
+  gear?: GearTotals;
   /** Skill id to rank. */
   learned: Record<string, number>;
+  /** Consumable slot ids and the counts the bag holds (potions used in a run). */
+  consumables?: (string | null)[];
+  stacks?: Record<string, number>;
   actives: (string | null)[];
   passives: (string | null)[];
 }
+/** What the equipped items add to the hero (see sim/items.ts gearTotals). */
+export interface GearTotals {
+  def: number;
+  mdef: number;
+  maxHpPct: number;
+  maxSpPct: number;
+  flee: number;
+  moveSpeedPct: number;
+  stats: Partial<Record<Stat, number>>;
+  healOnKillPct: number;
+  spellEchoChance: number;
+}
+
 export type SkillWeapon =
   'sword' | 'greataxe' | 'dagger' | 'mace' | 'knuckle' | 'staff' | 'bow' | 'gun';
 
 /** Stats used for requirement checks: base plus gear (none yet in M1). */
 export function reqStats(
   build: HeroBuild,
-  gearBonus: Partial<Record<Stat, number>> = {},
+  gearBonus: Partial<Record<Stat, number>> = build.gear?.stats ?? {},
 ): StatBlock {
   const out = { ...build.stats };
   for (const k of STAT_IDS) out[k] += gearBonus[k] ?? 0;
@@ -76,7 +94,7 @@ export function canLearn(
   build: HeroBuild,
   def: SkillDef,
   ctx: LearnContext,
-  gearBonus = {},
+  gearBonus?: Partial<Record<Stat, number>>,
 ): LearnResult {
   if (build.learned[def.id]) return { ok: false, reason: 'known' };
   if (!ctx.unlockedClasses.has(def.classId)) return { ok: false, reason: 'trainer' };
@@ -102,7 +120,7 @@ export function learn(build: HeroBuild, def: SkillDef): void {
 export function dormantSkills(
   build: HeroBuild,
   skills: Map<string, SkillDef>,
-  gearBonus = {},
+  gearBonus?: Partial<Record<Stat, number>>,
 ): string[] {
   const stats = reqStats(build, gearBonus);
   return Object.keys(build.learned).filter((id) => {
@@ -115,7 +133,7 @@ export function dormantSkills(
 export function unequipDormant(
   build: HeroBuild,
   skills: Map<string, SkillDef>,
-  gearBonus = {},
+  gearBonus?: Partial<Record<Stat, number>>,
 ): string[] {
   const dormant = new Set(dormantSkills(build, skills, gearBonus));
   const removed: string[] = [];
@@ -137,7 +155,7 @@ export function equip(
   def: SkillDef,
   slot: number,
   skills: Map<string, SkillDef>,
-  gearBonus = {},
+  gearBonus?: Partial<Record<Stat, number>>,
 ): boolean {
   if (!build.learned[def.id]) return false;
   if (!reqMet(def.req, reqStats(build, gearBonus))) return false;

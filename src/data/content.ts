@@ -1,9 +1,13 @@
 import { z } from 'zod';
 import classesJson from './classes.json';
 import devHeroJson from './devHero.json';
+import itemsJson from './items.json';
+import stacksJson from './stacks.json';
 import {
   bossSchema,
   classSchema,
+  itemSchema,
+  stackSchema,
   monsterSchema,
   skillSchema,
   summonSchema,
@@ -17,8 +21,10 @@ import { balance, modelMap, parseOrThrow } from './schema';
 import type {
   BossDef,
   ClassDef,
+  ItemDef,
   MonsterDef,
   SkillDef,
+  StackDef,
   Stat,
   SummonDef,
   WeaponType,
@@ -42,6 +48,10 @@ export const summons: SummonDef[] = parseOrThrow(
   z.array(summonSchema),
   summonsJson,
 );
+export const items: ItemDef[] = parseOrThrow('items.json', z.array(itemSchema), itemsJson);
+export const stacks: StackDef[] = parseOrThrow('stacks.json', z.array(stackSchema), stacksJson);
+export const itemMap: Map<string, ItemDef> = new Map(items.map((i) => [i.id, i]));
+export const stackMap: Map<string, StackDef> = new Map(stacks.map((i) => [i.id, i]));
 export const skillMap: Map<string, SkillDef> = new Map(skills.map((s) => [s.id, s]));
 export const classMap: Map<string, ClassDef> = new Map(classes.map((c) => [c.id, c]));
 

@@ -5,6 +5,7 @@ import { registerSW } from 'virtual:pwa-register';
 import { strings } from './data/schema';
 import { Game } from './game';
 import { showToast } from './ui/toast';
+import { hudStore } from './ui/store';
 
 const $ = (id: string) => document.getElementById(id) as HTMLElement;
 
@@ -21,7 +22,7 @@ document.addEventListener('contextmenu', (e) => e.preventDefault());
 document.addEventListener(
   'touchmove',
   (e) => {
-    if ((e.target as HTMLElement).closest('.dbg-panel')) return;
+    if ((e.target as HTMLElement).closest('.dbg-panel, .scroll, .scroll-x, textarea')) return;
     e.preventDefault();
   },
   { passive: false },
@@ -29,7 +30,12 @@ document.addEventListener(
 
 const updateSW = registerSW({
   onNeedRefresh() {
-    showToast({ text: strings.update, onTap: () => void updateSW(true) });
+    // "Update ready" shows in town only, never mid-run (PRD Section 4).
+    const offer = () => {
+      if (['run', 'chest', 'results'].includes(hudStore.get().screen)) setTimeout(offer, 4000);
+      else showToast({ text: strings.update, onTap: () => void updateSW(true) });
+    };
+    offer();
   },
   onOfflineReady() {
     showToast({ text: strings.offlineReady, ttl: 3500 });

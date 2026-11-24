@@ -1,0 +1,2231 @@
+[
+  {
+    "id": "sword_t1",
+    "name": "Worn Sword",
+    "slot": "weapon",
+    "type": "sword",
+    "weaponType": "sword",
+    "twoHanded": false,
+    "tier": 1,
+    "levelReq": 1,
+    "base": {
+      "atk": 12
+    },
+    "aps": 1.25,
+    "range": 2.2,
+    "maxSlots": 4,
+    "model": "sword",
+    "sellPrice": 24
+  },
+  {
+    "id": "greataxe_t1",
+    "name": "Worn Greataxe",
+    "slot": "weapon",
+    "type": "greataxe",
+    "weaponType": "greataxe",
+    "twoHanded": true,
+    "tier": 1,
+    "levelReq": 1,
+    "base": {
+      "atk": 16.2
+    },
+    "aps": 0.85,
+    "range": 2.6,
+    "maxSlots": 4,
+    "model": "greataxe",
+    "sellPrice": 24
+  },
+  {
+    "id": "dagger_t1",
+    "name": "Worn Dagger",
+    "slot": "weapon",
+    "type": "dagger",
+    "weaponType": "dagger",
+    "twoHanded": false,
+    "tier": 1,
+    "levelReq": 1,
+    "base": {
+      "atk": 9
+    },
+    "aps": 1.7,
+    "range": 1.8,
+    "maxSlots": 4,
+    "model": "dagger",
+    "sellPrice": 24
+  },
+  {
+    "id": "mace_t1",
+    "name": "Worn Mace",
+    "slot": "weapon",
+    "type": "mace",
+    "weaponType": "mace",
+    "twoHanded": false,
+    "tier": 1,
+    "levelReq": 1,
+    "base": {
+      "atk": 10.8,
+      "matk": 3.24
+    },
+    "aps": 1.1,
+    "range": 2,
+    "maxSlots": 4,
+    "model": "mace",
+    "sellPrice": 24
+  },
+  {
+    "id": "knuckle_t1",
+    "name": "Worn Knuckle",
+    "slot": "weapon",
+    "type": "knuckle",
+    "weaponType": "knuckle",
+    "twoHanded": false,
+    "tier": 1,
+    "levelReq": 1,
+    "base": {
+      "atk": 8.4
+    },
+    "aps": 1.8,
+    "range": 1.6,
+    "maxSlots": 4,
+    "model": "knuckle",
+    "sellPrice": 24
+  },
+  {
+    "id": "staff_t1",
+    "name": "Worn Staff",
+    "slot": "weapon",
+    "type": "staff",
+    "weaponType": "staff",
+    "twoHanded": false,
+    "tier": 1,
+    "levelReq": 1,
+    "base": {
+      "matk": 12,
+      "atk": 3.6
+    },
+    "aps": 0.9,
+    "range": 8,
+    "maxSlots": 4,
+    "model": "staff",
+    "sellPrice": 24
+  },
+  {
+    "id": "bow_t1",
+    "name": "Worn Bow",
+    "slot": "weapon",
+    "type": "bow",
+    "weaponType": "bow",
+    "twoHanded": true,
+    "tier": 1,
+    "levelReq": 1,
+    "base": {
+      "atk": 11.4
+    },
+    "aps": 1,
+    "range": 10,
+    "maxSlots": 4,
+    "model": "bow",
+    "sellPrice": 24
+  },
+  {
+    "id": "gun_t1",
+    "name": "Worn Gun",
+    "slot": "weapon",
+    "type": "gun",
+    "weaponType": "gun",
+    "twoHanded": false,
+    "tier": 1,
+    "levelReq": 1,
+    "base": {
+      "atk": 10.8
+    },
+    "aps": 1.15,
+    "range": 11,
+    "maxSlots": 4,
+    "model": "gun",
+    "sellPrice": 24
+  },
+  {
+    "id": "shield_t1",
+    "name": "Worn Shield",
+    "slot": "offhand",
+    "type": "shield",
+    "offhandType": "shield",
+    "tier": 1,
+    "levelReq": 1,
+    "base": {
+      "def": 3.6
+    },
+    "maxSlots": 2,
+    "model": "shield_round",
+    "sellPrice": 14
+  },
+  {
+    "id": "tome_t1",
+    "name": "Worn Tome",
+    "slot": "offhand",
+    "type": "tome",
+    "offhandType": "tome",
+    "tier": 1,
+    "levelReq": 1,
+    "base": {
+      "matk": 4.8,
+      "maxSpPct": 0.04
+    },
+    "maxSlots": 2,
+    "model": "spellbook_closed",
+    "sellPrice": 14
+  },
+  {
+    "id": "helm_t1",
+    "name": "Worn Helm",
+    "slot": "head",
+    "type": "helm",
+    "tier": 1,
+    "levelReq": 1,
+    "base": {
+      "def": 3
+    },
+    "maxSlots": 1,
+    "sellPrice": 10
+  },
+  {
+    "id": "hat_t1",
+    "name": "Worn Hat",
+    "slot": "head",
+    "type": "hat",
+    "tier": 1,
+    "levelReq": 1,
+    "base": {
+      "mdef": 3,
+      "def": 1.5
+    },
+    "maxSlots": 1,
+    "sellPrice": 10
+  },
+  {
+    "id": "plate_t1",
+    "name": "Worn Plate",
+    "slot": "armor",
+    "type": "plate",
+    "tier": 1,
+    "levelReq": 1,
+    "base": {
+      "def": 6
+    },
+    "maxSlots": 2,
+    "sellPrice": 18
+  },
+  {
+    "id": "leather_t1",
+    "name": "Worn Leather",
+    "slot": "armor",
+    "type": "leather",
+    "tier": 1,
+    "levelReq": 1,
+    "base": {
+      "def": 4.2,
+      "flee": 2
+    },
+    "maxSlots": 2,
+    "sellPrice": 18
+  },
+  {
+    "id": "robe_t1",
+    "name": "Worn Robe",
+    "slot": "armor",
+    "type": "robe",
+    "tier": 1,
+    "levelReq": 1,
+    "base": {
+      "def": 2.4,
+      "mdef": 3.6,
+      "maxSpPct": 0.03
+    },
+    "maxSlots": 2,
+    "sellPrice": 18
+  },
+  {
+    "id": "cloak_t1",
+    "name": "Worn Cloak",
+    "slot": "garment",
+    "type": "cloak",
+    "tier": 1,
+    "levelReq": 1,
+    "base": {
+      "def": 2.4,
+      "mdef": 2.4
+    },
+    "maxSlots": 1,
+    "sellPrice": 10
+  },
+  {
+    "id": "boots_t1",
+    "name": "Worn Boots",
+    "slot": "shoes",
+    "type": "boots",
+    "tier": 1,
+    "levelReq": 1,
+    "base": {
+      "def": 2.4,
+      "moveSpeedPct": 0.01
+    },
+    "maxSlots": 1,
+    "sellPrice": 10
+  },
+  {
+    "id": "ring_str_t1",
+    "name": "Worn Ring of Strength",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 1,
+    "levelReq": 1,
+    "base": {
+      "stats": {
+        "STR": 1
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 12
+  },
+  {
+    "id": "ring_agi_t1",
+    "name": "Worn Ring of Agility",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 1,
+    "levelReq": 1,
+    "base": {
+      "stats": {
+        "AGI": 1
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 12
+  },
+  {
+    "id": "ring_vit_t1",
+    "name": "Worn Ring of Vitality",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 1,
+    "levelReq": 1,
+    "base": {
+      "stats": {
+        "VIT": 1
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 12
+  },
+  {
+    "id": "ring_int_t1",
+    "name": "Worn Ring of Intellect",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 1,
+    "levelReq": 1,
+    "base": {
+      "stats": {
+        "INT": 1
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 12
+  },
+  {
+    "id": "ring_dex_t1",
+    "name": "Worn Ring of Dexterity",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 1,
+    "levelReq": 1,
+    "base": {
+      "stats": {
+        "DEX": 1
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 12
+  },
+  {
+    "id": "ring_luk_t1",
+    "name": "Worn Ring of Fortune",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 1,
+    "levelReq": 1,
+    "base": {
+      "stats": {
+        "LUK": 1
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 12
+  },
+  {
+    "id": "sword_t2",
+    "name": "Bonecarved Sword",
+    "slot": "weapon",
+    "type": "sword",
+    "weaponType": "sword",
+    "twoHanded": false,
+    "tier": 2,
+    "levelReq": 12,
+    "base": {
+      "atk": 35
+    },
+    "aps": 1.25,
+    "range": 2.2,
+    "maxSlots": 4,
+    "model": "sword",
+    "sellPrice": 53
+  },
+  {
+    "id": "greataxe_t2",
+    "name": "Bonecarved Greataxe",
+    "slot": "weapon",
+    "type": "greataxe",
+    "weaponType": "greataxe",
+    "twoHanded": true,
+    "tier": 2,
+    "levelReq": 12,
+    "base": {
+      "atk": 47.25
+    },
+    "aps": 0.85,
+    "range": 2.6,
+    "maxSlots": 4,
+    "model": "greataxe",
+    "sellPrice": 53
+  },
+  {
+    "id": "dagger_t2",
+    "name": "Bonecarved Dagger",
+    "slot": "weapon",
+    "type": "dagger",
+    "weaponType": "dagger",
+    "twoHanded": false,
+    "tier": 2,
+    "levelReq": 12,
+    "base": {
+      "atk": 26.25
+    },
+    "aps": 1.7,
+    "range": 1.8,
+    "maxSlots": 4,
+    "model": "dagger",
+    "sellPrice": 53
+  },
+  {
+    "id": "mace_t2",
+    "name": "Bonecarved Mace",
+    "slot": "weapon",
+    "type": "mace",
+    "weaponType": "mace",
+    "twoHanded": false,
+    "tier": 2,
+    "levelReq": 12,
+    "base": {
+      "atk": 31.5,
+      "matk": 9.45
+    },
+    "aps": 1.1,
+    "range": 2,
+    "maxSlots": 4,
+    "model": "mace",
+    "sellPrice": 53
+  },
+  {
+    "id": "knuckle_t2",
+    "name": "Bonecarved Knuckle",
+    "slot": "weapon",
+    "type": "knuckle",
+    "weaponType": "knuckle",
+    "twoHanded": false,
+    "tier": 2,
+    "levelReq": 12,
+    "base": {
+      "atk": 24.5
+    },
+    "aps": 1.8,
+    "range": 1.6,
+    "maxSlots": 4,
+    "model": "knuckle",
+    "sellPrice": 53
+  },
+  {
+    "id": "staff_t2",
+    "name": "Bonecarved Staff",
+    "slot": "weapon",
+    "type": "staff",
+    "weaponType": "staff",
+    "twoHanded": false,
+    "tier": 2,
+    "levelReq": 12,
+    "base": {
+      "matk": 35,
+      "atk": 10.5
+    },
+    "aps": 0.9,
+    "range": 8,
+    "maxSlots": 4,
+    "model": "staff",
+    "sellPrice": 53
+  },
+  {
+    "id": "bow_t2",
+    "name": "Bonecarved Bow",
+    "slot": "weapon",
+    "type": "bow",
+    "weaponType": "bow",
+    "twoHanded": true,
+    "tier": 2,
+    "levelReq": 12,
+    "base": {
+      "atk": 33.25
+    },
+    "aps": 1,
+    "range": 10,
+    "maxSlots": 4,
+    "model": "bow",
+    "sellPrice": 53
+  },
+  {
+    "id": "gun_t2",
+    "name": "Bonecarved Gun",
+    "slot": "weapon",
+    "type": "gun",
+    "weaponType": "gun",
+    "twoHanded": false,
+    "tier": 2,
+    "levelReq": 12,
+    "base": {
+      "atk": 31.5
+    },
+    "aps": 1.15,
+    "range": 11,
+    "maxSlots": 4,
+    "model": "gun",
+    "sellPrice": 53
+  },
+  {
+    "id": "shield_t2",
+    "name": "Bonecarved Shield",
+    "slot": "offhand",
+    "type": "shield",
+    "offhandType": "shield",
+    "tier": 2,
+    "levelReq": 12,
+    "base": {
+      "def": 8.4
+    },
+    "maxSlots": 2,
+    "model": "shield_round",
+    "sellPrice": 32
+  },
+  {
+    "id": "tome_t2",
+    "name": "Bonecarved Tome",
+    "slot": "offhand",
+    "type": "tome",
+    "offhandType": "tome",
+    "tier": 2,
+    "levelReq": 12,
+    "base": {
+      "matk": 14,
+      "maxSpPct": 0.08
+    },
+    "maxSlots": 2,
+    "model": "spellbook_closed",
+    "sellPrice": 32
+  },
+  {
+    "id": "helm_t2",
+    "name": "Bonecarved Helm",
+    "slot": "head",
+    "type": "helm",
+    "tier": 2,
+    "levelReq": 12,
+    "base": {
+      "def": 7
+    },
+    "maxSlots": 1,
+    "sellPrice": 21
+  },
+  {
+    "id": "hat_t2",
+    "name": "Bonecarved Hat",
+    "slot": "head",
+    "type": "hat",
+    "tier": 2,
+    "levelReq": 12,
+    "base": {
+      "mdef": 7,
+      "def": 3.5
+    },
+    "maxSlots": 1,
+    "sellPrice": 21
+  },
+  {
+    "id": "plate_t2",
+    "name": "Bonecarved Plate",
+    "slot": "armor",
+    "type": "plate",
+    "tier": 2,
+    "levelReq": 12,
+    "base": {
+      "def": 14
+    },
+    "maxSlots": 2,
+    "sellPrice": 40
+  },
+  {
+    "id": "leather_t2",
+    "name": "Bonecarved Leather",
+    "slot": "armor",
+    "type": "leather",
+    "tier": 2,
+    "levelReq": 12,
+    "base": {
+      "def": 9.8,
+      "flee": 4
+    },
+    "maxSlots": 2,
+    "sellPrice": 40
+  },
+  {
+    "id": "robe_t2",
+    "name": "Bonecarved Robe",
+    "slot": "armor",
+    "type": "robe",
+    "tier": 2,
+    "levelReq": 12,
+    "base": {
+      "def": 5.6,
+      "mdef": 8.4,
+      "maxSpPct": 0.06
+    },
+    "maxSlots": 2,
+    "sellPrice": 40
+  },
+  {
+    "id": "cloak_t2",
+    "name": "Bonecarved Cloak",
+    "slot": "garment",
+    "type": "cloak",
+    "tier": 2,
+    "levelReq": 12,
+    "base": {
+      "def": 5.6,
+      "mdef": 5.6
+    },
+    "maxSlots": 1,
+    "sellPrice": 21
+  },
+  {
+    "id": "boots_t2",
+    "name": "Bonecarved Boots",
+    "slot": "shoes",
+    "type": "boots",
+    "tier": 2,
+    "levelReq": 12,
+    "base": {
+      "def": 5.6,
+      "moveSpeedPct": 0.02
+    },
+    "maxSlots": 1,
+    "sellPrice": 21
+  },
+  {
+    "id": "ring_str_t2",
+    "name": "Bonecarved Ring of Strength",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 2,
+    "levelReq": 12,
+    "base": {
+      "stats": {
+        "STR": 2
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 26
+  },
+  {
+    "id": "ring_agi_t2",
+    "name": "Bonecarved Ring of Agility",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 2,
+    "levelReq": 12,
+    "base": {
+      "stats": {
+        "AGI": 2
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 26
+  },
+  {
+    "id": "ring_vit_t2",
+    "name": "Bonecarved Ring of Vitality",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 2,
+    "levelReq": 12,
+    "base": {
+      "stats": {
+        "VIT": 2
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 26
+  },
+  {
+    "id": "ring_int_t2",
+    "name": "Bonecarved Ring of Intellect",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 2,
+    "levelReq": 12,
+    "base": {
+      "stats": {
+        "INT": 2
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 26
+  },
+  {
+    "id": "ring_dex_t2",
+    "name": "Bonecarved Ring of Dexterity",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 2,
+    "levelReq": 12,
+    "base": {
+      "stats": {
+        "DEX": 2
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 26
+  },
+  {
+    "id": "ring_luk_t2",
+    "name": "Bonecarved Ring of Fortune",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 2,
+    "levelReq": 12,
+    "base": {
+      "stats": {
+        "LUK": 2
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 26
+  },
+  {
+    "id": "sword_t3",
+    "name": "Sunsteel Sword",
+    "slot": "weapon",
+    "type": "sword",
+    "weaponType": "sword",
+    "twoHanded": false,
+    "tier": 3,
+    "levelReq": 25,
+    "base": {
+      "atk": 65
+    },
+    "aps": 1.25,
+    "range": 2.2,
+    "maxSlots": 4,
+    "model": "sword",
+    "sellPrice": 116
+  },
+  {
+    "id": "greataxe_t3",
+    "name": "Sunsteel Greataxe",
+    "slot": "weapon",
+    "type": "greataxe",
+    "weaponType": "greataxe",
+    "twoHanded": true,
+    "tier": 3,
+    "levelReq": 25,
+    "base": {
+      "atk": 87.75
+    },
+    "aps": 0.85,
+    "range": 2.6,
+    "maxSlots": 4,
+    "model": "greataxe",
+    "sellPrice": 116
+  },
+  {
+    "id": "dagger_t3",
+    "name": "Sunsteel Dagger",
+    "slot": "weapon",
+    "type": "dagger",
+    "weaponType": "dagger",
+    "twoHanded": false,
+    "tier": 3,
+    "levelReq": 25,
+    "base": {
+      "atk": 48.75
+    },
+    "aps": 1.7,
+    "range": 1.8,
+    "maxSlots": 4,
+    "model": "dagger",
+    "sellPrice": 116
+  },
+  {
+    "id": "mace_t3",
+    "name": "Sunsteel Mace",
+    "slot": "weapon",
+    "type": "mace",
+    "weaponType": "mace",
+    "twoHanded": false,
+    "tier": 3,
+    "levelReq": 25,
+    "base": {
+      "atk": 58.5,
+      "matk": 17.55
+    },
+    "aps": 1.1,
+    "range": 2,
+    "maxSlots": 4,
+    "model": "mace",
+    "sellPrice": 116
+  },
+  {
+    "id": "knuckle_t3",
+    "name": "Sunsteel Knuckle",
+    "slot": "weapon",
+    "type": "knuckle",
+    "weaponType": "knuckle",
+    "twoHanded": false,
+    "tier": 3,
+    "levelReq": 25,
+    "base": {
+      "atk": 45.5
+    },
+    "aps": 1.8,
+    "range": 1.6,
+    "maxSlots": 4,
+    "model": "knuckle",
+    "sellPrice": 116
+  },
+  {
+    "id": "staff_t3",
+    "name": "Sunsteel Staff",
+    "slot": "weapon",
+    "type": "staff",
+    "weaponType": "staff",
+    "twoHanded": false,
+    "tier": 3,
+    "levelReq": 25,
+    "base": {
+      "matk": 65,
+      "atk": 19.5
+    },
+    "aps": 0.9,
+    "range": 8,
+    "maxSlots": 4,
+    "model": "staff",
+    "sellPrice": 116
+  },
+  {
+    "id": "bow_t3",
+    "name": "Sunsteel Bow",
+    "slot": "weapon",
+    "type": "bow",
+    "weaponType": "bow",
+    "twoHanded": true,
+    "tier": 3,
+    "levelReq": 25,
+    "base": {
+      "atk": 61.75
+    },
+    "aps": 1,
+    "range": 10,
+    "maxSlots": 4,
+    "model": "bow",
+    "sellPrice": 116
+  },
+  {
+    "id": "gun_t3",
+    "name": "Sunsteel Gun",
+    "slot": "weapon",
+    "type": "gun",
+    "weaponType": "gun",
+    "twoHanded": false,
+    "tier": 3,
+    "levelReq": 25,
+    "base": {
+      "atk": 58.5
+    },
+    "aps": 1.15,
+    "range": 11,
+    "maxSlots": 4,
+    "model": "gun",
+    "sellPrice": 116
+  },
+  {
+    "id": "shield_t3",
+    "name": "Sunsteel Shield",
+    "slot": "offhand",
+    "type": "shield",
+    "offhandType": "shield",
+    "tier": 3,
+    "levelReq": 25,
+    "base": {
+      "def": 14.4
+    },
+    "maxSlots": 2,
+    "model": "shield_round",
+    "sellPrice": 70
+  },
+  {
+    "id": "tome_t3",
+    "name": "Sunsteel Tome",
+    "slot": "offhand",
+    "type": "tome",
+    "offhandType": "tome",
+    "tier": 3,
+    "levelReq": 25,
+    "base": {
+      "matk": 26,
+      "maxSpPct": 0.12
+    },
+    "maxSlots": 2,
+    "model": "spellbook_closed",
+    "sellPrice": 70
+  },
+  {
+    "id": "helm_t3",
+    "name": "Sunsteel Helm",
+    "slot": "head",
+    "type": "helm",
+    "tier": 3,
+    "levelReq": 25,
+    "base": {
+      "def": 12
+    },
+    "maxSlots": 1,
+    "sellPrice": 46
+  },
+  {
+    "id": "hat_t3",
+    "name": "Sunsteel Hat",
+    "slot": "head",
+    "type": "hat",
+    "tier": 3,
+    "levelReq": 25,
+    "base": {
+      "mdef": 12,
+      "def": 6
+    },
+    "maxSlots": 1,
+    "sellPrice": 46
+  },
+  {
+    "id": "plate_t3",
+    "name": "Sunsteel Plate",
+    "slot": "armor",
+    "type": "plate",
+    "tier": 3,
+    "levelReq": 25,
+    "base": {
+      "def": 24
+    },
+    "maxSlots": 2,
+    "sellPrice": 87
+  },
+  {
+    "id": "leather_t3",
+    "name": "Sunsteel Leather",
+    "slot": "armor",
+    "type": "leather",
+    "tier": 3,
+    "levelReq": 25,
+    "base": {
+      "def": 16.8,
+      "flee": 6
+    },
+    "maxSlots": 2,
+    "sellPrice": 87
+  },
+  {
+    "id": "robe_t3",
+    "name": "Sunsteel Robe",
+    "slot": "armor",
+    "type": "robe",
+    "tier": 3,
+    "levelReq": 25,
+    "base": {
+      "def": 9.6,
+      "mdef": 14.4,
+      "maxSpPct": 0.09
+    },
+    "maxSlots": 2,
+    "sellPrice": 87
+  },
+  {
+    "id": "cloak_t3",
+    "name": "Sunsteel Cloak",
+    "slot": "garment",
+    "type": "cloak",
+    "tier": 3,
+    "levelReq": 25,
+    "base": {
+      "def": 9.6,
+      "mdef": 9.6
+    },
+    "maxSlots": 1,
+    "sellPrice": 46
+  },
+  {
+    "id": "boots_t3",
+    "name": "Sunsteel Boots",
+    "slot": "shoes",
+    "type": "boots",
+    "tier": 3,
+    "levelReq": 25,
+    "base": {
+      "def": 9.6,
+      "moveSpeedPct": 0.03
+    },
+    "maxSlots": 1,
+    "sellPrice": 46
+  },
+  {
+    "id": "ring_str_t3",
+    "name": "Sunsteel Ring of Strength",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 3,
+    "levelReq": 25,
+    "base": {
+      "stats": {
+        "STR": 3
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 58
+  },
+  {
+    "id": "ring_agi_t3",
+    "name": "Sunsteel Ring of Agility",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 3,
+    "levelReq": 25,
+    "base": {
+      "stats": {
+        "AGI": 3
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 58
+  },
+  {
+    "id": "ring_vit_t3",
+    "name": "Sunsteel Ring of Vitality",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 3,
+    "levelReq": 25,
+    "base": {
+      "stats": {
+        "VIT": 3
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 58
+  },
+  {
+    "id": "ring_int_t3",
+    "name": "Sunsteel Ring of Intellect",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 3,
+    "levelReq": 25,
+    "base": {
+      "stats": {
+        "INT": 3
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 58
+  },
+  {
+    "id": "ring_dex_t3",
+    "name": "Sunsteel Ring of Dexterity",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 3,
+    "levelReq": 25,
+    "base": {
+      "stats": {
+        "DEX": 3
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 58
+  },
+  {
+    "id": "ring_luk_t3",
+    "name": "Sunsteel Ring of Fortune",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 3,
+    "levelReq": 25,
+    "base": {
+      "stats": {
+        "LUK": 3
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 58
+  },
+  {
+    "id": "sword_t4",
+    "name": "Frostforged Sword",
+    "slot": "weapon",
+    "type": "sword",
+    "weaponType": "sword",
+    "twoHanded": false,
+    "tier": 4,
+    "levelReq": 40,
+    "base": {
+      "atk": 100
+    },
+    "aps": 1.25,
+    "range": 2.2,
+    "maxSlots": 4,
+    "model": "sword",
+    "sellPrice": 256
+  },
+  {
+    "id": "greataxe_t4",
+    "name": "Frostforged Greataxe",
+    "slot": "weapon",
+    "type": "greataxe",
+    "weaponType": "greataxe",
+    "twoHanded": true,
+    "tier": 4,
+    "levelReq": 40,
+    "base": {
+      "atk": 135
+    },
+    "aps": 0.85,
+    "range": 2.6,
+    "maxSlots": 4,
+    "model": "greataxe",
+    "sellPrice": 256
+  },
+  {
+    "id": "dagger_t4",
+    "name": "Frostforged Dagger",
+    "slot": "weapon",
+    "type": "dagger",
+    "weaponType": "dagger",
+    "twoHanded": false,
+    "tier": 4,
+    "levelReq": 40,
+    "base": {
+      "atk": 75
+    },
+    "aps": 1.7,
+    "range": 1.8,
+    "maxSlots": 4,
+    "model": "dagger",
+    "sellPrice": 256
+  },
+  {
+    "id": "mace_t4",
+    "name": "Frostforged Mace",
+    "slot": "weapon",
+    "type": "mace",
+    "weaponType": "mace",
+    "twoHanded": false,
+    "tier": 4,
+    "levelReq": 40,
+    "base": {
+      "atk": 90,
+      "matk": 27
+    },
+    "aps": 1.1,
+    "range": 2,
+    "maxSlots": 4,
+    "model": "mace",
+    "sellPrice": 256
+  },
+  {
+    "id": "knuckle_t4",
+    "name": "Frostforged Knuckle",
+    "slot": "weapon",
+    "type": "knuckle",
+    "weaponType": "knuckle",
+    "twoHanded": false,
+    "tier": 4,
+    "levelReq": 40,
+    "base": {
+      "atk": 70
+    },
+    "aps": 1.8,
+    "range": 1.6,
+    "maxSlots": 4,
+    "model": "knuckle",
+    "sellPrice": 256
+  },
+  {
+    "id": "staff_t4",
+    "name": "Frostforged Staff",
+    "slot": "weapon",
+    "type": "staff",
+    "weaponType": "staff",
+    "twoHanded": false,
+    "tier": 4,
+    "levelReq": 40,
+    "base": {
+      "matk": 100,
+      "atk": 30
+    },
+    "aps": 0.9,
+    "range": 8,
+    "maxSlots": 4,
+    "model": "staff",
+    "sellPrice": 256
+  },
+  {
+    "id": "bow_t4",
+    "name": "Frostforged Bow",
+    "slot": "weapon",
+    "type": "bow",
+    "weaponType": "bow",
+    "twoHanded": true,
+    "tier": 4,
+    "levelReq": 40,
+    "base": {
+      "atk": 95
+    },
+    "aps": 1,
+    "range": 10,
+    "maxSlots": 4,
+    "model": "bow",
+    "sellPrice": 256
+  },
+  {
+    "id": "gun_t4",
+    "name": "Frostforged Gun",
+    "slot": "weapon",
+    "type": "gun",
+    "weaponType": "gun",
+    "twoHanded": false,
+    "tier": 4,
+    "levelReq": 40,
+    "base": {
+      "atk": 90
+    },
+    "aps": 1.15,
+    "range": 11,
+    "maxSlots": 4,
+    "model": "gun",
+    "sellPrice": 256
+  },
+  {
+    "id": "shield_t4",
+    "name": "Frostforged Shield",
+    "slot": "offhand",
+    "type": "shield",
+    "offhandType": "shield",
+    "tier": 4,
+    "levelReq": 40,
+    "base": {
+      "def": 21.6
+    },
+    "maxSlots": 2,
+    "model": "shield_round",
+    "sellPrice": 153
+  },
+  {
+    "id": "tome_t4",
+    "name": "Frostforged Tome",
+    "slot": "offhand",
+    "type": "tome",
+    "offhandType": "tome",
+    "tier": 4,
+    "levelReq": 40,
+    "base": {
+      "matk": 40,
+      "maxSpPct": 0.16
+    },
+    "maxSlots": 2,
+    "model": "spellbook_closed",
+    "sellPrice": 153
+  },
+  {
+    "id": "helm_t4",
+    "name": "Frostforged Helm",
+    "slot": "head",
+    "type": "helm",
+    "tier": 4,
+    "levelReq": 40,
+    "base": {
+      "def": 18
+    },
+    "maxSlots": 1,
+    "sellPrice": 102
+  },
+  {
+    "id": "hat_t4",
+    "name": "Frostforged Hat",
+    "slot": "head",
+    "type": "hat",
+    "tier": 4,
+    "levelReq": 40,
+    "base": {
+      "mdef": 18,
+      "def": 9
+    },
+    "maxSlots": 1,
+    "sellPrice": 102
+  },
+  {
+    "id": "plate_t4",
+    "name": "Frostforged Plate",
+    "slot": "armor",
+    "type": "plate",
+    "tier": 4,
+    "levelReq": 40,
+    "base": {
+      "def": 36
+    },
+    "maxSlots": 2,
+    "sellPrice": 192
+  },
+  {
+    "id": "leather_t4",
+    "name": "Frostforged Leather",
+    "slot": "armor",
+    "type": "leather",
+    "tier": 4,
+    "levelReq": 40,
+    "base": {
+      "def": 25.2,
+      "flee": 8
+    },
+    "maxSlots": 2,
+    "sellPrice": 192
+  },
+  {
+    "id": "robe_t4",
+    "name": "Frostforged Robe",
+    "slot": "armor",
+    "type": "robe",
+    "tier": 4,
+    "levelReq": 40,
+    "base": {
+      "def": 14.4,
+      "mdef": 21.6,
+      "maxSpPct": 0.12
+    },
+    "maxSlots": 2,
+    "sellPrice": 192
+  },
+  {
+    "id": "cloak_t4",
+    "name": "Frostforged Cloak",
+    "slot": "garment",
+    "type": "cloak",
+    "tier": 4,
+    "levelReq": 40,
+    "base": {
+      "def": 14.4,
+      "mdef": 14.4
+    },
+    "maxSlots": 1,
+    "sellPrice": 102
+  },
+  {
+    "id": "boots_t4",
+    "name": "Frostforged Boots",
+    "slot": "shoes",
+    "type": "boots",
+    "tier": 4,
+    "levelReq": 40,
+    "base": {
+      "def": 14.4,
+      "moveSpeedPct": 0.04
+    },
+    "maxSlots": 1,
+    "sellPrice": 102
+  },
+  {
+    "id": "ring_str_t4",
+    "name": "Frostforged Ring of Strength",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 4,
+    "levelReq": 40,
+    "base": {
+      "stats": {
+        "STR": 4
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 128
+  },
+  {
+    "id": "ring_agi_t4",
+    "name": "Frostforged Ring of Agility",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 4,
+    "levelReq": 40,
+    "base": {
+      "stats": {
+        "AGI": 4
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 128
+  },
+  {
+    "id": "ring_vit_t4",
+    "name": "Frostforged Ring of Vitality",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 4,
+    "levelReq": 40,
+    "base": {
+      "stats": {
+        "VIT": 4
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 128
+  },
+  {
+    "id": "ring_int_t4",
+    "name": "Frostforged Ring of Intellect",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 4,
+    "levelReq": 40,
+    "base": {
+      "stats": {
+        "INT": 4
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 128
+  },
+  {
+    "id": "ring_dex_t4",
+    "name": "Frostforged Ring of Dexterity",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 4,
+    "levelReq": 40,
+    "base": {
+      "stats": {
+        "DEX": 4
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 128
+  },
+  {
+    "id": "ring_luk_t4",
+    "name": "Frostforged Ring of Fortune",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 4,
+    "levelReq": 40,
+    "base": {
+      "stats": {
+        "LUK": 4
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 128
+  },
+  {
+    "id": "sword_t5",
+    "name": "Emberforged Sword",
+    "slot": "weapon",
+    "type": "sword",
+    "weaponType": "sword",
+    "twoHanded": false,
+    "tier": 5,
+    "levelReq": 55,
+    "base": {
+      "atk": 140
+    },
+    "aps": 1.25,
+    "range": 2.2,
+    "maxSlots": 4,
+    "model": "sword",
+    "sellPrice": 562
+  },
+  {
+    "id": "greataxe_t5",
+    "name": "Emberforged Greataxe",
+    "slot": "weapon",
+    "type": "greataxe",
+    "weaponType": "greataxe",
+    "twoHanded": true,
+    "tier": 5,
+    "levelReq": 55,
+    "base": {
+      "atk": 189
+    },
+    "aps": 0.85,
+    "range": 2.6,
+    "maxSlots": 4,
+    "model": "greataxe",
+    "sellPrice": 562
+  },
+  {
+    "id": "dagger_t5",
+    "name": "Emberforged Dagger",
+    "slot": "weapon",
+    "type": "dagger",
+    "weaponType": "dagger",
+    "twoHanded": false,
+    "tier": 5,
+    "levelReq": 55,
+    "base": {
+      "atk": 105
+    },
+    "aps": 1.7,
+    "range": 1.8,
+    "maxSlots": 4,
+    "model": "dagger",
+    "sellPrice": 562
+  },
+  {
+    "id": "mace_t5",
+    "name": "Emberforged Mace",
+    "slot": "weapon",
+    "type": "mace",
+    "weaponType": "mace",
+    "twoHanded": false,
+    "tier": 5,
+    "levelReq": 55,
+    "base": {
+      "atk": 126,
+      "matk": 37.8
+    },
+    "aps": 1.1,
+    "range": 2,
+    "maxSlots": 4,
+    "model": "mace",
+    "sellPrice": 562
+  },
+  {
+    "id": "knuckle_t5",
+    "name": "Emberforged Knuckle",
+    "slot": "weapon",
+    "type": "knuckle",
+    "weaponType": "knuckle",
+    "twoHanded": false,
+    "tier": 5,
+    "levelReq": 55,
+    "base": {
+      "atk": 98
+    },
+    "aps": 1.8,
+    "range": 1.6,
+    "maxSlots": 4,
+    "model": "knuckle",
+    "sellPrice": 562
+  },
+  {
+    "id": "staff_t5",
+    "name": "Emberforged Staff",
+    "slot": "weapon",
+    "type": "staff",
+    "weaponType": "staff",
+    "twoHanded": false,
+    "tier": 5,
+    "levelReq": 55,
+    "base": {
+      "matk": 140,
+      "atk": 42
+    },
+    "aps": 0.9,
+    "range": 8,
+    "maxSlots": 4,
+    "model": "staff",
+    "sellPrice": 562
+  },
+  {
+    "id": "bow_t5",
+    "name": "Emberforged Bow",
+    "slot": "weapon",
+    "type": "bow",
+    "weaponType": "bow",
+    "twoHanded": true,
+    "tier": 5,
+    "levelReq": 55,
+    "base": {
+      "atk": 133
+    },
+    "aps": 1,
+    "range": 10,
+    "maxSlots": 4,
+    "model": "bow",
+    "sellPrice": 562
+  },
+  {
+    "id": "gun_t5",
+    "name": "Emberforged Gun",
+    "slot": "weapon",
+    "type": "gun",
+    "weaponType": "gun",
+    "twoHanded": false,
+    "tier": 5,
+    "levelReq": 55,
+    "base": {
+      "atk": 126
+    },
+    "aps": 1.15,
+    "range": 11,
+    "maxSlots": 4,
+    "model": "gun",
+    "sellPrice": 562
+  },
+  {
+    "id": "shield_t5",
+    "name": "Emberforged Shield",
+    "slot": "offhand",
+    "type": "shield",
+    "offhandType": "shield",
+    "tier": 5,
+    "levelReq": 55,
+    "base": {
+      "def": 30
+    },
+    "maxSlots": 2,
+    "model": "shield_round",
+    "sellPrice": 337
+  },
+  {
+    "id": "tome_t5",
+    "name": "Emberforged Tome",
+    "slot": "offhand",
+    "type": "tome",
+    "offhandType": "tome",
+    "tier": 5,
+    "levelReq": 55,
+    "base": {
+      "matk": 56,
+      "maxSpPct": 0.2
+    },
+    "maxSlots": 2,
+    "model": "spellbook_closed",
+    "sellPrice": 337
+  },
+  {
+    "id": "helm_t5",
+    "name": "Emberforged Helm",
+    "slot": "head",
+    "type": "helm",
+    "tier": 5,
+    "levelReq": 55,
+    "base": {
+      "def": 25
+    },
+    "maxSlots": 1,
+    "sellPrice": 225
+  },
+  {
+    "id": "hat_t5",
+    "name": "Emberforged Hat",
+    "slot": "head",
+    "type": "hat",
+    "tier": 5,
+    "levelReq": 55,
+    "base": {
+      "mdef": 25,
+      "def": 12.5
+    },
+    "maxSlots": 1,
+    "sellPrice": 225
+  },
+  {
+    "id": "plate_t5",
+    "name": "Emberforged Plate",
+    "slot": "armor",
+    "type": "plate",
+    "tier": 5,
+    "levelReq": 55,
+    "base": {
+      "def": 50
+    },
+    "maxSlots": 2,
+    "sellPrice": 422
+  },
+  {
+    "id": "leather_t5",
+    "name": "Emberforged Leather",
+    "slot": "armor",
+    "type": "leather",
+    "tier": 5,
+    "levelReq": 55,
+    "base": {
+      "def": 35,
+      "flee": 10
+    },
+    "maxSlots": 2,
+    "sellPrice": 422
+  },
+  {
+    "id": "robe_t5",
+    "name": "Emberforged Robe",
+    "slot": "armor",
+    "type": "robe",
+    "tier": 5,
+    "levelReq": 55,
+    "base": {
+      "def": 20,
+      "mdef": 30,
+      "maxSpPct": 0.15
+    },
+    "maxSlots": 2,
+    "sellPrice": 422
+  },
+  {
+    "id": "cloak_t5",
+    "name": "Emberforged Cloak",
+    "slot": "garment",
+    "type": "cloak",
+    "tier": 5,
+    "levelReq": 55,
+    "base": {
+      "def": 20,
+      "mdef": 20
+    },
+    "maxSlots": 1,
+    "sellPrice": 225
+  },
+  {
+    "id": "boots_t5",
+    "name": "Emberforged Boots",
+    "slot": "shoes",
+    "type": "boots",
+    "tier": 5,
+    "levelReq": 55,
+    "base": {
+      "def": 20,
+      "moveSpeedPct": 0.05
+    },
+    "maxSlots": 1,
+    "sellPrice": 225
+  },
+  {
+    "id": "ring_str_t5",
+    "name": "Emberforged Ring of Strength",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 5,
+    "levelReq": 55,
+    "base": {
+      "stats": {
+        "STR": 5
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 281
+  },
+  {
+    "id": "ring_agi_t5",
+    "name": "Emberforged Ring of Agility",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 5,
+    "levelReq": 55,
+    "base": {
+      "stats": {
+        "AGI": 5
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 281
+  },
+  {
+    "id": "ring_vit_t5",
+    "name": "Emberforged Ring of Vitality",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 5,
+    "levelReq": 55,
+    "base": {
+      "stats": {
+        "VIT": 5
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 281
+  },
+  {
+    "id": "ring_int_t5",
+    "name": "Emberforged Ring of Intellect",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 5,
+    "levelReq": 55,
+    "base": {
+      "stats": {
+        "INT": 5
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 281
+  },
+  {
+    "id": "ring_dex_t5",
+    "name": "Emberforged Ring of Dexterity",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 5,
+    "levelReq": 55,
+    "base": {
+      "stats": {
+        "DEX": 5
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 281
+  },
+  {
+    "id": "ring_luk_t5",
+    "name": "Emberforged Ring of Fortune",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 5,
+    "levelReq": 55,
+    "base": {
+      "stats": {
+        "LUK": 5
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 281
+  },
+  {
+    "id": "sword_t6",
+    "name": "Voidforged Sword",
+    "slot": "weapon",
+    "type": "sword",
+    "weaponType": "sword",
+    "twoHanded": false,
+    "tier": 6,
+    "levelReq": 70,
+    "base": {
+      "atk": 185
+    },
+    "aps": 1.25,
+    "range": 2.2,
+    "maxSlots": 4,
+    "model": "sword",
+    "sellPrice": 1237
+  },
+  {
+    "id": "greataxe_t6",
+    "name": "Voidforged Greataxe",
+    "slot": "weapon",
+    "type": "greataxe",
+    "weaponType": "greataxe",
+    "twoHanded": true,
+    "tier": 6,
+    "levelReq": 70,
+    "base": {
+      "atk": 249.75
+    },
+    "aps": 0.85,
+    "range": 2.6,
+    "maxSlots": 4,
+    "model": "greataxe",
+    "sellPrice": 1237
+  },
+  {
+    "id": "dagger_t6",
+    "name": "Voidforged Dagger",
+    "slot": "weapon",
+    "type": "dagger",
+    "weaponType": "dagger",
+    "twoHanded": false,
+    "tier": 6,
+    "levelReq": 70,
+    "base": {
+      "atk": 138.75
+    },
+    "aps": 1.7,
+    "range": 1.8,
+    "maxSlots": 4,
+    "model": "dagger",
+    "sellPrice": 1237
+  },
+  {
+    "id": "mace_t6",
+    "name": "Voidforged Mace",
+    "slot": "weapon",
+    "type": "mace",
+    "weaponType": "mace",
+    "twoHanded": false,
+    "tier": 6,
+    "levelReq": 70,
+    "base": {
+      "atk": 166.5,
+      "matk": 49.95
+    },
+    "aps": 1.1,
+    "range": 2,
+    "maxSlots": 4,
+    "model": "mace",
+    "sellPrice": 1237
+  },
+  {
+    "id": "knuckle_t6",
+    "name": "Voidforged Knuckle",
+    "slot": "weapon",
+    "type": "knuckle",
+    "weaponType": "knuckle",
+    "twoHanded": false,
+    "tier": 6,
+    "levelReq": 70,
+    "base": {
+      "atk": 129.5
+    },
+    "aps": 1.8,
+    "range": 1.6,
+    "maxSlots": 4,
+    "model": "knuckle",
+    "sellPrice": 1237
+  },
+  {
+    "id": "staff_t6",
+    "name": "Voidforged Staff",
+    "slot": "weapon",
+    "type": "staff",
+    "weaponType": "staff",
+    "twoHanded": false,
+    "tier": 6,
+    "levelReq": 70,
+    "base": {
+      "matk": 185,
+      "atk": 55.5
+    },
+    "aps": 0.9,
+    "range": 8,
+    "maxSlots": 4,
+    "model": "staff",
+    "sellPrice": 1237
+  },
+  {
+    "id": "bow_t6",
+    "name": "Voidforged Bow",
+    "slot": "weapon",
+    "type": "bow",
+    "weaponType": "bow",
+    "twoHanded": true,
+    "tier": 6,
+    "levelReq": 70,
+    "base": {
+      "atk": 175.75
+    },
+    "aps": 1,
+    "range": 10,
+    "maxSlots": 4,
+    "model": "bow",
+    "sellPrice": 1237
+  },
+  {
+    "id": "gun_t6",
+    "name": "Voidforged Gun",
+    "slot": "weapon",
+    "type": "gun",
+    "weaponType": "gun",
+    "twoHanded": false,
+    "tier": 6,
+    "levelReq": 70,
+    "base": {
+      "atk": 166.5
+    },
+    "aps": 1.15,
+    "range": 11,
+    "maxSlots": 4,
+    "model": "gun",
+    "sellPrice": 1237
+  },
+  {
+    "id": "shield_t6",
+    "name": "Voidforged Shield",
+    "slot": "offhand",
+    "type": "shield",
+    "offhandType": "shield",
+    "tier": 6,
+    "levelReq": 70,
+    "base": {
+      "def": 39.6
+    },
+    "maxSlots": 2,
+    "model": "shield_round",
+    "sellPrice": 742
+  },
+  {
+    "id": "tome_t6",
+    "name": "Voidforged Tome",
+    "slot": "offhand",
+    "type": "tome",
+    "offhandType": "tome",
+    "tier": 6,
+    "levelReq": 70,
+    "base": {
+      "matk": 74,
+      "maxSpPct": 0.24
+    },
+    "maxSlots": 2,
+    "model": "spellbook_closed",
+    "sellPrice": 742
+  },
+  {
+    "id": "helm_t6",
+    "name": "Voidforged Helm",
+    "slot": "head",
+    "type": "helm",
+    "tier": 6,
+    "levelReq": 70,
+    "base": {
+      "def": 33
+    },
+    "maxSlots": 1,
+    "sellPrice": 495
+  },
+  {
+    "id": "hat_t6",
+    "name": "Voidforged Hat",
+    "slot": "head",
+    "type": "hat",
+    "tier": 6,
+    "levelReq": 70,
+    "base": {
+      "mdef": 33,
+      "def": 16.5
+    },
+    "maxSlots": 1,
+    "sellPrice": 495
+  },
+  {
+    "id": "plate_t6",
+    "name": "Voidforged Plate",
+    "slot": "armor",
+    "type": "plate",
+    "tier": 6,
+    "levelReq": 70,
+    "base": {
+      "def": 66
+    },
+    "maxSlots": 2,
+    "sellPrice": 928
+  },
+  {
+    "id": "leather_t6",
+    "name": "Voidforged Leather",
+    "slot": "armor",
+    "type": "leather",
+    "tier": 6,
+    "levelReq": 70,
+    "base": {
+      "def": 46.2,
+      "flee": 12
+    },
+    "maxSlots": 2,
+    "sellPrice": 928
+  },
+  {
+    "id": "robe_t6",
+    "name": "Voidforged Robe",
+    "slot": "armor",
+    "type": "robe",
+    "tier": 6,
+    "levelReq": 70,
+    "base": {
+      "def": 26.4,
+      "mdef": 39.6,
+      "maxSpPct": 0.18
+    },
+    "maxSlots": 2,
+    "sellPrice": 928
+  },
+  {
+    "id": "cloak_t6",
+    "name": "Voidforged Cloak",
+    "slot": "garment",
+    "type": "cloak",
+    "tier": 6,
+    "levelReq": 70,
+    "base": {
+      "def": 26.4,
+      "mdef": 26.4
+    },
+    "maxSlots": 1,
+    "sellPrice": 495
+  },
+  {
+    "id": "boots_t6",
+    "name": "Voidforged Boots",
+    "slot": "shoes",
+    "type": "boots",
+    "tier": 6,
+    "levelReq": 70,
+    "base": {
+      "def": 26.4,
+      "moveSpeedPct": 0.06
+    },
+    "maxSlots": 1,
+    "sellPrice": 495
+  },
+  {
+    "id": "ring_str_t6",
+    "name": "Voidforged Ring of Strength",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 6,
+    "levelReq": 70,
+    "base": {
+      "stats": {
+        "STR": 6
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 618
+  },
+  {
+    "id": "ring_agi_t6",
+    "name": "Voidforged Ring of Agility",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 6,
+    "levelReq": 70,
+    "base": {
+      "stats": {
+        "AGI": 6
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 618
+  },
+  {
+    "id": "ring_vit_t6",
+    "name": "Voidforged Ring of Vitality",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 6,
+    "levelReq": 70,
+    "base": {
+      "stats": {
+        "VIT": 6
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 618
+  },
+  {
+    "id": "ring_int_t6",
+    "name": "Voidforged Ring of Intellect",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 6,
+    "levelReq": 70,
+    "base": {
+      "stats": {
+        "INT": 6
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 618
+  },
+  {
+    "id": "ring_dex_t6",
+    "name": "Voidforged Ring of Dexterity",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 6,
+    "levelReq": 70,
+    "base": {
+      "stats": {
+        "DEX": 6
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 618
+  },
+  {
+    "id": "ring_luk_t6",
+    "name": "Voidforged Ring of Fortune",
+    "slot": "accessory",
+    "type": "ring",
+    "tier": 6,
+    "levelReq": 70,
+    "base": {
+      "stats": {
+        "LUK": 6
+      }
+    },
+    "maxSlots": 1,
+    "sellPrice": 618
+  },
+  {
+    "id": "royal_jelly_crown",
+    "name": "Royal Jelly Crown",
+    "slot": "head",
+    "type": "hat",
+    "tier": 1,
+    "levelReq": 10,
+    "base": {
+      "maxHpPct": 0.05,
+      "stats": {
+        "VIT": 2
+      },
+      "def": 4,
+      "mdef": 4
+    },
+    "maxSlots": 0,
+    "sellPrice": 400,
+    "legendary": {
+      "text": "Heal 2% Max HP for every kill.",
+      "healOnKillPct": 0.02
+    }
+  },
+  {
+    "id": "wobbling_scepter",
+    "name": "Wobbling Scepter",
+    "slot": "weapon",
+    "type": "staff",
+    "weaponType": "staff",
+    "twoHanded": true,
+    "tier": 1,
+    "levelReq": 10,
+    "base": {
+      "matk": 20,
+      "atk": 6
+    },
+    "aps": 0.9,
+    "range": 8,
+    "maxSlots": 0,
+    "model": "staff",
+    "sellPrice": 400,
+    "legendary": {
+      "text": "Spells have a 10% chance to cast twice at 50% power. (The echo arrives in M3.)",
+      "spellEchoChance": 0.1
+    }
+  }
+]

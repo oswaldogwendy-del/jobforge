@@ -67,7 +67,14 @@ describe('ranked values', () => {
 describe('Knight and Mage data (PRD Section 8)', () => {
   it('has 16 skills, 8 per class, one per tier slot', () => {
     expect(skills).toHaveLength(16);
-    expect(classes.map((c) => c.id).sort()).toEqual(['knight', 'mage']);
+    expect(
+      classes
+        .filter((c) => !c.comingIn)
+        .map((c) => c.id)
+        .sort(),
+    ).toEqual(['knight', 'mage']);
+    expect(classes).toHaveLength(12);
+    expect(classes.filter((c) => c.unlock.type === 'start')).toHaveLength(6);
     for (const c of ['knight', 'mage']) {
       const own = skills.filter((s) => s.classId === c);
       expect(own).toHaveLength(8);

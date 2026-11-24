@@ -22,5 +22,141 @@
       "type": "start"
     },
     "blurb": "Elemental artillery that freezes, burns and blows up packs from range."
+  },
+  {
+    "id": "archer",
+    "name": "Archer",
+    "color": "#3f9b5c",
+    "primary": "DEX",
+    "secondary": "AGI",
+    "affinity": ["bow"],
+    "unlock": {
+      "type": "start"
+    },
+    "blurb": "Ranged physical damage with traps, marks and a falcon.",
+    "comingIn": "M3"
+  },
+  {
+    "id": "priest",
+    "name": "Priest",
+    "color": "#e8d36a",
+    "primary": "INT",
+    "secondary": "VIT",
+    "affinity": ["mace", "staff"],
+    "unlock": {
+      "type": "start"
+    },
+    "blurb": "Healer and holy caster, and the easiest class to splash into any build.",
+    "comingIn": "M3"
+  },
+  {
+    "id": "thief",
+    "name": "Thief",
+    "color": "#7a6a8a",
+    "primary": "AGI",
+    "secondary": "LUK",
+    "affinity": ["dagger"],
+    "unlock": {
+      "type": "start"
+    },
+    "blurb": "Fast crit-and-poison fighter who also pockets extra loot.",
+    "comingIn": "M3"
+  },
+  {
+    "id": "merchant",
+    "name": "Merchant",
+    "color": "#c98b3a",
+    "primary": "STR",
+    "secondary": "LUK",
+    "affinity": ["mace"],
+    "unlock": {
+      "type": "start"
+    },
+    "blurb": "Turns gold into damage and kills into more gold: the farming class.",
+    "comingIn": "M3"
+  },
+  {
+    "id": "berserker",
+    "name": "Berserker",
+    "color": "#b5392f",
+    "primary": "STR",
+    "secondary": "VIT",
+    "affinity": ["greataxe"],
+    "unlock": {
+      "type": "boss",
+      "bossId": "queen_gelatina"
+    },
+    "blurb": "Gets stronger as HP drops and heals by hitting.",
+    "comingIn": "M4"
+  },
+  {
+    "id": "monk",
+    "name": "Monk",
+    "color": "#d2733a",
+    "primary": "STR",
+    "secondary": "AGI",
+    "affinity": ["knuckle"],
+    "unlock": {
+      "type": "boss",
+      "bossId": "queen_gelatina"
+    },
+    "blurb": "Combo fighter who stores Spirit Orbs and dumps them into a huge finisher.",
+    "comingIn": "M4"
+  },
+  {
+    "id": "paladin",
+    "name": "Paladin",
+    "color": "#d9c27a",
+    "primary": "VIT",
+    "secondary": "STR",
+    "affinity": ["sword", "mace"],
+    "unlock": {
+      "type": "boss",
+      "bossId": "hollow_abbot"
+    },
+    "blurb": "Holy tank whose aura also protects summons.",
+    "comingIn": "M4"
+  },
+  {
+    "id": "necromancer",
+    "name": "Necromancer",
+    "color": "#5b4a8a",
+    "primary": "INT",
+    "secondary": "LUK",
+    "affinity": ["staff", "dagger"],
+    "unlock": {
+      "type": "boss",
+      "bossId": "hollow_abbot"
+    },
+    "blurb": "Summoner who drains life and blows up corpses.",
+    "comingIn": "M4"
+  },
+  {
+    "id": "ninja",
+    "name": "Ninja",
+    "color": "#4a4a6a",
+    "primary": "AGI",
+    "secondary": "DEX",
+    "affinity": ["dagger"],
+    "unlock": {
+      "type": "boss",
+      "bossId": "gilded_scarab_rex"
+    },
+    "blurb": "Mobile skirmisher mixing physical tricks with fire and lightning jutsu.",
+    "comingIn": "M4"
+  },
+  {
+    "id": "gunslinger",
+    "name": "Gunslinger",
+    "color": "#6a8a9a",
+    "primary": "DEX",
+    "secondary": "LUK",
+    "affinity": ["gun"],
+    "unlock": {
+      "type": "boss",
+      "bossId": "gilded_scarab_rex"
+    },
+    "blurb": "Long-range burst built on Coins earned from crits.",
+    "comingIn": "M4"
   }
 ]

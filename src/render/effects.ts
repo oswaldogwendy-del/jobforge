@@ -6,6 +6,7 @@ import {
   Matrix4,
   Mesh,
   MeshBasicMaterial,
+  OctahedronGeometry,
   RingGeometry,
   SphereGeometry,
   TorusGeometry,
@@ -128,5 +129,74 @@ export class Markers {
       this.elite.visible = true;
       this.elite.position.set(elite.x, 0.06, elite.z);
     } else this.elite.visible = false;
+  }
+}
+
+const RARITY_HEX: Record<string, number> = {
+  common: 0xe8e8e8,
+  fine: 0x5be05b,
+  rare: 0x4a9bff,
+  epic: 0xb85bff,
+  legendary: 0xffa030,
+};
+
+/** Drops on the ground: a bobbing gem and a light beam coloured by rarity (PRD Section 5). */
+export class LootView {
+  private readonly gems: InstancedMesh;
+  private readonly beams: InstancedMesh;
+  private readonly m = new Matrix4();
+  private readonly c = new Color();
+
+  constructor(
+    scene: Scene,
+    private readonly max = 120,
+  ) {
+    this.gems = new InstancedMesh(
+      new OctahedronGeometry(0.28, 0),
+      new MeshBasicMaterial({ color: 0xffffff }),
+      max,
+    );
+    this.beams = new InstancedMesh(
+      new CylinderGeometry(0.1, 0.16, 4, 8, 1, true).translate(0, 2, 0),
+      new MeshBasicMaterial({
+        color: 0xffffff,
+        blending: AdditiveBlending,
+        transparent: true,
+        opacity: 0.55,
+        depthWrite: false,
+        side: DoubleSide,
+      }),
+      max,
+    );
+    for (const mesh of [this.gems, this.beams]) {
+      mesh.count = 0;
+      mesh.frustumCulled = false;
+      scene.add(mesh);
+    }
+  }
+
+  update(w: SimWorld, clock: number): void {
+    const list = w.pickups;
+    const n = Math.min(list.length, this.max);
+    for (let i = 0; i < n; i++) {
+      const p = list[i];
+      const hex = RARITY_HEX[p.rarity] ?? 0xffffff;
+      this.c.setHex(hex);
+      const rise = Math.min(1, p.t * 4);
+      const y = 0.35 + 0.12 * Math.sin(clock * 4 + i) + (p.t > 0.5 ? 0.3 : 0);
+      this.m.makeRotationY(clock * 2 + i).setPosition(p.x, y * rise, p.z);
+      this.gems.setMatrixAt(i, this.m);
+      this.gems.setColorAt(i, this.c);
+      const tall = p.rarity === 'common' ? 0.45 : 1;
+      this.m.makeScale(tall, tall * rise, tall).setPosition(p.x, 0, p.z);
+      this.beams.setMatrixAt(i, this.m);
+      this.beams.setColorAt(i, this.c);
+    }
+    this.gems.count = n;
+    this.beams.count = n;
+    this.gems.instanceMatrix.needsUpdate = true;
+    this.beams.instanceMatrix.needsUpdate = true;
+    if (this.gems.instanceColor) this.gems.instanceColor.needsUpdate = true;
+    if (this.beams.instanceColor) this.beams.instanceColor.needsUpdate = true;
   }
 }

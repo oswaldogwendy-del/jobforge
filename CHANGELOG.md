@@ -1,6 +1,62 @@
 # Changelog
 
-## M1: Combat core (built, waiting on phone testing)
+## M2: Progression and town (built, waiting on phone testing)
+
+You make a hero, fight, level up, spend points, learn skills, equip drops and come back to a hub that saves everything. It also adds the knockback you asked for after testing M1.
+
+### Checklist (PRD Section 17)
+
+- [x] Base EXP and levels, stat points, and the Status window with preview and Unlocks list (`src/sim/profile.ts`, `src/ui/screens/Status.tsx`)
+- [x] Guild Hall learning (trainer, requirement, tier prerequisite, gold), ranks and the free rank reset. All 12 trainers are listed; only Knight and Mage are open
+- [x] Loadout screen with dormant skills, and the skill bar locked inside zones
+- [x] Item drops, rarity, inventory, equipment, compare, shop and selling (140 items; card slots roll but cards arrive in M3)
+- [x] Town hub, World Map and Oracle stat reset
+- [x] Saves: 3 slots in IndexedDB, autosave, export and import, and the migration test (a fixture for version 1 and a loader chain for later versions)
+- [ ] Levels 1 to 15 playable without debug tools. The bot gets there (see below), but it needs a human on a phone to confirm
+- [ ] **Phone check** (needs your iPhone): the whole loop from Title to Create hero, a fight, level-up, Guild Hall, Loadout, a drop, selling, the boss and a reload that still shows your hero
+
+Also in this build: knockback (a smooth slide with a flinch, a nudge on basic attacks, and pushes on Crushing Blow, Crescent Sweep and Cataclysm), two potion buttons, drops that fly to you under a rarity beam, a Boss Sigil route to the Queen from the World Map, and a Settings screen with damage numbers, FPS counter, auto-sell and save export.
+
+### Test results
+
+- `npm test`: 264 tests in 19 files pass (54 new): knockback, save versions and the migration chain, export and import round trip, slot storage, EXP and level curve, stat spending and the Oracle, learning, ranks and dormant skills, slot unlocks, bag, overflow, shop and selling, equip rules, rarity and drop rates (seeded, thousands of rolls), gear totals into the sim, kill rewards, pickups, the chest and potions.
+- `npm run lint`, `tsc --noEmit` and `npm run build` are clean, also with `BASE_PATH=/jobforge/`. Download is about 5.4 MB against the 15 MB budget.
+- Headless Chromium at 844x390 with touch emulation, from an empty browser: Title, Create hero, Town, every menu, a first fight with level-ups, drops and the potion button, the Queen through the portal and through a Sigil, the chest, a death that keeps loot, results, a reload that continues the same hero, an export and an import into a second slot, and an offline reload under `/jobforge/`: zero console errors. Screenshots were checked by eye.
+
+### Simulator (`npm run sim -- --progress`, bot from level 1 in Meadowmere)
+
+The bot spends points by template, learns skills in a fixed order, equips the best drops, sells the rest, drinks potions below 40% HP and loses 30 s per death. Two seeds each:
+
+| Build            | Level 5        | Level 10     | Level 15     | Deaths by level 15 |
+| ---------------- | -------------- | ------------ | ------------ | ------------------ |
+| Caster (Mage)    | 3.1 to 3.3 min | 13 to 15 min | 33 min       | 3                  |
+| Warrior (Knight) | 6 to 8 min     | 26 to 30 min | 57 to 67 min | 23 to 24           |
+
+Both reach level 15 with no debug tools, at about 20 kills per minute. The PRD pace is level 1 to 30 in about 1.5 hours, so level 15 in about 30 minutes: the Caster is on it, the Knight bot is not, because it dies a lot (same weakness as M1, see Known issues).
+
+### Known issues
+
+- **Survival is unchanged.** You asked not to change it, and the bot still dies a lot as a Knight. Potions and gear help but I did not retune. Tell me after the phone test if this still feels wrong.
+- No sound, and effects are basic (M5). Animation is "a bit clunky" (your words): blends and speed matching are M5.
+- Menu icons are drawn tiles with two letters, not art. Head items are not shown on the hero. Knuckle uses the sword model and Mace the one-handed axe until those classes arrive.
+- The Wobbling Scepter's double cast is not built (its stats work). The Royal Jelly Crown's heal-on-kill works.
+- Cards, the Codex, the Blacksmith, refining and the Tower are not here (M3). The World Map shows Zones 2 to 6 locked.
+- Settings is a subset (damage numbers, FPS counter, auto-sell, save code). UI scale, left-handed mode, graphics presets and volumes are M5. No auto-battle toggle yet (M3).
+- A knockback can make a melee monster miss, because its hit lands where you stood. That is on purpose, and it makes basic-attack pushes a mild defence.
+- iOS Safari deletes a site's storage after 7 days without a visit unless it is a Home Screen app. The title screen says so on iPhone. Use Export now and then. Real IndexedDB behaviour on iOS is not yet confirmed.
+- Only the iPhone has been tested; an Android phone has not.
+
+### How to test on your iPhone
+
+1. Merge the PR to `main`. The Deploy workflow updates `https://oswaldogwendy-del.github.io/jobforge/`.
+2. If you have the old version installed, close it, open it online and wait 10 seconds. Tap **Update ready, tap to restart** when it appears (it only shows in menus). If it never appears, delete the icon, clear `github.io` website data in Settings, and add it to the Home Screen again.
+3. Tap **New hero**, pick a look and a template, and start. Go to **Guild Hall**, learn a skill with your 200 gold, press **Equip**, and check it in **Loadout**.
+4. Tap **Adventure** and fight. Watch the FPS number, the potion buttons and the gems that fly to you. Level up, then spend points in **Status**.
+5. Try **Inventory** (equip, compare, sell), **Shop**, **Oracle** and **World Map**. Use the DBG panel's **Level up** and **+10k gold** only if you want to skip ahead.
+6. Close the app fully and reopen it: **Play** on your slot should show the same hero.
+7. Tell me the FPS and anything that feels wrong: menus you cannot read or reach, button sizes, the knockback feel, and whether levelling 1 to 15 feels like too much grind.
+
+## M1: Combat core (done, phone-tested)
 
 A real fight. Town stub, then Meadowmere Fields with 10 spawn points of monster packs, an elite about every 150 s, a boss gauge and portal, then Queen Gelatina in her own arena, the victory chest, a results screen, and death returning to town with loot kept. The hero is a level-12 test hero (Knight or Mage preset) built from the real stat, damage and skill systems.
 
@@ -13,7 +69,7 @@ A real fight. Town stub, then Meadowmere Fields with 10 spawn points of monster 
 - [x] Zone 1 field: spawner, packs, elite, boss gauge and portal
 - [x] Queen Gelatina with every pattern and both splits, the victory chest and the results screen
 - [x] Death returns the hero to town with loot kept
-- [ ] **Phone check** (needs your iPhone): 60 fps with about 30 skinned monsters, joystick plus smart-cast and drag-aim feel, and the whole loop from town to boss to results
+- [x] **Phone check** (iPhone, your report): "fps is okay", "overall control feels okay", "animation is a bit clunky but acceptable". The hero died after about ten enemies, which is why M2 adds potions, gear and knockback (DECISIONS.md, M2 item 1)
 
 ### Test results
 

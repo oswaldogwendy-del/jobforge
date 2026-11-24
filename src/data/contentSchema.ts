@@ -3,8 +3,10 @@ import type {
   BossDef,
   ClassDef,
   EffectDef,
+  ItemDef,
   MonsterDef,
   SkillDef,
+  StackDef,
   SummonDef,
   ZoneDef,
 } from './types';
@@ -240,6 +242,7 @@ export const classSchema: z.ZodType<ClassDef> = z.strictObject({
     z.strictObject({ type: z.literal('boss'), bossId: z.string() }),
   ]),
   blurb: z.string(),
+  comingIn: z.enum(['M3', 'M4']).optional(),
 }) as z.ZodType<ClassDef>;
 
 export const skillTierGold: Record<number, number> = { 1: 100, 2: 600, 3: 2500, 4: 8000, 5: 25000 };
@@ -402,3 +405,65 @@ export const summonSchema: z.ZodType<SummonDef> = z.strictObject({
   }),
   taunt: z.strictObject({ radius: num.positive() }).optional(),
 }) as z.ZodType<SummonDef>;
+
+// --- Items and stackable goods ---------------------------------------------------------------
+
+const itemBase = z.strictObject({
+  atk: z.number().optional(),
+  matk: z.number().optional(),
+  def: z.number().optional(),
+  mdef: z.number().optional(),
+  maxHpPct: z.number().optional(),
+  maxSpPct: z.number().optional(),
+  flee: z.number().optional(),
+  moveSpeedPct: z.number().optional(),
+  stats: z.partialRecord(stat, z.number()).optional(),
+});
+
+export const itemSchema: z.ZodType<ItemDef> = z.strictObject({
+  id: z.string(),
+  name: z.string(),
+  slot: z.enum(['weapon', 'offhand', 'head', 'armor', 'garment', 'shoes', 'accessory']),
+  type: z.string(),
+  weaponType: weaponType.optional(),
+  offhandType: z.enum(['shield', 'tome']).optional(),
+  twoHanded: z.boolean().optional(),
+  tier: z.union([
+    z.literal(1),
+    z.literal(2),
+    z.literal(3),
+    z.literal(4),
+    z.literal(5),
+    z.literal(6),
+  ]),
+  levelReq: z.number().int().min(1),
+  base: itemBase,
+  aps: z.number().optional(),
+  range: z.number().optional(),
+  maxSlots: z.number().int().min(0).max(4),
+  model: z.string().optional(),
+  sellPrice: z.number().min(0),
+  legendary: z
+    .strictObject({
+      text: z.string(),
+      healOnKillPct: z.number().optional(),
+      spellEchoChance: z.number().optional(),
+    })
+    .optional(),
+}) as z.ZodType<ItemDef>;
+
+export const stackSchema: z.ZodType<StackDef> = z.strictObject({
+  id: z.string(),
+  name: z.string(),
+  kind: z.enum(['potion', 'material', 'key']),
+  effect: z
+    .strictObject({
+      type: z.enum(['hp', 'sp', 'cleanse', 'revive', 'statReset', 'expBoost']),
+      pct: z.number().optional(),
+    })
+    .optional(),
+  price: z.number().min(0),
+  sellPrice: z.number().min(0),
+  shopLevel: z.number().int().min(0),
+  text: z.string(),
+}) as z.ZodType<StackDef>;

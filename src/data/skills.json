@@ -30,6 +30,11 @@
         "duration": 1,
         "chance": 0.25,
         "atRank": 5
+      },
+      {
+        "type": "displace",
+        "kind": "knockback",
+        "distance": 2
       }
     ],
     "anim": "melee_slash",
@@ -39,7 +44,7 @@
       "priority": 60,
       "when": "enemiesInRange"
     },
-    "text": "Strike for {atk} ATK. At rank 5, {chance} chance to stun for 1 s."
+    "text": "Strike for {atk} ATK and knock the target back 2 m. At rank 5, {chance} chance to stun for 1 s."
   },
   {
     "id": "knight_iron_body",
@@ -222,6 +227,11 @@
               "status": "stun",
               "pct": 0.3
             }
+          },
+          {
+            "type": "displace",
+            "kind": "knockback",
+            "distance": 1.5
           }
         ]
       }
@@ -233,7 +243,7 @@
       "priority": 65,
       "when": "enemiesInRange"
     },
-    "text": "Sweep a 120 degree arc for {atk} ATK. +30% against stunned enemies."
+    "text": "Sweep a 120 degree arc for {atk} ATK and push enemies back 1.5 m. +30% against stunned enemies."
   },
   {
     "id": "knight_unyielding",
@@ -715,6 +725,11 @@
             "type": "status",
             "status": "stun",
             "duration": 1
+          },
+          {
+            "type": "displace",
+            "kind": "knockback",
+            "distance": 1.5
           }
         ]
       }
@@ -726,6 +741,6 @@
       "priority": 95,
       "when": "boss"
     },
-    "text": "{count} meteors over 3 s, each {matk} MATK fire damage in 2.5 m plus a 1 s stun."
+    "text": "{count} meteors over 3 s, each {matk} MATK fire damage in 2.5 m plus a 1 s stun and a 1.5 m push."
   }
 ]

@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "savedAt": "2026-11-24T00:00:00.000Z",
+  "hero": {
+    "name": "Fixture",
+    "look": "knight",
+    "level": 9,
+    "exp": 299.77884135811723,
+    "gold": 3900,
+    "skillPointsFree": 8,
+    "learned": {
+      "knight_crushing_blow": 1
+    },
+    "presets": [
+      {
+        "stats": {
+          "STR": 12,
+          "AGI": 1,
+          "VIT": 9,
+          "INT": 1,
+          "DEX": 5,
+          "LUK": 1
+        },
+        "statPointsFree": 29,
+        "actives": ["knight_crushing_blow", null, null, null, null, null],
+        "passives": [null, null, null, null],
+        "consumables": ["minor_health", "minor_mana"],
+        "equipment": {
+          "weapon": "imwukphq41914",
+          "armor": "imwukphq42kxsb"
+        }
+      }
+    ],
+    "activePreset": 0,
+    "inventory": [
+      {
+        "uid": "imwukphq41914",
+        "defId": "sword_t1",
+        "rarity": "common",
+        "refine": 0,
+        "bonus": {},
+        "slots": []
+      },
+      {
+        "uid": "imwukphq42kxsb",
+        "defId": "plate_t1",
+        "rarity": "common",
+        "refine": 0,
+        "bonus": {},
+        "slots": [null]
+      },
+      {
+        "uid": "fixture-helm",
+        "defId": "helm_t1",
+        "rarity": "rare",
+        "refine": 0,
+        "bonus": {
+          "STR": 1
+        },
+        "slots": [null]
+      }
+    ],
+    "storage": [],
+    "overflow": [],
+    "stacks": {
+      "minor_health": 5,
+      "minor_mana": 5
+    },
+    "bagSize": 60
+  },
+  "progress": {
+    "unlockedClasses": [],
+    "unlockedZones": ["meadowmere"],
+    "bossKills": {},
+    "cardPity": {},
+    "codex": [],
+    "tower": {
+      "best": 0,
+      "checkpoint": 0,
+      "tokens": 0
+    },
+    "nightmare": false,
+    "slots": {
+      "active": 4,
+      "passive": 2,
+      "presets": 1
+    }
+  },
+  "lifetime": {
+    "kills": 0,
+    "deaths": 0,
+    "playSec": 0
+  },
+  "settings": {
+    "damageNumbers": "on",
+    "screenShake": true,
+    "fpsCounter": false,
+    "uiScale": 1,
+    "leftHanded": false,
+    "autoSellCommon": false,
+    "tipsSeen": [],
+    "iosHintSeen": false
+  }
+}
