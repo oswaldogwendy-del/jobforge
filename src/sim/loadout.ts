@@ -7,6 +7,10 @@ import { totalPoints, pointsSpent, type StatBlock } from './stats';
 
 export interface HeroBuild {
   name: string;
+  /** Which KayKit hero model to show (a key of modelMap.json looks). */
+  look: string;
+  /** Off-hand model id (shield, tome) or null. */
+  offhand: string | null;
   level: number;
   gold: number;
   /** Base stats, each starting at 1 and raised with points. */

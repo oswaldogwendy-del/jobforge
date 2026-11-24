@@ -1076,3 +1076,28 @@ export function skillSummary(def: SkillDef): string {
 }
 
 export type { Stat };
+
+export interface SkillStatus {
+  /** SP the skill would cost right now. */
+  cost: number;
+  noSp: boolean;
+  /** For single-enemy skills: is there an enemy in range? Other types are always true. */
+  hasTarget: boolean;
+  kind: SkillDef['kind'];
+  toggled: boolean;
+}
+
+/** What a skill button needs to show: SP short, no target in range, toggle state. */
+export function skillStatus(w: SimWorld, slot: number): SkillStatus | null {
+  const ss = w.hs.slots[slot];
+  if (!ss) return null;
+  const cost = spCostOf(w, ss.def, ss.rank);
+  const hasTarget = ss.def.target === 'enemy' ? resolveAim(w, ss.def, null) !== null : true;
+  return {
+    cost,
+    noSp: w.hero.sp + 1e-9 < cost,
+    hasTarget,
+    kind: ss.def.kind,
+    toggled: w.hs.toggles.includes(slot),
+  };
+}

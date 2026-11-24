@@ -61,7 +61,7 @@ export interface TickInput {
   casts: CastRequest[];
 }
 
-export type Mode = 'yard' | 'field' | 'boss';
+export type Mode = 'town' | 'yard' | 'field' | 'boss';
 
 export interface WorldOptions {
   build: HeroBuild;
@@ -135,6 +135,7 @@ export class SimWorld {
     this.hero.sp = this.hero.maxSp;
     if (o.mode === 'field') this.startField(o.zoneId ?? 'meadowmere');
     else if (o.mode === 'yard') this.startYard();
+    else if (o.mode === 'town') this.startTown();
   }
 
   // --- Events and lookup ------------------------------------------------------------------
@@ -195,6 +196,17 @@ export class SimWorld {
     this.bossDef = null;
     this.hs.casting = null;
     this.hs.dash = null;
+  }
+
+  /** The town stub: an empty circle where the hero idles. Nothing fights here. */
+  startTown(): void {
+    this.clearField();
+    this.mode = 'town';
+    this.nav = new Nav(circleArena(this.b.arena.radius), []);
+    this.run = newRun('town', 100, 150);
+    this.placeHero(0, 0, 0);
+    this.hero.hp = this.hero.maxHp;
+    this.hero.sp = this.hero.maxSp;
   }
 
   /** The M0 training yard: a circle of 30 training dummies, for testing skills. */

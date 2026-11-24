@@ -54,6 +54,8 @@ const statBlock = z.object(
 const slots = (n: number) => z.array(z.string().nullable()).length(n);
 const presetSchema = z.strictObject({
   label: z.string(),
+  look: z.string(),
+  offhand: z.string().nullable(),
   weapon: z.enum(['sword', 'greataxe', 'dagger', 'mace', 'knuckle', 'staff', 'bow', 'gun']),
   stats: statBlock,
   learned: z.record(z.string(), z.number().int().min(1).max(5)),
@@ -114,6 +116,8 @@ export function buildFromPreset(key: string): HeroBuild {
   if (!p) throw new Error(`devHero.json: no preset ${key}`);
   return {
     name: devHero.name,
+    look: p.look,
+    offhand: p.offhand,
     level: devHero.level,
     gold: devHero.gold,
     stats: { ...p.stats },

@@ -21,6 +21,8 @@ import { weaponStats } from '../src/sim/gear';
 
 const hero = (o: Partial<HeroBuild> = {}): HeroBuild => ({
   name: 'T',
+  look: 'knight',
+  offhand: null,
   level: 12,
   gold: 100000,
   stats: emptyStats(),

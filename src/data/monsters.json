@@ -290,5 +290,40 @@
         }
       }
     ]
+  },
+  {
+    "id": "training_charger",
+    "name": "Training Charger",
+    "zoneId": "yard",
+    "race": "brute",
+    "element": "neutral",
+    "archetype": "charger",
+    "model": "training_charger",
+    "mult": {
+      "hp": 2.0
+    },
+    "moveSpeed": 3.4,
+    "aggroRange": 14,
+    "packSize": [1, 1],
+    "radius": 0.8,
+    "cardId": "",
+    "attacks": [
+      {
+        "id": "charge",
+        "weight": 1,
+        "cooldown": 5,
+        "range": 12,
+        "telegraph": {
+          "shape": "line",
+          "at": "self",
+          "length": 10,
+          "width": 1.6,
+          "warn": 0.9
+        },
+        "damage": {
+          "atkPct": 1.0
+        }
+      }
+    ]
   }
 ]

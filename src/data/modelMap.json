@@ -3,7 +3,10 @@
     "file": "character_anims.glb",
     "idle": "Idle",
     "run": "Running_A",
-    "attack": "1H_Melee_Attack_Slice_Horizontal"
+    "attack": "1H_Melee_Attack_Slice_Horizontal",
+    "cast": "Spellcast_Shoot",
+    "death": "Death_A",
+    "hit": "Hit_A"
   },
   "looks": {
     "knight": {
@@ -35,6 +38,18 @@
     "shield_round": {
       "file": "shield_round.glb",
       "slot": "handslot.l"
+    },
+    "greataxe": {
+      "file": "axe_2handed.glb",
+      "slot": "handslot.r"
+    },
+    "dagger": {
+      "file": "dagger.glb",
+      "slot": "handslot.r"
+    },
+    "staff": {
+      "file": "staff.glb",
+      "slot": "handslot.r"
     }
   },
   "hero": {
@@ -130,6 +145,18 @@
         "move": "Walk",
         "attack": "Bite_Front",
         "hit": "HitRecieve",
+        "death": "Death"
+      }
+    },
+    "training_charger": {
+      "file": "monsters/Bunny.glb",
+      "scale": 0.8,
+      "tint": "#d86a5a",
+      "anim": {
+        "idle": "Idle",
+        "move": "Run",
+        "attack": "Punch",
+        "hit": "HitReact",
         "death": "Death"
       }
     }

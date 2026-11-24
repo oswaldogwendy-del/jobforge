@@ -25,7 +25,9 @@
         "knight_flame_burst": 3
       },
       "actives": ["knight_crushing_blow", "knight_flame_burst", null, null, null, null],
-      "passives": ["knight_iron_body", null, null, null]
+      "passives": ["knight_iron_body", null, null, null],
+      "look": "knight",
+      "offhand": "shield_round"
     },
     "caster": {
       "label": "Caster (Mage)",
@@ -44,7 +46,9 @@
         "mage_frost_lance": 3
       },
       "actives": ["mage_ember_bolt", "mage_frost_lance", null, null, null, null],
-      "passives": ["mage_arcane_mind", null, null, null]
+      "passives": ["mage_arcane_mind", null, null, null],
+      "look": "mage",
+      "offhand": null
     }
   }
 }
