@@ -2,16 +2,14 @@
   "tickRate": 30,
   "maxFrameSec": 0.25,
   "hero": {
-    "moveSpeed": 5.0,
-    "turnRate": 16,
     "radius": 0.5,
-    "atk": 22,
-    "critChance": 0.12,
-    "critMult": 1.5,
-    "variance": 0.05,
-    "weapon": { "aps": 1.25, "range": 2.2, "windupFraction": 0.4 }
+    "turnRate": 16
   },
-  "targeting": { "autoAttackRange": 10, "focusPickRadius": 1.5, "castTargetRange": 12 },
+  "targeting": {
+    "autoAttackRange": 10,
+    "focusPickRadius": 1.5,
+    "castTargetRange": 12
+  },
   "dummies": {
     "count": 30,
     "hp": 600,
@@ -24,7 +22,9 @@
     "placeRadius": 26,
     "seed": 20261124
   },
-  "arena": { "radius": 32 },
+  "arena": {
+    "radius": 32
+  },
   "camera": {
     "fov": 40,
     "pitchDeg": 55,
@@ -43,12 +43,294 @@
     "tapMaxMs": 250,
     "tapMaxPx": 10
   },
-  "skills": { "globalCooldown": 0.4, "meleeStepMax": 4, "dragStartPx": 14 },
+  "skills": {
+    "dragStartPx": 14
+  },
   "render": {
     "maxPixelRatio": 2,
     "damageNumberPool": 64,
     "damageNumberLife": 0.9,
     "fxPool": 6,
     "fxLife": 0.35
+  },
+  "stats": {
+    "startPoints": 48,
+    "baseStat": 1,
+    "maxBaseStat": 99,
+    "maxLevel": 99,
+    "pointsPerLevelDiv": 5,
+    "pointsPerLevelBase": 3,
+    "costDiv": 10,
+    "costBase": 2,
+    "skillPointsPerLevel": 1,
+    "skillPointsFirstBoss": 2
+  },
+  "derived": {
+    "hp": {
+      "base": 80,
+      "perLevel": 12,
+      "perLevelSq": 0.25,
+      "vitPct": 0.01
+    },
+    "sp": {
+      "base": 20,
+      "perLevel": 3,
+      "perLevelSq": 0.05,
+      "intPct": 0.01
+    },
+    "atk": {
+      "strSqDiv": 10,
+      "dexDiv": 5,
+      "lukDiv": 5,
+      "strDivRanged": 5
+    },
+    "matk": {
+      "minDiv": 7,
+      "maxDiv": 5
+    },
+    "hit": {
+      "perLevel": 1,
+      "perDex": 1
+    },
+    "flee": {
+      "perLevel": 1,
+      "perAgi": 1
+    },
+    "def": {
+      "perVit": 0.5,
+      "perLevel": 0.25
+    },
+    "mdef": {
+      "perInt": 0.5,
+      "perVit": 0.2,
+      "perLevel": 0.25
+    },
+    "hpRegen": {
+      "pct": 0.002,
+      "perVit": 0.05,
+      "idleSec": 4,
+      "idleMult": 5
+    },
+    "spRegen": {
+      "base": 0.5,
+      "pct": 0.004,
+      "perInt": 0.04,
+      "oocMult": 3
+    },
+    "aps": {
+      "perAgi": 0.008,
+      "perDex": 0.002
+    },
+    "cast": {
+      "dexDiv": 150
+    },
+    "crit": {
+      "base": 1,
+      "perLuk": 0.3
+    },
+    "perfectDodge": {
+      "base": 1,
+      "lukDiv": 10
+    },
+    "statusResist": {
+      "perPoint": 0.004,
+      "lukHalf": 0.5
+    },
+    "dropPerLuk": 0.003,
+    "moveSpeedBase": 5.0
+  },
+  "combat": {
+    "hitBase": 80,
+    "hitMinPct": 15,
+    "hitMaxPct": 100,
+    "defCurve": 100,
+    "critMult": 1.5,
+    "affinityBonus": 0.25,
+    "variance": 0.05,
+    "freezeBonus": 0.3,
+    "globalCooldown": 0.4,
+    "meleeStepMax": 4,
+    "ccRepeatWindow": 6,
+    "ccRepeatFactor": 0.5,
+    "staggerFillPerCc": 34,
+    "staggerDuration": 2,
+    "staggerDamageBonus": 0.2,
+    "bossTauntMax": 2,
+    "procIcd": 0.5,
+    "maxSummons": 8,
+    "bleedMaxStacks": 3,
+    "slowMove": 0.3,
+    "slowAps": 0.2,
+    "blindHit": 0.5,
+    "curseAtk": 0.2,
+    "curseMove": 0.2,
+    "poisonHealReduce": 0.3,
+    "regenPoisonFactor": 1
+  },
+  "caps": {
+    "cdrPct": 40,
+    "castMinFraction": 0.2,
+    "apsMax": 3.0,
+    "moveSpeedBonusPct": 60,
+    "defReductionPct": 80,
+    "mdefReductionPct": 80,
+    "totalReductionPct": 85,
+    "critChancePct": 80,
+    "perfectDodgePct": 30,
+    "statusResistPct": 75,
+    "lifestealPct": 15,
+    "lifestealHpPerSecPct": 5,
+    "dropRatePct": 100,
+    "goldBonusPct": 200
+  },
+  "weapons": {
+    "sword": {
+      "aps": 1.25,
+      "range": 2.2,
+      "school": "physical",
+      "ranged": false,
+      "atkMult": 1.0
+    },
+    "greataxe": {
+      "aps": 0.85,
+      "range": 2.6,
+      "school": "physical",
+      "ranged": false,
+      "atkMult": 1.35
+    },
+    "dagger": {
+      "aps": 1.7,
+      "range": 1.8,
+      "school": "physical",
+      "ranged": false,
+      "atkMult": 0.75
+    },
+    "mace": {
+      "aps": 1.1,
+      "range": 2.0,
+      "school": "physical",
+      "ranged": false,
+      "atkMult": 0.9
+    },
+    "knuckle": {
+      "aps": 1.8,
+      "range": 1.6,
+      "school": "physical",
+      "ranged": false,
+      "atkMult": 0.7
+    },
+    "staff": {
+      "aps": 0.9,
+      "range": 8,
+      "school": "magic",
+      "ranged": true,
+      "atkMult": 0.3
+    },
+    "bow": {
+      "aps": 1.0,
+      "range": 10,
+      "school": "physical",
+      "ranged": true,
+      "atkMult": 0.95
+    },
+    "gun": {
+      "aps": 1.15,
+      "range": 11,
+      "school": "physical",
+      "ranged": true,
+      "atkMult": 0.9
+    }
+  },
+  "basicAttack": {
+    "windupFraction": 0.4,
+    "staffMatkPct": 0.8
+  },
+  "monster": {
+    "hp": {
+      "base": 20,
+      "perLevel": 8,
+      "perLevelSq": 0.12
+    },
+    "atk": {
+      "base": 6,
+      "perLevel": 2.6,
+      "perLevelSq": 0.03
+    },
+    "def": {
+      "base": 5,
+      "perLevel": 0.6
+    },
+    "mdef": {
+      "base": 5,
+      "perLevel": 0.5
+    },
+    "hit": {
+      "base": 20,
+      "perLevel": 1.5
+    },
+    "flee": {
+      "base": 10,
+      "perLevel": 1.2
+    },
+    "elite": {
+      "hp": 8,
+      "atk": 1.5,
+      "def": 1.3,
+      "scale": 1.4,
+      "exp": 8,
+      "gold": 8
+    },
+    "bossExp": 100,
+    "bossFirstKillExp": 200,
+    "bossGold": 60,
+    "aggroRange": 10,
+    "leashRange": 30,
+    "separation": 1.0,
+    "unitSpeedScale": 1.0,
+    "telegraphMinWarn": 0.6,
+    "telegraphHeavyHpPct": 0.15
+  },
+  "exp": {
+    "levelBase": 15,
+    "levelPerLevel": 2,
+    "levelPerLevelSq": 0.04,
+    "monsterBase": 10,
+    "monsterPow": 1.06,
+    "monsterPerLevel": 2,
+    "gapPerLevel": 0.05,
+    "gapMin": 0.1,
+    "gapMax": 1.5
+  },
+  "gold": {
+    "base": 3,
+    "perLevel": 1.5,
+    "variance": 0.2
+  },
+  "field": {
+    "gaugeFull": 100,
+    "gaugeNormal": 1,
+    "gaugeElite": 10,
+    "maxAlive": 30,
+    "respawnSec": 10,
+    "eliteEverySec": 150,
+    "portalDistance": 4
+  },
+  "boss": {
+    "introSec": 2,
+    "arenaCameraDistance": 22,
+    "chestOpenSec": 1
+  },
+  "items": {
+    "weaponAtk": [12, 35, 65, 100, 140, 185],
+    "armorDef": [6, 14, 24, 36, 50, 66],
+    "maceMatkFrac": 0.3,
+    "staffAtkFrac": 0.3,
+    "staffMatkMult": 1.0
+  },
+  "loadout": {
+    "actives": 6,
+    "passives": 4,
+    "consumables": 2,
+    "skillPointsFirstBoss": 2
   }
 }

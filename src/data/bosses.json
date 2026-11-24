@@ -1,0 +1,115 @@
+[
+  {
+    "id": "queen_gelatina",
+    "name": "Queen Gelatina",
+    "zoneId": "meadowmere",
+    "race": "formless",
+    "element": "neutral",
+    "archetype": "chaser",
+    "model": "queen_gelatina",
+    "mult": {
+      "atk": 1.7
+    },
+    "moveSpeed": 3.0,
+    "aggroRange": 40,
+    "packSize": [1, 1],
+    "radius": 2.2,
+    "cardId": "card_queen_gelatina",
+    "level": 12,
+    "hpMult": 70,
+    "arenaRadius": 15,
+    "attacks": [
+      {
+        "id": "gelatina_bounce_slam",
+        "weight": 3,
+        "cooldown": 6.0,
+        "range": 12,
+        "telegraph": {
+          "shape": "circle",
+          "at": "targetLocked",
+          "warn": 1.2,
+          "radius": 3.5
+        },
+        "damage": {
+          "atkPct": 1.8
+        },
+        "displace": {
+          "kind": "knockback",
+          "distance": 2
+        },
+        "script": "leap"
+      },
+      {
+        "id": "gelatina_jelly_spit",
+        "weight": 2,
+        "cooldown": 7.0,
+        "range": 12,
+        "projectile": {
+          "speed": 9,
+          "count": 3,
+          "spreadDeg": 24
+        },
+        "damage": {
+          "atkPct": 0.55,
+          "status": {
+            "id": "slow",
+            "chance": 1.0,
+            "duration": 2
+          }
+        }
+      },
+      {
+        "id": "gelatina_royal_roll",
+        "weight": 2,
+        "cooldown": 9.0,
+        "range": 22,
+        "telegraph": {
+          "shape": "line",
+          "at": "targetLocked",
+          "warn": 1.0,
+          "length": 20,
+          "width": 3
+        },
+        "damage": {
+          "atkPct": 1.9
+        },
+        "script": "roll"
+      }
+    ],
+    "phases": [
+      {
+        "belowHpPct": 100,
+        "attacks": ["gelatina_bounce_slam", "gelatina_jelly_spit", "gelatina_royal_roll"]
+      },
+      {
+        "belowHpPct": 66,
+        "attacks": ["gelatina_bounce_slam", "gelatina_jelly_spit", "gelatina_royal_roll"],
+        "onEnter": "split"
+      },
+      {
+        "belowHpPct": 33,
+        "attacks": ["gelatina_bounce_slam", "gelatina_jelly_spit", "gelatina_royal_roll"],
+        "onEnter": "split"
+      }
+    ],
+    "enrage": {
+      "atSec": 240,
+      "mods": [
+        {
+          "stat": "moveSpeed",
+          "pct": 0.4
+        },
+        {
+          "stat": "doubleSlam",
+          "add": 1
+        }
+      ]
+    },
+    "legendaryIds": ["royal_jelly_crown", "wobbling_scepter"],
+    "firstKill": {
+      "unlockClasses": ["berserker", "monk"],
+      "unlockZone": "hollowbone",
+      "activeSlots": 5
+    }
+  }
+]

@@ -1,0 +1,731 @@
+[
+  {
+    "id": "knight_crushing_blow",
+    "classId": "knight",
+    "name": "Crushing Blow",
+    "tier": 1,
+    "kind": "active",
+    "tags": ["melee", "physical"],
+    "req": {
+      "STR": 5
+    },
+    "gold": 100,
+    "maxRank": 5,
+    "target": "enemy",
+    "range": 4,
+    "cooldown": 4,
+    "sp": 8,
+    "affinity": ["sword", "greataxe"],
+    "effects": [
+      {
+        "type": "damage",
+        "school": "physical",
+        "element": "weapon",
+        "atk": [1.8, 3.0],
+        "canCrit": true
+      },
+      {
+        "type": "status",
+        "status": "stun",
+        "duration": 1,
+        "chance": 0.25,
+        "atRank": 5
+      }
+    ],
+    "anim": "melee_slash",
+    "vfx": "impact_burst",
+    "sfx": "blunt",
+    "ai": {
+      "priority": 60,
+      "when": "enemiesInRange"
+    },
+    "text": "Strike for {atk} ATK. At rank 5, {chance} chance to stun for 1 s."
+  },
+  {
+    "id": "knight_iron_body",
+    "classId": "knight",
+    "name": "Iron Body",
+    "tier": 1,
+    "kind": "passive",
+    "tags": ["buff"],
+    "req": {
+      "VIT": 5
+    },
+    "gold": 100,
+    "maxRank": 5,
+    "effects": [
+      {
+        "type": "modifier",
+        "mods": [
+          {
+            "stat": "maxHpPct",
+            "pct": [0.03, 0.15]
+          },
+          {
+            "stat": "def",
+            "add": [5, 25]
+          }
+        ]
+      }
+    ],
+    "text": "+3% to 15% Max HP and +5 to 25 DEF."
+  },
+  {
+    "id": "knight_flame_burst",
+    "classId": "knight",
+    "name": "Flame Burst",
+    "tier": 2,
+    "kind": "active",
+    "tags": ["melee", "physical", "aoe", "fire"],
+    "req": {
+      "STR": 20
+    },
+    "gold": 600,
+    "maxRank": 5,
+    "target": "self",
+    "range": 4,
+    "cooldown": 8,
+    "sp": 15,
+    "affinity": ["sword", "greataxe"],
+    "effects": [
+      {
+        "type": "area",
+        "shape": "circle",
+        "at": "self",
+        "radius": 4,
+        "onTick": [
+          {
+            "type": "damage",
+            "school": "physical",
+            "element": "fire",
+            "atk": [1.5, 2.5],
+            "canCrit": true
+          },
+          {
+            "type": "displace",
+            "kind": "knockback",
+            "distance": 2
+          }
+        ]
+      },
+      {
+        "type": "buff",
+        "who": "self",
+        "key": "flame_burst",
+        "duration": 10,
+        "mods": [
+          {
+            "stat": "basicFireBonus",
+            "pct": 0.1
+          }
+        ]
+      }
+    ],
+    "anim": "melee_spin",
+    "vfx": "ring_shockwave",
+    "sfx": "blunt",
+    "ai": {
+      "priority": 55,
+      "when": "enemiesInRange"
+    },
+    "text": "Blast nearby enemies for {atk} ATK fire damage and knock them back 2 m. Basic attacks deal +10% fire damage for 10 s."
+  },
+  {
+    "id": "knight_provoke_roar",
+    "classId": "knight",
+    "name": "Provoke Roar",
+    "tier": 2,
+    "kind": "active",
+    "tags": ["melee", "aoe", "debuff"],
+    "req": {
+      "VIT": 20
+    },
+    "gold": 600,
+    "maxRank": 5,
+    "target": "self",
+    "range": 8,
+    "cooldown": 10,
+    "sp": 12,
+    "effects": [
+      {
+        "type": "taunt",
+        "radius": 8,
+        "duration": 4
+      },
+      {
+        "type": "area",
+        "shape": "circle",
+        "at": "self",
+        "radius": 8,
+        "onTick": [
+          {
+            "type": "displace",
+            "kind": "pull",
+            "distance": 2
+          },
+          {
+            "type": "debuff",
+            "who": "targets",
+            "key": "provoked",
+            "duration": 4,
+            "mods": [
+              {
+                "stat": "def",
+                "pct": [-0.1, -0.3]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "anim": "shout",
+    "vfx": "ring_shockwave",
+    "sfx": "blunt",
+    "ai": {
+      "priority": 40,
+      "when": "enemiesInRange"
+    },
+    "text": "Taunt enemies within 8 m for 4 s and pull them 2 m closer. They lose {pct} DEF."
+  },
+  {
+    "id": "knight_crescent_sweep",
+    "classId": "knight",
+    "name": "Crescent Sweep",
+    "tier": 3,
+    "kind": "active",
+    "tags": ["melee", "physical", "aoe"],
+    "req": {
+      "STR": 40
+    },
+    "gold": 2500,
+    "maxRank": 5,
+    "target": "direction",
+    "range": 5,
+    "cooldown": 9,
+    "sp": 25,
+    "affinity": ["sword", "greataxe"],
+    "effects": [
+      {
+        "type": "area",
+        "shape": "cone",
+        "at": "self",
+        "radius": 5,
+        "angleDeg": 120,
+        "onTick": [
+          {
+            "type": "damage",
+            "school": "physical",
+            "element": "weapon",
+            "atk": [2.2, 4.0],
+            "canCrit": true,
+            "bonusIfStatus": {
+              "status": "stun",
+              "pct": 0.3
+            }
+          }
+        ]
+      }
+    ],
+    "anim": "melee_sweep",
+    "vfx": "cone_sweep",
+    "sfx": "blunt",
+    "ai": {
+      "priority": 65,
+      "when": "enemiesInRange"
+    },
+    "text": "Sweep a 120 degree arc for {atk} ATK. +30% against stunned enemies."
+  },
+  {
+    "id": "knight_unyielding",
+    "classId": "knight",
+    "name": "Unyielding",
+    "tier": 3,
+    "kind": "passive",
+    "tags": ["buff"],
+    "req": {
+      "VIT": 40
+    },
+    "gold": 2500,
+    "maxRank": 5,
+    "effects": [
+      {
+        "type": "trigger",
+        "on": "lowHp",
+        "threshold": 0.4,
+        "icd": 30,
+        "effects": [
+          {
+            "type": "buff",
+            "who": "self",
+            "key": "unyielding",
+            "duration": 6,
+            "immune": ["stun", "knockback"],
+            "mods": [
+              {
+                "stat": "def",
+                "add": [20, 40]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "text": "When HP drops below 40%: immune to stun and knockback and +20 to 40 DEF for 6 s. Cooldown 30 s."
+  },
+  {
+    "id": "knight_bulwark_charge",
+    "classId": "knight",
+    "name": "Bulwark Charge",
+    "tier": 4,
+    "kind": "active",
+    "tags": ["melee", "physical", "dash", "aoe"],
+    "req": {
+      "STR": 60,
+      "VIT": 25
+    },
+    "gold": 8000,
+    "maxRank": 5,
+    "target": "direction",
+    "range": 8,
+    "cooldown": 14,
+    "sp": 40,
+    "affinity": ["sword", "greataxe"],
+    "effects": [
+      {
+        "type": "dash",
+        "distance": 8,
+        "speed": 26,
+        "onPass": [
+          {
+            "type": "damage",
+            "school": "physical",
+            "element": "weapon",
+            "atk": [2.5, 4.2],
+            "canCrit": true
+          },
+          {
+            "type": "displace",
+            "kind": "knockback",
+            "distance": 3
+          }
+        ]
+      }
+    ],
+    "anim": "dash",
+    "vfx": "impact_burst",
+    "sfx": "blunt",
+    "ai": {
+      "priority": 50,
+      "when": "enemiesInRange"
+    },
+    "text": "Charge through enemies for {atk} ATK and knock them back 3 m."
+  },
+  {
+    "id": "knight_kingsblade_oath",
+    "classId": "knight",
+    "name": "Kingsblade Oath",
+    "tier": 5,
+    "kind": "active",
+    "tags": ["buff"],
+    "req": {
+      "STR": 80,
+      "VIT": 40
+    },
+    "gold": 25000,
+    "maxRank": 3,
+    "target": "self",
+    "cooldown": 75,
+    "sp": 70,
+    "affinity": ["sword", "greataxe"],
+    "effects": [
+      {
+        "type": "buff",
+        "who": "self",
+        "key": "kingsblade_oath",
+        "duration": 20,
+        "mods": [
+          {
+            "stat": "basicBonusAtk",
+            "pct": [1.0, 1.6]
+          },
+          {
+            "stat": "aps",
+            "pct": 0.3
+          },
+          {
+            "stat": "spCostPct",
+            "pct": -0.3
+          }
+        ]
+      }
+    ],
+    "anim": "cheer",
+    "vfx": "buff_sparkles",
+    "sfx": "blunt",
+    "ai": {
+      "priority": 90,
+      "when": "boss"
+    },
+    "text": "For 20 s: basic attacks add {pct} ATK that ignores DEF, +30% APS, and skills cost 30% less SP."
+  },
+  {
+    "id": "mage_ember_bolt",
+    "classId": "mage",
+    "name": "Ember Bolt",
+    "tier": 1,
+    "kind": "active",
+    "tags": ["magic", "projectile", "fire"],
+    "req": {
+      "INT": 5
+    },
+    "gold": 100,
+    "maxRank": 5,
+    "target": "enemy",
+    "range": 10,
+    "cast": 0.6,
+    "cooldown": 3,
+    "sp": 10,
+    "affinity": ["staff"],
+    "effects": [
+      {
+        "type": "projectile",
+        "speed": 18,
+        "radius": 0.4,
+        "onHit": [
+          {
+            "type": "damage",
+            "school": "magic",
+            "element": "fire",
+            "matk": [1.6, 3.0]
+          },
+          {
+            "type": "status",
+            "status": "burn",
+            "chance": [0.2, 1.0],
+            "duration": 3,
+            "power": 0.3
+          }
+        ]
+      }
+    ],
+    "anim": "cast_1h",
+    "vfx": "projectile_glow",
+    "sfx": "spell_fire",
+    "ai": {
+      "priority": 50,
+      "when": "enemiesInRange"
+    },
+    "text": "Hurl an ember for {matk} MATK fire damage, with a {chance} chance to burn for 3 s."
+  },
+  {
+    "id": "mage_arcane_mind",
+    "classId": "mage",
+    "name": "Arcane Mind",
+    "tier": 1,
+    "kind": "passive",
+    "tags": ["buff"],
+    "req": {
+      "INT": 5
+    },
+    "gold": 100,
+    "maxRank": 5,
+    "effects": [
+      {
+        "type": "modifier",
+        "mods": [
+          {
+            "stat": "maxSpPct",
+            "pct": [0.05, 0.25]
+          },
+          {
+            "stat": "spRegen",
+            "add": [0.5, 2.5]
+          }
+        ]
+      }
+    ],
+    "text": "+5% to 25% Max SP and +0.5 to 2.5 SP regen per second."
+  },
+  {
+    "id": "mage_frost_lance",
+    "classId": "mage",
+    "name": "Frost Lance",
+    "tier": 2,
+    "kind": "active",
+    "tags": ["magic", "projectile", "water"],
+    "req": {
+      "INT": 20
+    },
+    "gold": 600,
+    "maxRank": 5,
+    "target": "enemy",
+    "range": 10,
+    "cast": 0.6,
+    "cooldown": 6,
+    "sp": 12,
+    "affinity": ["staff"],
+    "effects": [
+      {
+        "type": "projectile",
+        "speed": 20,
+        "radius": 0.4,
+        "onHit": [
+          {
+            "type": "damage",
+            "school": "magic",
+            "element": "water",
+            "matk": [1.4, 2.6]
+          },
+          {
+            "type": "status",
+            "status": "freeze",
+            "chance": [0.3, 0.5],
+            "duration": 2
+          }
+        ]
+      }
+    ],
+    "anim": "cast_1h",
+    "vfx": "projectile_glow",
+    "sfx": "spell_water",
+    "ai": {
+      "priority": 55,
+      "when": "enemiesInRange"
+    },
+    "text": "Throw a lance of ice for {matk} MATK water damage with a {chance} chance to freeze for 2 s."
+  },
+  {
+    "id": "mage_chain_lightning",
+    "classId": "mage",
+    "name": "Chain Lightning",
+    "tier": 2,
+    "kind": "active",
+    "tags": ["magic", "wind"],
+    "req": {
+      "INT": 25,
+      "DEX": 10
+    },
+    "gold": 600,
+    "maxRank": 5,
+    "target": "enemy",
+    "range": 10,
+    "cast": 0.8,
+    "cooldown": 7,
+    "sp": 18,
+    "affinity": ["staff"],
+    "effects": [
+      {
+        "type": "damage",
+        "school": "magic",
+        "element": "wind",
+        "matk": [1.5, 2.5],
+        "chain": {
+          "jumps": [2, 4],
+          "radius": 5,
+          "falloff": 0.2
+        }
+      }
+    ],
+    "anim": "cast_1h",
+    "vfx": "lightning",
+    "sfx": "spell_wind",
+    "ai": {
+      "priority": 60,
+      "when": "enemiesInRange"
+    },
+    "text": "Strike for {matk} MATK wind damage, then jump to more enemies within 5 m at -20% per jump."
+  },
+  {
+    "id": "mage_wall_of_flame",
+    "classId": "mage",
+    "name": "Wall of Flame",
+    "tier": 3,
+    "kind": "active",
+    "tags": ["magic", "aoe", "fire"],
+    "req": {
+      "INT": 40
+    },
+    "gold": 2500,
+    "maxRank": 5,
+    "target": "ground",
+    "range": 10,
+    "cast": 1.0,
+    "cooldown": 15,
+    "sp": 28,
+    "affinity": ["staff"],
+    "effects": [
+      {
+        "type": "area",
+        "shape": "line",
+        "at": "ground",
+        "length": 6,
+        "width": 1.4,
+        "duration": 6,
+        "tick": 0.5,
+        "onTick": [
+          {
+            "type": "damage",
+            "school": "magic",
+            "element": "fire",
+            "matk": [0.8, 1.4]
+          },
+          {
+            "type": "displace",
+            "kind": "knockback",
+            "distance": 0.6
+          }
+        ]
+      }
+    ],
+    "anim": "cast_2h",
+    "vfx": "fire_wall",
+    "sfx": "spell_fire",
+    "ai": {
+      "priority": 45,
+      "when": "enemiesInRange"
+    },
+    "text": "A wall of fire for 6 s. Enemies touching it take {matk} MATK fire damage every 0.5 s and are pushed back (bosses are not)."
+  },
+  {
+    "id": "mage_spell_focus",
+    "classId": "mage",
+    "name": "Spell Focus",
+    "tier": 3,
+    "kind": "passive",
+    "tags": ["buff"],
+    "req": {
+      "INT": 30,
+      "DEX": 30
+    },
+    "gold": 2500,
+    "maxRank": 5,
+    "effects": [
+      {
+        "type": "modifier",
+        "mods": [
+          {
+            "stat": "castSpeed",
+            "pct": [0.05, 0.2]
+          }
+        ]
+      },
+      {
+        "type": "modifier",
+        "tags": ["magic"],
+        "mods": [
+          {
+            "stat": "damagePct",
+            "pct": [0.04, 0.12]
+          }
+        ]
+      }
+    ],
+    "text": "Magic skills cast 5% to 20% faster and deal 4% to 12% more damage."
+  },
+  {
+    "id": "mage_glacial_storm",
+    "classId": "mage",
+    "name": "Glacial Storm",
+    "tier": 4,
+    "kind": "active",
+    "tags": ["magic", "aoe", "water"],
+    "req": {
+      "INT": 60,
+      "DEX": 25
+    },
+    "gold": 8000,
+    "maxRank": 5,
+    "target": "ground",
+    "range": 10,
+    "cast": 1.5,
+    "cooldown": 20,
+    "sp": 50,
+    "affinity": ["staff"],
+    "effects": [
+      {
+        "type": "area",
+        "shape": "circle",
+        "at": "ground",
+        "radius": 6,
+        "duration": 4,
+        "tick": 0.4,
+        "onTick": [
+          {
+            "type": "damage",
+            "school": "magic",
+            "element": "water",
+            "matk": [0.4, 0.7]
+          },
+          {
+            "type": "status",
+            "status": "freeze",
+            "chance": 0.08,
+            "duration": 1.5
+          }
+        ]
+      }
+    ],
+    "anim": "cast_2h",
+    "vfx": "frost_spikes",
+    "sfx": "spell_water",
+    "ai": {
+      "priority": 70,
+      "when": "enemiesInRange"
+    },
+    "text": "10 hits over 4 s for {matk} MATK water damage each. Each hit has an 8% freeze chance."
+  },
+  {
+    "id": "mage_cataclysm",
+    "classId": "mage",
+    "name": "Cataclysm",
+    "tier": 5,
+    "kind": "active",
+    "tags": ["magic", "aoe", "fire"],
+    "req": {
+      "INT": 80,
+      "DEX": 40
+    },
+    "gold": 25000,
+    "maxRank": 3,
+    "target": "ground",
+    "range": 10,
+    "cast": 2.0,
+    "cooldown": 60,
+    "sp": 90,
+    "affinity": ["staff"],
+    "effects": [
+      {
+        "type": "area",
+        "shape": "circle",
+        "at": "ground",
+        "radius": 7,
+        "duration": 3,
+        "scatter": {
+          "count": [6, 10],
+          "hitRadius": 2.5
+        },
+        "onTick": [
+          {
+            "type": "damage",
+            "school": "magic",
+            "element": "fire",
+            "matk": [2.2, 3.3]
+          },
+          {
+            "type": "status",
+            "status": "stun",
+            "duration": 1
+          }
+        ]
+      }
+    ],
+    "anim": "cast_2h",
+    "vfx": "meteor",
+    "sfx": "spell_fire",
+    "ai": {
+      "priority": 95,
+      "when": "boss"
+    },
+    "text": "{count} meteors over 3 s, each {matk} MATK fire damage in 2.5 m plus a 1 s stun."
+  }
+]

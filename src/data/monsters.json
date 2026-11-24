@@ -1,0 +1,294 @@
+[
+  {
+    "id": "training_dummy",
+    "name": "Training Dummy",
+    "zoneId": "yard",
+    "race": "formless",
+    "element": "neutral",
+    "archetype": "dummy",
+    "model": "dummy",
+    "mult": {
+      "hp": 1.0
+    },
+    "moveSpeed": 0,
+    "aggroRange": 0,
+    "packSize": [1, 1],
+    "attacks": [],
+    "cardId": "",
+    "radius": 0.7
+  },
+  {
+    "id": "jellop",
+    "name": "Jellop",
+    "zoneId": "meadowmere",
+    "race": "formless",
+    "element": "neutral",
+    "archetype": "chaser",
+    "model": "jellop",
+    "mult": {
+      "hp": 1.0,
+      "atk": 1.0
+    },
+    "moveSpeed": 3.0,
+    "aggroRange": 10,
+    "packSize": [2, 4],
+    "radius": 0.7,
+    "cardId": "card_jellop",
+    "attacks": [
+      {
+        "id": "jellop_bump",
+        "weight": 1,
+        "cooldown": 1.6,
+        "range": 1.7,
+        "damage": {
+          "atkPct": 1.0
+        }
+      }
+    ]
+  },
+  {
+    "id": "hopbun",
+    "name": "Hopbun",
+    "zoneId": "meadowmere",
+    "race": "brute",
+    "element": "earth",
+    "archetype": "chaser",
+    "model": "hopbun",
+    "mult": {
+      "hp": 0.8,
+      "atk": 0.9
+    },
+    "moveSpeed": 4.4,
+    "aggroRange": 10,
+    "packSize": [2, 3],
+    "radius": 0.6,
+    "cardId": "card_hopbun",
+    "attacks": [
+      {
+        "id": "hopbun_kick",
+        "weight": 1,
+        "cooldown": 1.3,
+        "range": 1.6,
+        "damage": {
+          "atkPct": 0.9,
+          "element": "earth"
+        }
+      }
+    ]
+  },
+  {
+    "id": "buzzwing",
+    "name": "Buzzwing",
+    "zoneId": "meadowmere",
+    "race": "insect",
+    "element": "wind",
+    "archetype": "kiter",
+    "model": "buzzwing",
+    "mult": {
+      "hp": 0.7,
+      "atk": 0.9
+    },
+    "moveSpeed": 3.6,
+    "aggroRange": 11,
+    "packSize": [2, 3],
+    "radius": 0.55,
+    "cardId": "card_buzzwing",
+    "attacks": [
+      {
+        "id": "buzzwing_sting",
+        "weight": 1,
+        "cooldown": 2.2,
+        "range": 9,
+        "projectile": {
+          "speed": 11
+        },
+        "damage": {
+          "atkPct": 0.8,
+          "element": "poison",
+          "status": {
+            "id": "poison",
+            "chance": 0.3,
+            "duration": 4
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "capshroom",
+    "name": "Capshroom",
+    "zoneId": "meadowmere",
+    "race": "plant",
+    "element": "earth",
+    "archetype": "caster",
+    "model": "capshroom",
+    "mult": {
+      "hp": 0.9,
+      "atk": 1.0
+    },
+    "moveSpeed": 2.2,
+    "aggroRange": 10,
+    "packSize": [2, 3],
+    "radius": 0.65,
+    "cardId": "card_capshroom",
+    "attacks": [
+      {
+        "id": "capshroom_spores",
+        "weight": 1,
+        "cooldown": 3.4,
+        "range": 9,
+        "telegraph": {
+          "shape": "circle",
+          "at": "targetLocked",
+          "warn": 1.0,
+          "radius": 2.5
+        },
+        "damage": {
+          "atkPct": 1.0,
+          "element": "poison",
+          "status": {
+            "id": "poison",
+            "chance": 0.5,
+            "duration": 4
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "thornling",
+    "name": "Thornling",
+    "zoneId": "meadowmere",
+    "race": "plant",
+    "element": "earth",
+    "archetype": "chaser",
+    "model": "thornling",
+    "mult": {
+      "hp": 1.8,
+      "atk": 1.0,
+      "def": 1.3
+    },
+    "moveSpeed": 2.4,
+    "aggroRange": 9,
+    "packSize": [2, 3],
+    "radius": 0.8,
+    "cardId": "card_thornling",
+    "attacks": [
+      {
+        "id": "thornling_slap",
+        "weight": 1,
+        "cooldown": 1.8,
+        "range": 1.9,
+        "damage": {
+          "atkPct": 1.1,
+          "element": "earth"
+        }
+      }
+    ]
+  },
+  {
+    "id": "rootmole",
+    "name": "Rootmole",
+    "zoneId": "meadowmere",
+    "race": "brute",
+    "element": "earth",
+    "archetype": "burrower",
+    "model": "rootmole",
+    "mult": {
+      "hp": 1.0,
+      "atk": 1.2
+    },
+    "moveSpeed": 3.2,
+    "aggroRange": 8,
+    "packSize": [2, 3],
+    "radius": 0.6,
+    "cardId": "card_rootmole",
+    "attacks": [
+      {
+        "id": "rootmole_erupt",
+        "weight": 3,
+        "cooldown": 4.0,
+        "range": 8,
+        "telegraph": {
+          "shape": "circle",
+          "at": "targetLocked",
+          "warn": 0.9,
+          "radius": 2.2
+        },
+        "damage": {
+          "atkPct": 1.6,
+          "element": "earth"
+        }
+      },
+      {
+        "id": "rootmole_bite",
+        "weight": 2,
+        "cooldown": 1.5,
+        "range": 1.6,
+        "damage": {
+          "atkPct": 0.9,
+          "element": "earth"
+        }
+      }
+    ]
+  },
+  {
+    "id": "thorn_guardian",
+    "name": "Thorn Guardian",
+    "zoneId": "meadowmere",
+    "race": "plant",
+    "element": "earth",
+    "archetype": "chaser",
+    "model": "thorn_guardian",
+    "mult": {
+      "hp": 1.0,
+      "atk": 1.0
+    },
+    "moveSpeed": 3.0,
+    "aggroRange": 12,
+    "packSize": [1, 1],
+    "radius": 1.1,
+    "cardId": "card_thorn_guardian",
+    "elite": true,
+    "attacks": [
+      {
+        "id": "guardian_vines",
+        "weight": 3,
+        "cooldown": 5.0,
+        "range": 9,
+        "telegraph": {
+          "shape": "line",
+          "at": "targetLocked",
+          "warn": 0.9,
+          "length": 8,
+          "width": 1.8
+        },
+        "damage": {
+          "atkPct": 1.4,
+          "element": "earth",
+          "status": {
+            "id": "root",
+            "chance": 1.0,
+            "duration": 1.5
+          }
+        }
+      },
+      {
+        "id": "guardian_slam",
+        "weight": 2,
+        "cooldown": 2.2,
+        "range": 2.6,
+        "damage": {
+          "atkPct": 1.2,
+          "element": "earth"
+        },
+        "telegraph": {
+          "shape": "circle",
+          "at": "self",
+          "radius": 2.8,
+          "warn": 0.7
+        }
+      }
+    ]
+  }
+]

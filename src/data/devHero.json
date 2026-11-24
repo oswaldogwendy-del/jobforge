@@ -1,0 +1,50 @@
+{
+  "name": "Test Hero",
+  "level": 12,
+  "gold": 20000,
+  "weapon": {
+    "type": "sword",
+    "tier": 1
+  },
+  "armorTier": 1,
+  "presets": {
+    "warrior": {
+      "label": "Warrior (Knight)",
+      "weapon": "sword",
+      "stats": {
+        "STR": 20,
+        "AGI": 5,
+        "VIT": 15,
+        "INT": 1,
+        "DEX": 2,
+        "LUK": 1
+      },
+      "learned": {
+        "knight_crushing_blow": 4,
+        "knight_iron_body": 3,
+        "knight_flame_burst": 3
+      },
+      "actives": ["knight_crushing_blow", "knight_flame_burst", null, null, null, null],
+      "passives": ["knight_iron_body", null, null, null]
+    },
+    "caster": {
+      "label": "Caster (Mage)",
+      "weapon": "staff",
+      "stats": {
+        "STR": 1,
+        "AGI": 1,
+        "VIT": 10,
+        "INT": 22,
+        "DEX": 10,
+        "LUK": 1
+      },
+      "learned": {
+        "mage_ember_bolt": 4,
+        "mage_arcane_mind": 3,
+        "mage_frost_lance": 3
+      },
+      "actives": ["mage_ember_bolt", "mage_frost_lance", null, null, null, null],
+      "passives": ["mage_arcane_mind", null, null, null]
+    }
+  }
+}
