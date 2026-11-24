@@ -8,7 +8,7 @@
     "archetype": "chaser",
     "model": "queen_gelatina",
     "mult": {
-      "atk": 1.7
+      "atk": 1.75
     },
     "moveSpeed": 3.0,
     "aggroRange": 40,
@@ -16,13 +16,13 @@
     "radius": 2.2,
     "cardId": "card_queen_gelatina",
     "level": 12,
-    "hpMult": 70,
+    "hpMult": 50,
     "arenaRadius": 15,
     "attacks": [
       {
         "id": "gelatina_bounce_slam",
         "weight": 3,
-        "cooldown": 6.0,
+        "cooldown": 7.5,
         "range": 12,
         "telegraph": {
           "shape": "circle",
@@ -42,7 +42,7 @@
       {
         "id": "gelatina_jelly_spit",
         "weight": 2,
-        "cooldown": 7.0,
+        "cooldown": 8,
         "range": 12,
         "projectile": {
           "speed": 9,
@@ -50,7 +50,7 @@
           "spreadDeg": 24
         },
         "damage": {
-          "atkPct": 0.55,
+          "atkPct": 0.4,
           "status": {
             "id": "slow",
             "chance": 1.0,
@@ -61,7 +61,7 @@
       {
         "id": "gelatina_royal_roll",
         "weight": 2,
-        "cooldown": 9.0,
+        "cooldown": 11,
         "range": 22,
         "telegraph": {
           "shape": "line",

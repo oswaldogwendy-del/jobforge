@@ -71,6 +71,7 @@ describe('chaser', () => {
     w.hero.x = 8;
     w.hero.z = 0;
     const m = monsterAt(w, 'hopbun', -6, 0);
+    m.maxHp = m.hp = 1e6; // the hero would otherwise kill it before it arrives and hits
     m.ai!.hasAggro = true;
     m.ai!.state = 'chase';
     run(w, 10);

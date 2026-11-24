@@ -31,12 +31,12 @@ const rooted = (w: SimWorld) =>
   applyStatus(b, w.rng, w.hero, 'root', 9999, { now: 0, src: 99, power: 0 });
 
 describe('Queen Gelatina (PRD Section 11)', () => {
-  it('is a level-12 formless boss with 70x HP in a 15 m arena', () => {
+  it('is a level-12 formless boss with a big HP multiple in a 15 m arena', () => {
     const w = arena();
     const q = w.boss!;
     expect(q.isBoss).toBe(true);
     expect(q.level).toBe(12);
-    expect(q.maxHp).toBeCloseTo(monsterStats(b, 12, { hp: 70 }).hp, 3);
+    expect(q.maxHp).toBeCloseTo(monsterStats(b, 12, { hp: queenDef.hpMult }).hp, 3);
     expect(q.race).toBe('formless');
     expect(q.element).toBe('neutral');
     expect(w.nav.arena.shape).toBe('circle');
@@ -132,7 +132,8 @@ describe('Queen Gelatina (PRD Section 11)', () => {
 
   it('splits at 66% and 33% HP: 4 Jellops crawl toward her, and each one that reaches her heals her 4%', () => {
     const w = arena();
-    rooted(w); // so the hero's own attacks do not change the Queen's HP while we measure
+    // A stunned hero cannot attack, so it neither chips the Queen nor kills adds on their way in.
+    applyStatus(b, w.rng, w.hero, 'stun', 9999, { now: 0, src: 99, power: 0 });
     const q = w.boss!;
     const jellops = () => w.units.filter((u) => u.id >= 0 && u.alive && u.ai?.script.toQueen);
     expect(jellops()).toHaveLength(0);

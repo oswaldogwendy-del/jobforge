@@ -4,9 +4,9 @@
   "gold": 20000,
   "weapon": {
     "type": "sword",
-    "tier": 1
+    "tier": 2
   },
-  "armorTier": 1,
+  "armorTier": 2,
   "presets": {
     "warrior": {
       "label": "Warrior (Knight)",
@@ -20,9 +20,9 @@
         "LUK": 1
       },
       "learned": {
-        "knight_crushing_blow": 4,
-        "knight_iron_body": 3,
-        "knight_flame_burst": 3
+        "knight_crushing_blow": 5,
+        "knight_iron_body": 4,
+        "knight_flame_burst": 5
       },
       "actives": ["knight_crushing_blow", "knight_flame_burst", null, null, null, null],
       "passives": ["knight_iron_body", null, null, null],
@@ -41,9 +41,9 @@
         "LUK": 1
       },
       "learned": {
-        "mage_ember_bolt": 4,
-        "mage_arcane_mind": 3,
-        "mage_frost_lance": 3
+        "mage_ember_bolt": 5,
+        "mage_arcane_mind": 4,
+        "mage_frost_lance": 5
       },
       "actives": ["mage_ember_bolt", "mage_frost_lance", null, null, null, null],
       "passives": ["mage_arcane_mind", null, null, null],
