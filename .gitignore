@@ -1,0 +1,7 @@
+node_modules/
+dist/
+dev-dist/
+assets-src/_extracted/
+*.log
+.DS_Store
+coverage/
