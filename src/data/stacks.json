@@ -1,0 +1,166 @@
+[
+  {
+    "id": "minor_health",
+    "name": "Minor Health Draught",
+    "kind": "potion",
+    "effect": {
+      "type": "hp",
+      "pct": 0.2
+    },
+    "price": 30,
+    "sellPrice": 8,
+    "shopLevel": 1,
+    "text": "Heal 20% Max HP."
+  },
+  {
+    "id": "greater_health",
+    "name": "Greater Health Draught",
+    "kind": "potion",
+    "effect": {
+      "type": "hp",
+      "pct": 0.35
+    },
+    "price": 150,
+    "sellPrice": 40,
+    "shopLevel": 25,
+    "text": "Heal 35% Max HP."
+  },
+  {
+    "id": "grand_health",
+    "name": "Grand Health Draught",
+    "kind": "potion",
+    "effect": {
+      "type": "hp",
+      "pct": 0.5
+    },
+    "price": 500,
+    "sellPrice": 130,
+    "shopLevel": 50,
+    "text": "Heal 50% Max HP."
+  },
+  {
+    "id": "minor_mana",
+    "name": "Minor Mana Draught",
+    "kind": "potion",
+    "effect": {
+      "type": "sp",
+      "pct": 0.2
+    },
+    "price": 40,
+    "sellPrice": 10,
+    "shopLevel": 1,
+    "text": "Restore 20% Max SP."
+  },
+  {
+    "id": "greater_mana",
+    "name": "Greater Mana Draught",
+    "kind": "potion",
+    "effect": {
+      "type": "sp",
+      "pct": 0.35
+    },
+    "price": 200,
+    "sellPrice": 50,
+    "shopLevel": 25,
+    "text": "Restore 35% Max SP."
+  },
+  {
+    "id": "grand_mana",
+    "name": "Grand Mana Draught",
+    "kind": "potion",
+    "effect": {
+      "type": "sp",
+      "pct": 0.5
+    },
+    "price": 650,
+    "sellPrice": 160,
+    "shopLevel": 50,
+    "text": "Restore 50% Max SP."
+  },
+  {
+    "id": "panacea",
+    "name": "Panacea",
+    "kind": "potion",
+    "effect": {
+      "type": "cleanse"
+    },
+    "price": 120,
+    "sellPrice": 30,
+    "shopLevel": 12,
+    "text": "Remove all debuffs."
+  },
+  {
+    "id": "phoenix_feather",
+    "name": "Phoenix Feather",
+    "kind": "potion",
+    "effect": {
+      "type": "revive",
+      "pct": 0.5
+    },
+    "price": 0,
+    "sellPrice": 500,
+    "shopLevel": 0,
+    "text": "Revive once per run at 50% HP. (Arrives with the Tower.)"
+  },
+  {
+    "id": "boss_sigil",
+    "name": "Boss Sigil",
+    "kind": "key",
+    "price": 0,
+    "sellPrice": 0,
+    "shopLevel": 0,
+    "text": "Open a zone boss from the World Map."
+  },
+  {
+    "id": "oblivion_draught",
+    "name": "Oblivion Draught",
+    "kind": "potion",
+    "effect": {
+      "type": "statReset"
+    },
+    "price": 0,
+    "sellPrice": 0,
+    "shopLevel": 0,
+    "text": "A free stat reset at the Oracle."
+  },
+  {
+    "id": "field_manual",
+    "name": "Field Manual",
+    "kind": "potion",
+    "effect": {
+      "type": "expBoost",
+      "pct": 0.5
+    },
+    "price": 0,
+    "sellPrice": 0,
+    "shopLevel": 0,
+    "text": "+50% EXP for 30 minutes. (Arrives with the Tower.)"
+  },
+  {
+    "id": "iron_shard",
+    "name": "Iron Shard",
+    "kind": "material",
+    "price": 150,
+    "sellPrice": 20,
+    "shopLevel": 1,
+    "text": "Refining material for +1 to +4. (The Blacksmith arrives in M3.)"
+  },
+  {
+    "id": "mythril_shard",
+    "name": "Mythril Shard",
+    "kind": "material",
+    "price": 600,
+    "sellPrice": 80,
+    "shopLevel": 0,
+    "text": "Refining material for +5 to +7."
+  },
+  {
+    "id": "starmetal",
+    "name": "Starmetal",
+    "kind": "material",
+    "price": 2000,
+    "sellPrice": 300,
+    "shopLevel": 0,
+    "text": "Refining material for +8 to +10."
+  }
+]

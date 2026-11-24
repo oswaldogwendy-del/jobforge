@@ -342,12 +342,101 @@
     "armorDef": [6, 14, 24, 36, 50, 66],
     "maceMatkFrac": 0.3,
     "staffAtkFrac": 0.3,
-    "staffMatkMult": 1.0
+    "staffMatkMult": 1.0,
+    "rarity": {
+      "common": {
+        "mult": 1.0,
+        "weight": 60,
+        "slotsMin": 0,
+        "slotsMax": 1,
+        "bonusStats": 0
+      },
+      "fine": {
+        "mult": 1.1,
+        "weight": 28,
+        "slotsMin": 0,
+        "slotsMax": 2,
+        "bonusStats": 0
+      },
+      "rare": {
+        "mult": 1.25,
+        "weight": 10,
+        "slotsMin": 1,
+        "slotsMax": 3,
+        "bonusStats": 1
+      },
+      "epic": {
+        "mult": 1.4,
+        "weight": 2,
+        "slotsMin": 2,
+        "slotsMax": 4,
+        "bonusStats": 2
+      }
+    },
+    "sellMult": {
+      "common": 1,
+      "fine": 1.6,
+      "rare": 3.5,
+      "epic": 9,
+      "legendary": 15
+    },
+    "refine": {
+      "weaponPct": 0.06,
+      "armorPct": 0.08
+    },
+    "drops": {
+      "normalEquip": 0.04,
+      "normalOre": 0.15,
+      "normalPotion": 0.05,
+      "normalPotionMinorShare": 0.7,
+      "eliteOre": [2, 4],
+      "eliteSigil": 0.25,
+      "bossItems": [2, 3],
+      "bossEpic": 0.25,
+      "bossLegendary": 0.03,
+      "bossOre": [5, 8],
+      "bossOblivion": 0.1,
+      "lootBonusCap": 1.0,
+      "flyDelay": 0.5,
+      "pickupRadius": 1.4,
+      "despawnSec": 60,
+      "flySpeed": 14
+    },
+    "bag": {
+      "start": 60,
+      "step": 10,
+      "max": 120,
+      "expansionCost": [5000, 12000, 25000, 50000, 100000, 200000],
+      "overflow": 50,
+      "storage": 200,
+      "stackMax": 999
+    },
+    "potion": {
+      "cooldown": 8
+    }
   },
   "loadout": {
     "actives": 6,
     "passives": 4,
     "consumables": 2,
     "skillPointsFirstBoss": 2
+  },
+  "progress": {
+    "slotUnlocks": {
+      "activeBase": 4,
+      "passiveBase": 2,
+      "consumables": 2,
+      "activeBoss1": 5,
+      "activeBoss2": 6,
+      "passiveBoss3": 3,
+      "passiveBoss4": 4,
+      "preset2Boss": 5,
+      "preset3Boss": 6
+    },
+    "oracleFreeLevel": 20,
+    "oracleCostPerLevelSq": 5,
+    "autosaveTownSec": 60,
+    "saveSlots": 3,
+    "exportPrefix": "JF1:"
   }
 }

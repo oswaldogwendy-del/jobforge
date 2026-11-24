@@ -50,6 +50,26 @@
     "staff": {
       "file": "staff.glb",
       "slot": "handslot.r"
+    },
+    "mace": {
+      "file": "axe_1handed.glb",
+      "slot": "handslot.r"
+    },
+    "bow": {
+      "file": "crossbow_2handed.glb",
+      "slot": "handslot.r"
+    },
+    "gun": {
+      "file": "crossbow_1handed.glb",
+      "slot": "handslot.r"
+    },
+    "spellbook_closed": {
+      "file": "spellbook_closed.glb",
+      "slot": "handslot.l"
+    },
+    "shield_square": {
+      "file": "shield_square.glb",
+      "slot": "handslot.l"
     }
   },
   "hero": {

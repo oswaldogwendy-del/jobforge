@@ -167,8 +167,9 @@ function Chest({ api }: { api: GameApi }) {
       <h2>Victory!</h2>
       <div class="dim">Queen Gelatina is defeated</div>
       <ul>
-        {r.loot.map((l) => (
-          <li class={l.kind}>{l.text}</li>
+        <li>{r.gold} gold</li>
+        {(r.chest?.items ?? []).map((i) => (
+          <li class={i.rarity}>{i.defId}</li>
         ))}
         <li>
           {r.exp} EXP ({(r.expPct * 100).toFixed(0)}% of a level)

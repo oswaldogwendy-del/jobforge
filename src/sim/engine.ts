@@ -86,11 +86,26 @@ export function refreshHero(w: SimWorld): void {
   const b = w.b;
   const mods = [...hs.passiveMods, ...hs.toggleMods, ...buffMods(h)];
   const stats = { ...w.build.stats };
-  for (const k of STAT_IDS) stats[k] += sumMod(mods, k).add;
-  const weapon = weaponStats(b, w.build.weapon.type, w.build.weapon.tier);
+  const gear = w.build.gear;
+  for (const k of STAT_IDS) stats[k] += sumMod(mods, k).add + (gear?.stats[k] ?? 0);
+  const bw = w.build.weapon;
+  const weapon =
+    bw.atk !== undefined || bw.matk !== undefined
+      ? {
+          type: bw.type,
+          atk: bw.atk ?? 0,
+          matk: bw.matk ?? 0,
+          refine: bw.refine ?? 0,
+        }
+      : weaponStats(b, bw.type, bw.tier);
   const bonuses = bonusesFromMods(mods, {
     ...zeroBonuses(),
-    gearDef: bodyArmorDef(b, w.build.armorTier),
+    gearDef: gear ? gear.def : bodyArmorDef(b, w.build.armorTier),
+    gearMdef: gear?.mdef ?? 0,
+    maxHpPct: gear?.maxHpPct ?? 0,
+    maxSpPct: gear?.maxSpPct ?? 0,
+    flee: gear?.flee ?? 0,
+    moveSpeedPct: gear?.moveSpeedPct ?? 0,
   });
   const d = deriveHero(b, {
     level: w.build.level,
@@ -132,6 +147,9 @@ export function refreshHero(w: SimWorld): void {
   h.perfectDodgePct = d.perfectDodgePct;
   h.damageReduction = Math.min(0.85, sumMod(mods, 'damageReduction').pct);
   for (const id of STATUS_IDS) h.resist[id] = statusResistPct(b, stats, id);
+  hs.dropBonus = d.dropBonus;
+  hs.goldBonus = d.goldBonus;
+  hs.healOnKillPct = gear?.healOnKillPct ?? 0;
   hs.castMult = d.castMult;
   hs.cdrPct = d.cdrPct;
 }

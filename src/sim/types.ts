@@ -1,3 +1,4 @@
+import type { ItemInstance } from '../data/types';
 import type {
   Archetype,
   AttackDef,
@@ -206,7 +207,30 @@ export type SimEvent =
   | { t: 'bossIntro'; name: string }
   | { t: 'phase'; phase: number }
   | { t: 'died'; targetId: number }
-  | { t: 'cast'; slot: number; ok: boolean; reason?: string };
+  | { t: 'cast'; slot: number; ok: boolean; reason?: string }
+  /** EXP and gold a kill is worth, for the game to add to the saved hero. */
+  | { t: 'reward'; exp: number; gold: number; level: number; boss: boolean }
+  /** A drop reached the hero. The game puts it in the bag. */
+  | { t: 'pickup'; pickup: PickupPayload; x: number; z: number }
+  /** A potion was used from a consumable slot. */
+  | { t: 'potion'; id: string }
+  | { t: 'levelUp'; level: number };
+
+export type PickupPayload =
+  { kind: 'item'; item: ItemInstance } | { kind: 'stack'; id: string; n: number };
+
+/** A drop lying on the ground until it flies to the hero. */
+export interface Pickup {
+  payload: PickupPayload;
+  x: number;
+  z: number;
+  /** Seconds since it dropped. */
+  t: number;
+  /** Rarity colour key for the beam: item rarity, or 'common' for stacks. */
+  rarity: string;
+  /** Short label such as the item name. */
+  label: string;
+}
 
 /** What a running skill effect knows about who cast it and how. */
 export interface FxCtx {
@@ -323,4 +347,10 @@ export interface HeroState {
   cdrPct: number;
   /** One-shot flag used by lowHp triggers so they fire on the way down, not every hit. */
   lowHpArmed: boolean;
+  /** Loot and gold bonuses from LUK and gear, and heal-on-kill from a legendary. */
+  dropBonus: number;
+  goldBonus: number;
+  healOnKillPct: number;
+  /** Seconds until each potion group can be used again. */
+  potionCd: { hp: number; sp: number };
 }

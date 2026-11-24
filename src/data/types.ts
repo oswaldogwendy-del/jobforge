@@ -165,6 +165,8 @@ export interface ClassDef {
   affinity: WeaponType[];
   unlock: { type: 'start' } | { type: 'boss'; bossId: string };
   blurb: string;
+  /** EXT: the class has no skills yet; the Guild Hall shows it greyed out until this milestone. */
+  comingIn?: 'M3' | 'M4';
 }
 
 export interface SkillDef {
@@ -317,4 +319,70 @@ export interface SummonDef {
     range: number;
   };
   taunt?: { radius: number };
+}
+
+// --- Items, consumables and materials (PRD Section 12) --------------------------------------
+
+export type EquipSlot =
+  'weapon' | 'offhand' | 'head' | 'armor' | 'garment' | 'shoes' | 'acc1' | 'acc2';
+export type ItemSlot = 'weapon' | 'offhand' | 'head' | 'armor' | 'garment' | 'shoes' | 'accessory';
+export type Rarity = 'common' | 'fine' | 'rare' | 'epic' | 'legendary';
+
+export interface ItemBase {
+  atk?: number;
+  matk?: number;
+  def?: number;
+  mdef?: number;
+  maxHpPct?: number;
+  maxSpPct?: number;
+  flee?: number;
+  moveSpeedPct?: number;
+  stats?: Partial<Record<Stat, number>>;
+}
+
+export interface ItemDef {
+  id: string;
+  name: string;
+  slot: ItemSlot;
+  /** Item type: sword, shield, helm, plate, ring and so on. */
+  type: string;
+  weaponType?: WeaponType;
+  offhandType?: 'shield' | 'tome';
+  twoHanded?: boolean;
+  tier: 1 | 2 | 3 | 4 | 5 | 6;
+  levelReq: number;
+  base: ItemBase;
+  aps?: number;
+  range?: number;
+  maxSlots: number;
+  /** Key of modelMap.json weapons for items that show on the hero. */
+  model?: string;
+  sellPrice: number;
+  /** EXT: the unique effect of a legendary (only the listed parts are implemented). */
+  legendary?: { text: string; healOnKillPct?: number; spellEchoChance?: number };
+}
+
+export interface ItemInstance {
+  uid: string;
+  defId: string;
+  rarity: Rarity;
+  refine: number;
+  bonus: Partial<Record<Stat, number>>;
+  /** Socketed card ids (cards arrive in M3). */
+  slots: (string | null)[];
+  locked?: boolean;
+}
+
+/** Stackable goods: potions, materials and keys. */
+export interface StackDef {
+  id: string;
+  name: string;
+  kind: 'potion' | 'material' | 'key';
+  /** Potions: what they restore, as a fraction of the maximum. */
+  effect?: { type: 'hp' | 'sp' | 'cleanse' | 'revive' | 'statReset' | 'expBoost'; pct?: number };
+  price: number;
+  sellPrice: number;
+  /** Hero level at which the shop starts selling it (0 = not sold). */
+  shopLevel: number;
+  text: string;
 }

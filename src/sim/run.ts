@@ -1,3 +1,4 @@
+import type { DropRoll } from './loot';
 // Run state: what a trip into a zone has collected and where it is in the loop
 // field -> boss intro -> boss -> chest -> results -> town (PRD Section 3).
 
@@ -13,8 +14,9 @@ export interface RunResult {
   expPct: number;
   gold: number;
   bossDefeated: boolean;
-  /** Loot lines for the chest and results screens (items arrive in M2). */
-  loot: { kind: 'gold' | 'note'; text: string }[];
+  /** Everything picked up in the run, and the victory chest's contents. */
+  drops: DropRoll;
+  chest: DropRoll | null;
   seed: number;
 }
 
@@ -34,6 +36,9 @@ export interface RunState {
   result: RunResult | null;
   /** Time until the next elite appears, in seconds. */
   eliteIn: number;
+  /** Items and stacks the hero picked up this run. */
+  drops: DropRoll;
+  chest: DropRoll | null;
 }
 
 export function newRun(zoneId: string, gaugeFull: number, eliteEvery: number): RunState {
@@ -52,5 +57,7 @@ export function newRun(zoneId: string, gaugeFull: number, eliteEvery: number): R
     bossFirstKill: true,
     result: null,
     eliteIn: eliteEvery,
+    drops: { items: [], stacks: [] },
+    chest: null,
   };
 }
