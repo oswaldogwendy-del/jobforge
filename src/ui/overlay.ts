@@ -1,6 +1,5 @@
 import { Vector3, type PerspectiveCamera } from 'three';
 import type { Balance } from '../data/schema';
-import type { Dummy } from '../sim/world';
 
 interface Num {
   active: boolean;
@@ -22,9 +21,17 @@ export interface AimArrow {
   length: number;
 }
 
+export interface Bar {
+  x: number;
+  y: number;
+  z: number;
+  frac: number;
+  elite: boolean;
+}
+
 /**
- * 2D canvas above the 3D scene: pooled damage numbers, HP bars of damaged enemies and the aim
- * arrow (PRD Section 5 and Section 15).
+ * 2D canvas above the 3D scene: pooled damage numbers, HP bars of damaged enemies, the aim
+ * arrow and the off-screen arrow that points at the elite (PRD Section 5 and Section 15).
  */
 export class Overlay {
   private readonly ctx: CanvasRenderingContext2D;
@@ -33,6 +40,7 @@ export class Overlay {
   private w = 1;
   private h = 1;
   private readonly v = new Vector3();
+  private readonly p = { x: 0, y: 0 };
 
   constructor(
     private readonly canvas: HTMLCanvasElement,
@@ -76,6 +84,10 @@ export class Overlay {
     n.drift = (Math.random() - 0.5) * 24;
   }
 
+  clear(): void {
+    for (const n of this.pool) n.active = false;
+  }
+
   /** Projects a world point to CSS pixels. Returns false when it is behind the camera. */
   private project(
     cam: PerspectiveCamera,
@@ -91,31 +103,63 @@ export class Overlay {
     return true;
   }
 
-  private readonly p = { x: 0, y: 0 };
-
-  draw(dt: number, cam: PerspectiveCamera, dummies: Dummy[], aim: AimArrow | null): void {
+  draw(
+    dt: number,
+    cam: PerspectiveCamera,
+    bars: Bar[],
+    aim: AimArrow | null,
+    elite: { x: number; z: number } | null,
+  ): void {
     const g = this.ctx;
     g.clearRect(0, 0, this.w, this.h);
     const life = this.cfg.render.damageNumberLife;
     const p = this.p;
 
     // HP bars appear only once an enemy is damaged (PRD Section 5, HUD layout).
-    for (const d of dummies) {
-      if (!d.alive || d.hp >= d.maxHp) continue;
-      if (!this.project(cam, d.x, this.cfg.dummies.height + 0.4, d.z, p)) continue;
-      const bw = 46;
+    for (const b of bars) {
+      if (!this.project(cam, b.x, b.y, b.z, p)) continue;
+      const bw = b.elite ? 60 : 46;
       g.fillStyle = 'rgba(0,0,0,0.6)';
       g.fillRect(p.x - bw / 2 - 1, p.y - 1, bw + 2, 8);
-      g.fillStyle = '#e44';
-      g.fillRect(p.x - bw / 2, p.y, bw * (d.hp / d.maxHp), 6);
+      g.fillStyle = b.elite ? '#ffb02e' : '#e44';
+      g.fillRect(p.x - bw / 2, p.y, bw * b.frac, 6);
+    }
+
+    // Off-screen arrow toward the elite.
+    if (elite && this.project(cam, elite.x, 0, elite.z, p)) {
+      const margin = 34;
+      const off = p.x < 0 || p.x > this.w || p.y < 0 || p.y > this.h;
+      if (off) {
+        const cx = this.w / 2;
+        const cy = this.h / 2;
+        const ang = Math.atan2(p.y - cy, p.x - cx);
+        const k = Math.min(
+          (cx - margin) / Math.abs(Math.cos(ang) || 1e-6),
+          (cy - margin) / Math.abs(Math.sin(ang) || 1e-6),
+        );
+        const ax = cx + Math.cos(ang) * k;
+        const ay = cy + Math.sin(ang) * k;
+        g.save();
+        g.translate(ax, ay);
+        g.rotate(ang);
+        g.fillStyle = '#ffb02e';
+        g.strokeStyle = 'rgba(0,0,0,0.7)';
+        g.lineWidth = 3;
+        g.beginPath();
+        g.moveTo(16, 0);
+        g.lineTo(-10, -11);
+        g.lineTo(-10, 11);
+        g.closePath();
+        g.stroke();
+        g.fill();
+        g.restore();
+      }
     }
 
     if (aim && this.project(cam, aim.x, 0.1, aim.z, p)) {
       const sx = p.x;
       const sy = p.y;
-      if (
-        this.project(cam, aim.x + aim.dirX * aim.length, 0.1, aim.z + aim.dirZ * aim.length, this.p)
-      ) {
+      if (this.project(cam, aim.x + aim.dirX * aim.length, 0.1, aim.z + aim.dirZ * aim.length, p)) {
         g.strokeStyle = 'rgba(255,255,255,0.85)';
         g.lineWidth = 4;
         g.setLineDash([10, 8]);

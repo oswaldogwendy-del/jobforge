@@ -8,19 +8,31 @@ export class CameraRig {
   private lookZ = 0;
   private focusX = 0;
   private focusZ = 0;
-  private readonly sinP: number;
-  private readonly cosP: number;
+  private sinP: number;
+  private cosP: number;
   private snapped = false;
+  private distance: number;
 
   constructor(
     private readonly cfg: Balance,
     aspect: number,
   ) {
     const c = cfg.camera;
+    this.distance = cfg.camera.distance;
     this.camera = new PerspectiveCamera(c.fov, aspect, c.near, c.far);
     const pitch = MathUtils.degToRad(c.pitchDeg);
     this.sinP = Math.sin(pitch);
     this.cosP = Math.cos(pitch);
+  }
+
+  /** 18 m in fields, 22 m in boss arenas (PRD Section 5). */
+  setDistance(d: number): void {
+    this.distance = d;
+  }
+
+  /** Jumps the camera to the hero (after a scene change) instead of gliding. */
+  snap(): void {
+    this.snapped = false;
   }
 
   setAspect(aspect: number): void {
@@ -47,8 +59,8 @@ export class CameraRig {
     }
     this.camera.position.set(
       this.focusX,
-      this.sinP * c.distance,
-      this.focusZ + this.cosP * c.distance,
+      this.sinP * this.distance,
+      this.focusZ + this.cosP * this.distance,
     );
     this.camera.lookAt(this.focusX, 0, this.focusZ);
   }

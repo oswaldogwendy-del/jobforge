@@ -1,0 +1,15 @@
+[
+  {
+    "id": "skeleton_warrior",
+    "model": "kaykit_skeleton_warrior",
+    "hpPctOfOwner": 0.3,
+    "archetype": "chaser",
+    "attack": {
+      "school": "magic",
+      "element": "shadow",
+      "matk": [0.4, 0.7],
+      "aps": 0.9,
+      "range": 1.8
+    }
+  }
+]

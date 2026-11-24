@@ -13,8 +13,8 @@ Section 0 in short (the PRD wins on any difference):
 
 Repo layout notes:
 
-- `docs/PRD.md` is the spec. `assets-src/` holds the original downloads (KayKit zip). Never put originals in `public/`.
+- `docs/PRD.md` is the spec. `assets-src/` holds the original downloads (KayKit zip, Quaternius monsters). Never put originals in `public/`.
 - `tools/assets/build-models.mjs` converts the originals into compressed `.glb` files in `public/assets/models/` (committed).
 - Pages deploys from `main` through `.github/workflows/deploy.yml`. Work on the session's feature branch and never push to `main` directly.
 
-Commands: `npm run dev -- --host` (phones on the same Wi-Fi), `npm test`, `npm run lint`, `npm run build`, `npm run assets` (rebuild models).
+Commands: `npm run dev -- --host` (phones on the same Wi-Fi), `npm test`, `npm run lint`, `npm run build`, `npm run assets` (rebuild models), `npm run sim` (headless balance bot).

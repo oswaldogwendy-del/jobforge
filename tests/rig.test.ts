@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { modelMap } from '../src/data/schema';
@@ -52,5 +52,29 @@ describe('KayKit rig', () => {
     const rep = JSON.parse(readFileSync(join(dir, 'rig-report.json'), 'utf8'));
     expect(Object.keys(rep.characters)).toHaveLength(5);
     expect(rep.sharedRig.bones).toHaveLength(41);
+  });
+});
+
+describe('Quaternius monsters', () => {
+  const report = JSON.parse(readFileSync(join(dir, 'rig-report.json'), 'utf8')) as {
+    monsters: Record<string, { animations: string[]; joints: number }>;
+  };
+  it('every monster in modelMap.json has its file and all five clips', () => {
+    for (const [id, m] of Object.entries(modelMap.monsters)) {
+      expect(existsSync(join(dir, m.file)), `${id} file ${m.file}`).toBe(true);
+      const model = m.file.replace('monsters/', '').replace('.glb', '');
+      const clips = report.monsters[model]?.animations ?? [];
+      for (const key of ['idle', 'move', 'attack', 'hit', 'death'] as const) {
+        expect(clips, `${id} clip ${key}=${m.anim[key]}`).toContain(m.anim[key]);
+      }
+    }
+  });
+  it('the glb files really contain those clips', () => {
+    for (const m of Object.values(modelMap.monsters)) {
+      const names = gltfJson(m.file).animations!.map((a) => a.name);
+      for (const key of ['idle', 'move', 'attack', 'hit', 'death'] as const) {
+        expect(names).toContain(m.anim[key]);
+      }
+    }
   });
 });

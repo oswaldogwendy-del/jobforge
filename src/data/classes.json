@@ -1,0 +1,26 @@
+[
+  {
+    "id": "knight",
+    "name": "Knight",
+    "color": "#4682b4",
+    "primary": "STR",
+    "secondary": "VIT",
+    "affinity": ["sword", "greataxe"],
+    "unlock": {
+      "type": "start"
+    },
+    "blurb": "Front-line bruiser who pulls packs together and hits hard."
+  },
+  {
+    "id": "mage",
+    "name": "Mage",
+    "color": "#8a63d2",
+    "primary": "INT",
+    "secondary": "DEX",
+    "affinity": ["staff"],
+    "unlock": {
+      "type": "start"
+    },
+    "blurb": "Elemental artillery that freezes, burns and blows up packs from range."
+  }
+]

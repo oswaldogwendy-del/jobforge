@@ -4,11 +4,12 @@ Every asset and its license (PRD Section 15). The Credits screen will read this 
 
 ## Art
 
-| Asset                                                                 | Author       | License | Used for                                                                                    |
-| --------------------------------------------------------------------- | ------------ | ------- | ------------------------------------------------------------------------------------------- |
-| [KayKit: Adventurers Character Pack 1.0](https://www.kaylousberg.com) | Kay Lousberg | CC0 1.0 | Hero looks (Knight, Mage, Rogue, Rogue Hooded, Barbarian), weapons, 76 character animations |
+| Asset                                                                                                            | Author       | License | Used for                                                                                                        |
+| ---------------------------------------------------------------------------------------------------------------- | ------------ | ------- | --------------------------------------------------------------------------------------------------------------- |
+| [KayKit: Adventurers Character Pack 1.0](https://www.kaylousberg.com)                                            | Kay Lousberg | CC0 1.0 | Hero looks (Knight, Mage, Rogue, Rogue Hooded, Barbarian), weapons, 76 character animations                     |
+| [Quaternius: Ultimate Monsters (Blob, Big and Flying packs)](https://quaternius.com/packs/ultimatemonsters.html) | Quaternius   | CC0 1.0 | Zone 1 monsters and Queen Gelatina (GreenBlob, PinkBlob, GreenSpikyBlob, Mushnub, Dog, Bunny, Cactoro, Armabee) |
 
-The original download is kept in `assets-src/KayKit-Character-Pack-Adventures-1.0.zip`. The game ships compressed copies built by `npm run assets`.
+The original downloads are kept in `assets-src/` (the KayKit zip and `assets-src/quaternius-ultimate-monsters/`). The pack's own `LICENSE.txt` is headed "Ultimate Platformer Pack", which looks like a copy-paste slip in the download; the pack page and the text both state CC0 1.0. The game ships compressed copies built by `npm run assets`.
 
 ## Fonts
 

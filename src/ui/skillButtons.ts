@@ -1,4 +1,7 @@
-import type { Balance, DebugSkill } from '../data/schema';
+import type { Balance } from '../data/schema';
+import { classMap } from '../data/content';
+import type { SkillStatus } from '../sim/engine';
+import type { SlotSkill } from '../sim/types';
 
 export interface SkillButtonHooks {
   /** dir is a unit vector in world x/z when the player dragged to aim, else null for a tap. */
@@ -18,30 +21,30 @@ interface Drag {
 
 /**
  * Six skill buttons in an arc at the bottom right. Tap smart-casts, drag aims, and dragging back
- * onto the button cancels (PRD Section 5). Plain DOM because these update every frame.
+ * onto the button cancels (PRD Section 5). Button states: a cooldown sweep with seconds left, a
+ * blue tint when SP is short, a red ring when no target is in range. Plain DOM because these
+ * update every frame.
  */
 export class SkillButtons {
   private readonly buttons: HTMLButtonElement[] = [];
   private readonly sweeps: HTMLElement[] = [];
   private readonly labels: HTMLElement[] = [];
-  private readonly last: number[] = [];
+  private readonly glyphs: HTMLElement[] = [];
+  private readonly last: string[] = [];
   private readonly drags = new Map<number, Drag>();
+  private locked = false;
 
   constructor(
     root: HTMLElement,
-    skills: DebugSkill[],
     private readonly cfg: Balance,
     private readonly hooks: SkillButtonHooks,
+    count = 6,
   ) {
-    skills.forEach((s, i) => {
+    for (let i = 0; i < count; i++) {
       const b = document.createElement('button');
-      b.className = 'skill-btn';
+      b.className = 'skill-btn empty';
       b.type = 'button';
-      b.style.setProperty('--c', s.color);
-      b.setAttribute('aria-label', s.name);
-      b.innerHTML =
-        `<span class="sweep"></span><span class="glyph">${s.glyph}</span>` +
-        `<span class="key">${i + 1}</span><span class="cd"></span>`;
+      b.innerHTML = `<span class="sweep"></span><span class="glyph"></span><span class="key">${i + 1}</span><span class="cd"></span>`;
       b.addEventListener('pointerdown', (e) => this.down(e, i));
       b.addEventListener('pointermove', (e) => this.move(e, i));
       b.addEventListener('pointerup', (e) => this.up(e, i));
@@ -51,10 +54,28 @@ export class SkillButtons {
       this.buttons.push(b);
       this.sweeps.push(b.querySelector('.sweep') as HTMLElement);
       this.labels.push(b.querySelector('.cd') as HTMLElement);
-      this.last.push(-1);
-    });
+      this.glyphs.push(b.querySelector('.glyph') as HTMLElement);
+      this.last.push('');
+    }
     this.layout();
     window.addEventListener('resize', () => this.layout());
+  }
+
+  /** Shows the equipped skills: first letter of the name, in the class color. */
+  setSkills(slots: (SlotSkill | null)[]): void {
+    this.buttons.forEach((b, i) => {
+      const ss = slots[i];
+      b.classList.toggle('empty', !ss);
+      b.style.setProperty('--c', ss ? (classMap.get(ss.def.classId)?.color ?? '#8aa') : '#556');
+      b.setAttribute('aria-label', ss ? ss.def.name : 'Empty slot');
+      this.glyphs[i].textContent = ss ? ss.def.name.charAt(0) : '';
+      this.last[i] = '';
+    });
+  }
+
+  /** The skill bar locks once you enter a zone. */
+  setLocked(locked: boolean): void {
+    this.locked = locked;
   }
 
   /** Two arcs around the bottom-right corner: four outside, two inside (offsets scale with size). */
@@ -72,29 +93,37 @@ export class SkillButtons {
     ];
     polar.forEach(([r, deg], i) => {
       const a = (deg * Math.PI) / 180;
-      const right = r * Math.cos(a);
-      const bottom = r * Math.sin(a);
       const b = this.buttons[i];
-      // Centre the button on its arc point; the anchor sits half a button in from the screen edge.
-      b.style.right = `${right - size / 2}px`;
-      b.style.bottom = `${bottom - size / 2}px`;
+      b.style.right = `${r * Math.cos(a) - size / 2}px`;
+      b.style.bottom = `${r * Math.sin(a) - size / 2}px`;
     });
   }
 
-  /** Called every frame with the sim's cooldown state. Touches the DOM only on change. */
-  update(cooldown: number[], cooldownMax: number[], gcd: number): void {
+  /** Called every frame. Touches the DOM only when something changed. */
+  update(
+    cooldown: number[],
+    cooldownMax: number[],
+    gcd: number,
+    statuses: (SkillStatus | null)[],
+  ): void {
     for (let i = 0; i < this.buttons.length; i++) {
-      const remain = Math.max(cooldown[i], gcd);
+      const st = statuses[i];
+      const cd = cooldown[i] ?? 0;
+      const remain = Math.max(cd, gcd);
       const frac =
         remain > 0
-          ? remain / (cooldown[i] > gcd ? cooldownMax[i] : this.cfg.skills.globalCooldown)
+          ? remain / (cd > gcd ? Math.max(cooldownMax[i], 0.01) : this.cfg.combat.globalCooldown)
           : 0;
-      const key = Math.round(frac * 100) * 1000 + Math.ceil(remain * 10);
+      const key = `${Math.round(frac * 100)}|${Math.ceil(cd)}|${st?.noSp ? 1 : 0}|${st && !st.hasTarget ? 1 : 0}|${st?.toggled ? 1 : 0}`;
       if (key === this.last[i]) continue;
       this.last[i] = key;
       this.sweeps[i].style.setProperty('--p', String(frac));
-      this.labels[i].textContent = cooldown[i] > 0.05 ? String(Math.ceil(cooldown[i])) : '';
-      this.buttons[i].classList.toggle('cooling', remain > 0);
+      this.labels[i].textContent = cd > 0.05 ? String(Math.ceil(cd)) : '';
+      const b = this.buttons[i];
+      b.classList.toggle('cooling', remain > 0);
+      b.classList.toggle('nosp', !!st?.noSp);
+      b.classList.toggle('notarget', !!st && !st.hasTarget);
+      b.classList.toggle('toggled', !!st?.toggled);
     }
   }
 
@@ -105,6 +134,7 @@ export class SkillButtons {
 
   private down = (e: PointerEvent, i: number): void => {
     e.preventDefault();
+    if (this.buttons[i].classList.contains('empty')) return;
     this.buttons[i].setPointerCapture(e.pointerId);
     this.buttons[i].classList.add('pressed');
     this.drags.set(e.pointerId, {
@@ -151,4 +181,8 @@ export class SkillButtons {
     this.buttons[i].classList.remove('pressed');
     this.hooks.onAim(-1, null);
   };
+
+  get isLocked(): boolean {
+    return this.locked;
+  }
 }

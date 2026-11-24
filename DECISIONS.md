@@ -2,6 +2,25 @@
 
 Calls made where the PRD is silent or where reality differed from it (PRD Section 0, rule 6). Newest milestone first.
 
+## M1
+
+1. **Monster models.** Zone 1 uses the Quaternius Ultimate Monsters you uploaded: Jellop = GreenBlob, Capshroom = Mushnub, Thornling = GreenSpikyBlob, Rootmole = Dog (brown tint), Hopbun = Bunny, Buzzwing = Armabee, Thorn Guardian = Cactoro, Queen Gelatina = PinkBlob scaled up with a gold crown built in code. Only the eight models in use ship (about 1.1 MB). The training dummy is still built in code, and summons use a capsule until a skeleton model is added.
+2. **Schema extensions** beyond the PRD's `EffectDef`, needed by the 16 Knight and Mage skills: `atRank` (Crushing Blow's stun only at rank 5), `bonusIfStatus` (Crescent Sweep +30% vs stunned), `chain` (Chain Lightning jumps), `scatter` (Cataclysm meteors), `dash.onPass` (Bulwark Charge hits along its path), and `immune` and `key` on buffs. Buff stats beyond the PRD list: `basicBonusAtk`, `basicFireBonus`, `spCostPct`, `damageReduction`.
+3. **Crits skip the hit and perfect-dodge rolls.** The PRD says crits always hit, so a crit also cannot be dodged. Magic never misses.
+4. **Melee skills start from step distance plus reach.** A melee skill (4 m range in the data) can be used on a target up to 4 m plus the weapon's reach away; the hero steps in first.
+5. **Wall of Flame** is centred on the aimed point and perpendicular to the cast direction, and knocks enemies away from the caster. A boss ignores knockback.
+6. **Dev hero.** Level 12 with 90 stat points and 11 skill points all spent, wearing tier-2 gear (the PRD's on-level gear for level 12). All 6 active and 4 passive slots are open, because slot unlocks need saves (M2). The build is kept in `localStorage` (`jobforge.devbuild.v1`) and checked against the rules when loaded.
+7. **Dev loadout panel** stands in for the Status window, Guild Hall and Loadout screens until M2. It runs the real rules: stat point costs, requirements, tier prerequisites, rank-ups from skill points, and dormant skills.
+8. **Dormant skills are unusable in the engine,** not only hidden in the UI: slots are rebuilt from the build and any skill whose requirement fails is dropped. Requirements count base stats only; passives and buffs never count (PRD Section 7).
+9. **Queen tuning.** HP x50 (PRD says x70), ATK x1.75, cooldowns 7.5 s (slam), 8 s (spit) and 11 s (roll). The attack numbers in the data (180% slam, 190% roll) are unchanged; the multiplier brings a heavy hit into the PRD's 25 to 35% band for the Knight preset. The telegraph warnings are the PRD's: 1.2 s slam, 1.0 s roll. HP and cadence were tuned with the bot and should be rechecked by the M3 and M4 simulator gates.
+10. **Boss scripts.** Attack data carries `script: "leap"` (she jumps onto the hero's spot) and `script: "roll"` (she rolls along the line). The Jellop split is a small script for her alone.
+11. **Archetypes implemented now:** dummy, chaser, kiter, caster, charger and burrower. Swarmer, exploder and splitter act as chasers and support acts as a kiter until M3.
+12. **Run totals are not persisted.** Gold and EXP are computed with the PRD formulas and shown on the results screen; saving, levelling and the chest's items come in M2.
+13. **Town is a stub:** the hero idling in front of a menu (Adventure, Loadout, Training Yard). The M0 arena is kept as the Training Yard for testing skills.
+14. **Telegraph cues.** One shader draws every shape. Damage is red with diagonal stripes, debuffs are purple with dots, freeze is blue with a grid, so colour is never the only cue.
+15. **Monsters never stack:** a soft push from neighbours plus a hard overlap correction. The leash (30 m) is checked before anything else, even mid-attack.
+16. **Tuning bot.** `tools/sim` uses `tsx` to run the TypeScript sim from Node. The bot is deliberately simple and is not a stand-in for a good player.
+
 ## M0
 
 1. **Preact for the HUD shell, plain DOM for skill buttons.** The debug panel and toasts are Preact. The six skill buttons update their cooldown sweep every frame, so they are plain DOM to avoid re-rendering.

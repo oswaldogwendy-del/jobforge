@@ -4,6 +4,9 @@ export interface DebugStats {
   drawCalls: number;
   triangles: number;
   pixelRatio: number;
+  skinned: number;
+  monsters: number;
+  projectiles: number;
 }
 
 /** What the debug panel can read and change. Implemented by Game. */

@@ -11,7 +11,7 @@ import {
   type Scene,
 } from 'three';
 import type { Balance } from '../data/schema';
-import type { SimEvent } from '../sim/world';
+import type { SimEvent } from '../sim/types';
 
 type FxEvent = Extract<SimEvent, { t: 'fx' }>;
 

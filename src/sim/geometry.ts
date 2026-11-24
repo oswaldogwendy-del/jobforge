@@ -69,3 +69,61 @@ export function lineHits(
   const across = Math.abs(rx * dz - rz * dx);
   return across <= width / 2 + tr;
 }
+
+export interface ShapeSpec {
+  shape: 'circle' | 'cone' | 'line' | 'donut' | 'cross';
+  x: number;
+  z: number;
+  /** 0 looks along +z, positive turns toward +x. */
+  heading: number;
+  radius: number;
+  angleDeg: number;
+  length: number;
+  width: number;
+  inner: number;
+}
+
+export function blankShape(shape: ShapeSpec['shape'], x = 0, z = 0, heading = 0): ShapeSpec {
+  return { shape, x, z, heading, radius: 0, angleDeg: 0, length: 0, width: 0, inner: 0 };
+}
+
+/** Does a target circle (tx, tz, tr) touch the shape? Used by skills, telegraphs and boss attacks. */
+export function inShape(s: ShapeSpec, tx: number, tz: number, tr: number): boolean {
+  switch (s.shape) {
+    case 'circle':
+      return dist(s.x, s.z, tx, tz) <= s.radius + tr;
+    case 'cone':
+      return coneHits(s.x, s.z, s.heading, s.radius, (s.angleDeg * Math.PI) / 180, tx, tz, tr);
+    case 'line':
+      return lineHits(s.x, s.z, s.heading, s.length, s.width, tx, tz, tr);
+    case 'donut': {
+      const d = dist(s.x, s.z, tx, tz);
+      return d <= s.radius + tr && d >= s.inner - tr;
+    }
+    case 'cross': {
+      // Two perpendicular bars of the given arm length (radius) and width, centred on the origin.
+      const a = lineHits(
+        s.x - Math.sin(s.heading) * s.radius,
+        s.z - Math.cos(s.heading) * s.radius,
+        s.heading,
+        s.radius * 2,
+        s.width,
+        tx,
+        tz,
+        tr,
+      );
+      const h2 = s.heading + Math.PI / 2;
+      const b = lineHits(
+        s.x - Math.sin(h2) * s.radius,
+        s.z - Math.cos(h2) * s.radius,
+        h2,
+        s.radius * 2,
+        s.width,
+        tx,
+        tz,
+        tr,
+      );
+      return a || b;
+    }
+  }
+}
