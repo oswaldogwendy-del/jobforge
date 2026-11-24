@@ -736,3 +736,8 @@ button.big.warn {
     0 0 0 3px #ffd23f,
     0 3px 8px rgba(0, 0, 0, 0.45);
 }
+
+/* The debug FPS button floats at the top right; keep screen headers clear of it. */
+.modal-head {
+  padding-right: 58px;
+}

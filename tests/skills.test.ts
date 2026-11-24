@@ -628,3 +628,19 @@ describe('primitives the Knight and Mage do not use (fixtures)', () => {
     expect(w.hero.hp / w.hero.maxHp).toBeCloseTo(0.5, 2);
   });
 });
+
+describe('dormant skills in the engine', () => {
+  it('a skill whose requirement is not met cannot be used even if it is still listed in a slot', () => {
+    const w = world();
+    steady(w);
+    w.build.stats.STR = 10; // Flame Burst needs STR 20
+    rebuildSlots(w);
+    expect(w.hs.slots[1]).toBeNull();
+    dummyAt(w, 0, 3);
+    expect(tryCast(w, 1, null)).toBe('invalid');
+    expect(w.hs.slots[0]).not.toBeNull(); // Crushing Blow (STR 5) is still fine
+    w.build.stats.STR = 20;
+    rebuildSlots(w);
+    expect(w.hs.slots[1]).not.toBeNull();
+  });
+});

@@ -14,7 +14,7 @@ import { buildScenery, createScene, type Scenery, type SceneryKind } from './ren
 import { Telegraphs } from './render/telegraphs';
 import { killUnit } from './sim/combat';
 import { skillStatus } from './sim/engine';
-import { validateBuild, type HeroBuild } from './sim/loadout';
+import { unequipDormant, validateBuild, type HeroBuild } from './sim/loadout';
 import type { CastRequest } from './sim/world';
 import { SimWorld, type Mode } from './sim/world';
 import type { Unit } from './sim/types';
@@ -371,6 +371,7 @@ export class Game implements GameApi {
   /** Applies a build from the dev loadout: skill slots, stats, and the hero model if it changed. */
   setBuild(b: HeroBuild): void {
     const old = this.build;
+    unequipDormant(b, skillMap); // a skill whose requirement fails turns dormant and is unequipped
     this.build = b;
     saveBuild(b);
     if (this.screen === 'town') {

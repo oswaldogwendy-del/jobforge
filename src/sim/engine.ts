@@ -8,6 +8,7 @@ import { applyStatus, canCast, cleanse, hasStatus, isDot } from './status';
 import type { BuffInst, FxCtx, ModEntry, Projectile, SlotSkill, Unit } from './types';
 import type { SimWorld } from './world';
 import { bodyArmorDef, weaponStats } from './gear';
+import { reqMet, reqStats } from './loadout';
 import { deriveHero, statusResistPct, zeroBonuses } from './stats';
 
 const STATUS_IDS: StatusId[] = [
@@ -158,6 +159,8 @@ export function rebuildSlots(w: SimWorld): void {
     const def = w.skillDefs.get(id);
     const rank = build.learned[id];
     if (!def || !rank) return null;
+    // A skill whose requirement is no longer met is dormant: learned, but it cannot be used.
+    if (!reqMet(def.req, reqStats(build))) return null;
     return { def, rank };
   };
   hs.slots = build.actives.map(resolve);
