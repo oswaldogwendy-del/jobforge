@@ -1,0 +1,22 @@
+{
+  "rotate": { "title": "Rotate your phone", "body": "Jobforge plays in landscape." },
+  "paused": "Paused",
+  "tapToResume": "Tap to resume",
+  "loading": "Loading…",
+  "loadFailed": "Could not load the game. Check your connection and reload.",
+  "update": "Update ready, tap to restart",
+  "offlineReady": "Ready to play offline",
+  "noTarget": "No target",
+  "miss": "Miss",
+  "debug": {
+    "toggle": "DBG",
+    "fps": "FPS",
+    "frameMs": "Frame ms",
+    "drawCalls": "Draw calls",
+    "triangles": "Triangles",
+    "pixelRatio": "Pixel ratio",
+    "timeScale": "Time scale",
+    "godMode": "God mode",
+    "bones": "Bone names"
+  }
+}

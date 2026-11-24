@@ -1,0 +1,71 @@
+[
+  {
+    "id": "dbg_slash",
+    "name": "Slash",
+    "glyph": "S",
+    "color": "#6aa7ff",
+    "cooldown": 3,
+    "effect": {
+      "shape": "cone",
+      "at": "self",
+      "range": 4,
+      "angleDeg": 120,
+      "atkPct": 1.8,
+      "hits": 1
+    }
+  },
+  {
+    "id": "dbg_shockwave",
+    "name": "Shockwave",
+    "glyph": "W",
+    "color": "#ffb347",
+    "cooldown": 6,
+    "effect": { "shape": "circle", "at": "self", "range": 5, "atkPct": 1.4, "hits": 1 }
+  },
+  {
+    "id": "dbg_pierce",
+    "name": "Pierce",
+    "glyph": "P",
+    "color": "#7be0a0",
+    "cooldown": 5,
+    "effect": { "shape": "line", "at": "self", "range": 9, "width": 1.6, "atkPct": 2.0, "hits": 1 }
+  },
+  {
+    "id": "dbg_slam",
+    "name": "Slam",
+    "glyph": "M",
+    "color": "#ff7a7a",
+    "cooldown": 9,
+    "effect": {
+      "shape": "circle",
+      "at": "ground",
+      "range": 3.2,
+      "reach": 10,
+      "atkPct": 2.5,
+      "hits": 1
+    }
+  },
+  {
+    "id": "dbg_whirl",
+    "name": "Whirl",
+    "glyph": "H",
+    "color": "#c79bff",
+    "cooldown": 8,
+    "effect": { "shape": "circle", "at": "self", "range": 3.2, "atkPct": 0.9, "hits": 3 }
+  },
+  {
+    "id": "dbg_smash",
+    "name": "Smash",
+    "glyph": "B",
+    "color": "#ffe066",
+    "cooldown": 12,
+    "effect": {
+      "shape": "circle",
+      "at": "ground",
+      "range": 1.4,
+      "reach": 10,
+      "atkPct": 4.0,
+      "hits": 1
+    }
+  }
+]
