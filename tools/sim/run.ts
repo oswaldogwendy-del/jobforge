@@ -9,6 +9,7 @@ import { buildFromPreset, devHero } from '../../src/data/content';
 import { balance } from '../../src/data/schema';
 import { SimWorld } from '../../src/sim/world';
 import { botInput } from './bot';
+import { runProgress } from './progress';
 
 const DT = 1 / balance.tickRate;
 
@@ -123,6 +124,14 @@ function runBoss(build: string, seed: number): BossReport {
     heaviestHitPct: heaviest * 100,
     hitsOver50Pct: over,
   };
+}
+
+if (flag('progress')) {
+  const who = process.argv.find((a) => a.startsWith('--build='))
+    ? [arg('build', 'warrior')]
+    : ['warrior', 'caster'];
+  runProgress(who, Number(arg('seeds', '2')), Number(arg('minutes', '90')));
+  process.exit(0);
 }
 
 const f1 = (n: number) => n.toFixed(1);

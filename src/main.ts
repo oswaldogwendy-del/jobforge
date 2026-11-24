@@ -21,7 +21,7 @@ document.addEventListener('contextmenu', (e) => e.preventDefault());
 document.addEventListener(
   'touchmove',
   (e) => {
-    if ((e.target as HTMLElement).closest('.dbg-panel')) return;
+    if ((e.target as HTMLElement).closest('.dbg-panel, .scroll, .scroll-x, textarea')) return;
     e.preventDefault();
   },
   { passive: false },

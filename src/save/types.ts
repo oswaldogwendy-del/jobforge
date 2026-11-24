@@ -66,7 +66,7 @@ export interface SaveData {
 export const defaultSettings = (): SettingsData => ({
   damageNumbers: 'on',
   screenShake: true,
-  fpsCounter: false,
+  fpsCounter: true,
   uiScale: 1,
   leftHanded: false,
   autoSellCommon: false,

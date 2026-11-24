@@ -299,6 +299,8 @@ export function buildOf(s: SaveData, ctx: ProfileCtx = defaultCtx): HeroBuild {
     armorTier: 1,
     gear: g.totals,
     learned: { ...h.learned },
+    consumables: [...p.consumables],
+    stacks: { ...h.stacks },
     actives: lock(p.actives, counts.active),
     passives: lock(p.passives, counts.passive),
   };

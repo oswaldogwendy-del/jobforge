@@ -2,19 +2,19 @@ import { Raycaster, Plane, Scene, Vector2, Vector3, WebGLRenderer, Color, Fog } 
 import { unlockAudio } from './audio/unlock';
 import { FixedStepper } from './core/stepper';
 import { balance, modelMap } from './data/schema';
-import { buildFromPreset, classMap } from './data/content';
+import { buildFromPreset, itemMap, stackMap } from './data/content';
 import type { DebugStats } from './debug/api';
 import { Controls } from './input/controls';
 import { CameraRig } from './render/cameraRig';
 import { CastFx } from './render/castFx';
-import { Markers, ProjectileView } from './render/effects';
+import { LootView, Markers, ProjectileView } from './render/effects';
 import { HeroView } from './render/heroView';
 import { MonsterViews } from './render/monsterViews';
 import { buildScenery, createScene, type Scenery, type SceneryKind } from './render/stage';
 import { Telegraphs } from './render/telegraphs';
 import { killUnit } from './sim/combat';
-import { skillStatus } from './sim/engine';
-import { unequipDormant, validateBuild, type HeroBuild } from './sim/loadout';
+import { refreshHero, skillStatus } from './sim/engine';
+import type { HeroBuild } from './sim/loadout';
 import type { CastRequest } from './sim/world';
 import { SimWorld, type Mode } from './sim/world';
 import type { Unit } from './sim/types';
@@ -23,7 +23,37 @@ import { mountHud } from './ui/Hud';
 import { Overlay, type AimArrow } from './ui/overlay';
 import { SkillButtons } from './ui/skillButtons';
 import { hudStore, type BuffChip } from './ui/store';
-import { skillMap } from './data/content';
+import { exportCode as makeCode, importCode as readCode } from './save/code';
+import { SaveError } from './save/schema';
+import {
+  deleteSlot as removeSlot,
+  listSlots,
+  loadSlot as readSlot,
+  requestPersistence,
+  saveSlot as writeSlot,
+  storageDegraded,
+} from './save/storage';
+import { defaultSettings, type SaveData, type SettingsData } from './save/types';
+import { expToNext } from './sim/stats';
+import {
+  addItem,
+  addStack,
+  buildOf,
+  canRaiseStat,
+  expFraction,
+  gainExp,
+  learnCheck,
+  newSave,
+  presetOf,
+  recordBossKill,
+  takeStack,
+  type NewHeroOptions,
+} from './sim/profile';
+import { skills as allSkillDefs } from './data/content';
+import { STAT_IDS } from './data/types';
+import { buildTitle } from './ui/buildTitle';
+import type { Menu } from './ui/store';
+import type { DropRoll } from './sim/loot';
 
 type PauseReason = 'manual' | 'hidden' | 'portrait';
 
@@ -44,7 +74,6 @@ declare global {
   }
 }
 
-const BUILD_KEY = 'jobforge.devbuild.v1';
 const HUD_INTERVAL = 0.1;
 const BASE_FOG = '#9fd0f0';
 
@@ -54,41 +83,23 @@ function el<T extends HTMLElement>(id: string): T {
   return e as T;
 }
 
-function loadBuild(): HeroBuild {
+const SETTINGS_KEY = 'jobforge.settings.v1';
+const AUTOSAVE_DELAY_MS = 700;
+
+function loadSettings(): SettingsData {
   try {
-    const raw = localStorage.getItem(BUILD_KEY);
-    if (raw) {
-      const b = JSON.parse(raw) as HeroBuild;
-      if (validateBuild(balance, b, skillMap).length === 0) return b;
-    }
+    const raw = localStorage.getItem(SETTINGS_KEY);
+    if (raw) return { ...defaultSettings(), ...(JSON.parse(raw) as Partial<SettingsData>) };
   } catch {
-    // Storage can be blocked (private mode); fall through to the preset.
+    // Storage can be blocked; fall back to defaults.
   }
-  return buildFromPreset('warrior');
+  return defaultSettings();
 }
 
-function saveBuild(b: HeroBuild): void {
-  try {
-    localStorage.setItem(BUILD_KEY, JSON.stringify(b));
-  } catch {
-    // Not persisted; the build still works for this session.
-  }
-}
+/** Compact number for damage numbers: 1234 becomes 1.2k. */
+const compact = (n: number): string => (n >= 1000 ? `${(n / 1000).toFixed(1)}k` : String(n));
 
-/** "Knight · Mage": the hero's top two classes by equipped skills (PRD Section 7). */
-export function buildTitle(b: HeroBuild): string {
-  const counts = new Map<string, number>();
-  for (const id of [...b.actives, ...b.passives]) {
-    if (!id) continue;
-    const c = skillMap.get(id)?.classId;
-    if (c) counts.set(c, (counts.get(c) ?? 0) + 1);
-  }
-  const top = [...counts.entries()]
-    .sort((a, c) => c[1] - a[1])
-    .slice(0, 2)
-    .map(([id]) => classMap.get(id)?.name ?? id);
-  return top.length ? top.join(' · ') : 'Novice';
-}
+export { buildTitle };
 
 const humanize = (key: string) => key.replace(/_/g, ' ').replace(/^\w/, (c) => c.toUpperCase());
 
@@ -103,6 +114,7 @@ export class Game implements GameApi {
   private readonly telegraphs: Telegraphs;
   private readonly projectiles: ProjectileView;
   private readonly markers: Markers;
+  private readonly loot: LootView;
   private readonly fx: CastFx;
   private readonly overlay: Overlay;
   private readonly controls: Controls;
@@ -113,10 +125,17 @@ export class Game implements GameApi {
 
   private w!: SimWorld;
   private build: HeroBuild;
+  private save: SaveData | null = null;
+  private slotIndex = 0;
+  private settings: SettingsData = loadSettings();
+  private saveTimer = 0;
+  private townSaveT = 0;
+  private chestApplied = false;
+  private wantHero: HeroBuild | null = null;
   private scenery: Scenery | null = null;
   private sceneryKey = '';
   private lastMode: Mode = 'town';
-  private screen: 'town' | 'run' | 'chest' | 'results' = 'town';
+  private screen: 'title' | 'create' | 'town' | 'run' | 'chest' | 'results' = 'title';
   private readonly casts: CastRequest[] = [];
   private readonly reasons = new Set<PauseReason>();
   private aim: { slot: number; x: number; z: number } | null = null;
@@ -157,6 +176,13 @@ export class Game implements GameApi {
       this.w.hero.hp = this.w.hero.maxHp;
       this.w.hero.sp = this.w.hero.maxSp;
     },
+    levelUp: () => {
+      if (!this.save) return;
+      this.grantExp(expToNext(balance, this.save.hero.level) + 1, 0);
+    },
+    gold: () => {
+      this.mutate((s) => void (s.hero.gold += 10000));
+    },
   };
 
   private constructor(hero: HeroView, build: HeroBuild) {
@@ -176,6 +202,7 @@ export class Game implements GameApi {
     this.telegraphs = new Telegraphs(this.scene);
     this.projectiles = new ProjectileView(this.scene);
     this.markers = new Markers(this.scene);
+    this.loot = new LootView(this.scene);
     this.fx = new CastFx(this.scene, balance);
     this.overlay = new Overlay(el<HTMLCanvasElement>('overlay'), balance);
 
@@ -223,6 +250,8 @@ export class Game implements GameApi {
       },
       game: this,
     };
+    this.toTitle();
+    void requestPersistence();
     if (portrait.matches) this.reasons.add('portrait');
     if (document.hidden) this.reasons.add('hidden');
   }
@@ -232,7 +261,7 @@ export class Game implements GameApi {
       document.fonts.load('700 22px Fredoka'),
       new Promise((r) => setTimeout(r, 1500)),
     ]).catch(() => undefined);
-    const build = loadBuild();
+    const build = buildFromPreset('warrior');
     const [hero] = await Promise.all([
       HeroView.create(balance, modelMap, build),
       MonsterViews.preload(),
@@ -249,6 +278,7 @@ export class Game implements GameApi {
   private newWorld(mode: Mode): void {
     const seed = (Date.now() ^ (Math.random() * 0xffffffff)) >>> 0;
     this.w = new SimWorld({ build: this.build, seed, mode, zoneId: 'meadowmere' });
+    this.w.run.bossFirstKill = !this.save || !(this.save.progress.bossKills.queen_gelatina > 0);
     this.lastMode = mode;
     this.casts.length = 0;
     this.aim = null;
@@ -300,17 +330,18 @@ export class Game implements GameApi {
     this.touchEl.hidden = true;
     this.rig.setDistance(11);
     this.pushHud(true);
-    hudStore.set({ screen: 'town', mode: 'yard' });
+    hudStore.set({ screen: 'town', mode: 'yard', menu: null });
   }
 
   private enterRun(mode: 'field' | 'yard'): void {
     this.newWorld(mode);
     this.screen = 'run';
+    this.chestApplied = false;
     this.skillsEl.hidden = false;
     this.touchEl.hidden = false;
     this.buttons.setLocked(true); // the skill bar locks once you enter a zone (PRD Section 2)
     this.pushHud(true);
-    hudStore.set({ screen: 'run', mode });
+    hudStore.set({ screen: 'run', mode, menu: null });
   }
 
   startAdventure(): void {
@@ -319,14 +350,24 @@ export class Game implements GameApi {
   startYard(): void {
     this.enterRun('yard');
   }
+  /** Opens a boss directly from the World Map by spending one Boss Sigil. */
+  startBoss(): void {
+    if (!this.save || (this.save.hero.stacks.boss_sigil ?? 0) < 1) return;
+    this.mutate((s) => void takeStack(s, 'boss_sigil', 1));
+    this.enterRun('field');
+    this.w.enterBoss();
+  }
   returnToTown(): void {
     this.setPause('manual', false);
+    this.flushSave();
     this.enterTown();
   }
   grindAgain(): void {
     this.w.grindAgain();
     this.afterModeChange();
     this.screen = 'run';
+    this.chestApplied = false;
+    this.skillsEl.hidden = false;
     hudStore.set({ screen: 'run', mode: 'field', result: null });
   }
   finishChest(): void {
@@ -347,6 +388,8 @@ export class Game implements GameApi {
     this.skillsEl.hidden = true;
     this.touchEl.hidden = true;
     const r = this.w.run.result;
+    if (r?.outcome === 'death' && this.save) this.save.lifetime.deaths += 1;
+    this.flushSave();
     hudStore.set({ screen: 'results', result: r, died: r?.outcome === 'death', paused: false });
   }
 
@@ -364,31 +407,249 @@ export class Game implements GameApi {
     this.setPause('manual', !this.reasons.has('manual'));
   }
 
-  getBuild(): HeroBuild {
-    return this.build;
+  usePotion(slot: number): void {
+    if (this.screen === 'run') this.w.usePotion(slot);
   }
 
-  /** Applies a build from the dev loadout: skill slots, stats, and the hero model if it changed. */
-  setBuild(b: HeroBuild): void {
+  // --- GameApi: saves and the hero ----------------------------------------------------------------
+
+  getSave(): SaveData {
+    if (!this.save) throw new Error('No hero is loaded');
+    return this.save;
+  }
+  currentSlot(): number {
+    return this.slotIndex;
+  }
+  openMenu(menu: Menu): void {
+    hudStore.set({ menu });
+  }
+  listSlots() {
+    return listSlots();
+  }
+
+  toTitle(): void {
+    this.flushSave();
+    this.save = null;
+    this.build = buildFromPreset('warrior');
+    void this.swapHero(this.build);
+    this.newWorld('town');
+    this.screen = 'title';
+    this.skillsEl.hidden = true;
+    this.touchEl.hidden = true;
+    this.rig.setDistance(11);
+    hudStore.set({ screen: 'title', menu: null, storageWarning: storageDegraded() });
+  }
+
+  toCreate(slot: number): void {
+    this.screen = 'create';
+    hudStore.set({ screen: 'create', createSlot: slot });
+    this.previewHero('knight', 'sword');
+  }
+
+  previewHero(look: string, weapon: 'sword' | 'staff'): void {
+    const b = buildFromPreset(weapon === 'staff' ? 'caster' : 'warrior');
+    b.look = look;
+    b.weapon = { type: weapon, tier: 1 };
+    b.offhand = null;
+    void this.swapHero(b);
+  }
+
+  async loadSlot(slot: number): Promise<void> {
+    try {
+      const s = await readSlot(slot);
+      if (s) await this.activate(s, slot);
+    } catch (e) {
+      console.error(e);
+    }
+    hudStore.set({ storageWarning: storageDegraded() });
+  }
+
+  async createHero(slot: number, opts: NewHeroOptions): Promise<void> {
+    const seed = (Date.now() ^ (Math.random() * 0xffffffff)) >>> 0;
+    const s = newSave(opts, undefined, seed);
+    s.settings = { ...this.settings };
+    await writeSlot(slot, s);
+    await this.activate(s, slot);
+  }
+
+  async deleteSlot(slot: number): Promise<void> {
+    await removeSlot(slot);
+  }
+
+  private async activate(s: SaveData, slot: number): Promise<void> {
+    this.save = s;
+    this.slotIndex = slot;
+    this.build = buildOf(s);
+    await this.swapHero(this.build);
+    this.enterTown();
+    this.refreshHeroState();
+  }
+
+  exportCode(): string {
+    const s = this.getSave();
+    s.settings = { ...this.settings };
+    return makeCode(s);
+  }
+
+  async importCode(code: string, slot: number): Promise<string | null> {
+    try {
+      const s = readCode(code);
+      await writeSlot(slot, s);
+      hudStore.set({ rev: hudStore.get().rev + 1 });
+      return null;
+    } catch (e) {
+      return e instanceof SaveError ? e.message : 'The code could not be imported.';
+    }
+  }
+
+  getSettings(): SettingsData {
+    return this.settings;
+  }
+  setSettings(patch: Partial<SettingsData>): void {
+    this.settings = { ...this.settings, ...patch };
+    try {
+      localStorage.setItem(SETTINGS_KEY, JSON.stringify(this.settings));
+    } catch {
+      // Not persisted; applies for this session.
+    }
+    if (this.save) {
+      this.save.settings = { ...this.settings };
+      this.markDirty();
+    }
+    hudStore.set({ fpsCounter: this.settings.fpsCounter, rev: hudStore.get().rev + 1 });
+  }
+
+  /** Changes the saved hero, then rebuilds the sim hero and refreshes every menu. */
+  mutate(fn: (s: SaveData) => void): void {
+    if (!this.save) return;
+    fn(this.save);
+    this.refreshHeroState();
+    this.markDirty();
+  }
+
+  /** Rebuilds the sim build from the save and updates the town world, the hero model and the HUD. */
+  private refreshHeroState(): void {
+    if (!this.save) return;
     const old = this.build;
-    unequipDormant(b, skillMap); // a skill whose requirement fails turns dormant and is unequipped
-    this.build = b;
-    saveBuild(b);
+    this.build = buildOf(this.save);
     if (this.screen === 'town') {
-      this.w.loadBuild(b);
+      this.w.loadBuild(this.build);
       this.buttons.setSkills(this.w.hs.slots);
     }
+    if (
+      old.look !== this.build.look ||
+      old.offhand !== this.build.offhand ||
+      old.weapon.type !== this.build.weapon.type
+    )
+      void this.swapHero(this.build);
+    this.computeBadges();
     this.pushHud(true);
-    if (old.look !== b.look || old.offhand !== b.offhand || old.weapon.type !== b.weapon.type)
-      void this.swapHero(b);
+    hudStore.set({ rev: hudStore.get().rev + 1 });
   }
 
-  loadPreset(key: string): void {
-    this.setBuild(buildFromPreset(key));
+  private computeBadges(): void {
+    const s = this.save;
+    if (!s) return;
+    const p = presetOf(s);
+    const learnable = allSkillDefs.some(
+      (d) => d.tier <= 5 && !s.hero.learned[d.id] && learnCheck(s, d).ok,
+    );
+    const rankable =
+      s.hero.skillPointsFree > 0 &&
+      Object.entries(s.hero.learned).some(
+        ([id, r]) => r < (allSkillDefs.find((d) => d.id === id)?.maxRank ?? 0),
+      );
+    const equipped = new Set(Object.values(p.equipment));
+    const score = (i: { defId: string; rarity: string }): number => {
+      const d = itemMap.get(i.defId);
+      return d
+        ? d.tier * 10 + ['common', 'fine', 'rare', 'epic', 'legendary'].indexOf(i.rarity)
+        : 0;
+    };
+    const better = s.hero.inventory.some((i) => {
+      if (equipped.has(i.uid)) return false;
+      const d = itemMap.get(i.defId);
+      if (!d || d.levelReq > s.hero.level) return false;
+      const slots = d.slot === 'accessory' ? ['acc1', 'acc2'] : [d.slot];
+      return slots.some((sl) => {
+        const uid = (p.equipment as Record<string, string | undefined>)[sl];
+        const cur = uid ? s.hero.inventory.find((x) => x.uid === uid) : undefined;
+        return !cur || score(i) > score(cur);
+      });
+    });
+    hudStore.set({
+      badges: {
+        status: STAT_IDS.some((k) => canRaiseStat(balance, p, k)),
+        guild: learnable || rankable,
+        inventory: better,
+        overflow: s.hero.overflow.length > 0,
+      },
+    });
+  }
+
+  // --- saving -----------------------------------------------------------------------------------
+
+  private markDirty(): void {
+    if (this.saveTimer) return;
+    this.saveTimer = window.setTimeout(() => this.flushSave(), AUTOSAVE_DELAY_MS);
+  }
+
+  /** Writes the hero to its slot now. Called on zone exit, level-up, boss kill and every minute in town. */
+  private flushSave(): void {
+    if (this.saveTimer) {
+      clearTimeout(this.saveTimer);
+      this.saveTimer = 0;
+    }
+    const s = this.save;
+    if (!s) return;
+    s.settings = { ...this.settings };
+    void writeSlot(this.slotIndex, s).then(() => {
+      if (storageDegraded() !== hudStore.get().storageWarning)
+        hudStore.set({ storageWarning: storageDegraded() });
+    });
+  }
+
+  // --- rewards from the sim -----------------------------------------------------------------------
+
+  /** Adds EXP and gold to the saved hero and applies a level-up to the running sim. */
+  private grantExp(exp: number, goldAmount: number): void {
+    const s = this.save;
+    if (!s) return;
+    s.hero.gold += goldAmount;
+    s.lifetime.kills += 1;
+    const up = gainExp(balance, s, exp);
+    if (up) {
+      const w = this.w;
+      this.build.level = up.to;
+      w.hero.level = up.to;
+      refreshHero(w);
+      w.hero.hp = w.hero.maxHp;
+      w.hero.sp = w.hero.maxSp;
+      this.overlay.spawn(w.hero.x, 2.6, w.hero.z, `LEVEL UP! Lv ${up.to}`, '#ffd23f', true);
+      hudStore.set({
+        banner: `Level ${up.to}! +${up.statPoints} stat points, +${up.skillPoints} skill point`,
+      });
+      this.bannerUntil = this.clock + 3.5;
+      this.computeBadges();
+      this.flushSave();
+    }
+    hudStore.set({ exp: expFraction(balance, s), gold: s.hero.gold, level: s.hero.level });
+  }
+
+  private applyDrops(d: DropRoll): void {
+    const s = this.save;
+    if (!s) return;
+    for (const item of d.items) addItem(s, item);
+    for (const st of d.stacks) addStack(s, st.id, st.n);
+    this.computeBadges();
+    this.markDirty();
   }
 
   private async swapHero(b: HeroBuild): Promise<void> {
-    if (this.swapping) return;
+    if (this.swapping) {
+      this.wantHero = b;
+      return;
+    }
     this.swapping = true;
     try {
       const view = await HeroView.create(balance, modelMap, b);
@@ -399,6 +660,9 @@ export class Game implements GameApi {
     } finally {
       this.swapping = false;
     }
+    const next = this.wantHero;
+    this.wantHero = null;
+    if (next) await this.swapHero(next);
   }
 
   // --- DebugApi ---------------------------------------------------------------------------------
@@ -510,6 +774,17 @@ export class Game implements GameApi {
     if (w.mode !== this.lastMode) this.afterModeChange();
     this.watchRun();
 
+    if (this.screen === 'create') {
+      w.hero.pheading = w.hero.heading;
+      w.hero.heading += dt * 0.9;
+    }
+    if (this.screen === 'town') {
+      this.townSaveT += dt;
+      if (this.townSaveT >= balance.progress.autosaveTownSec) {
+        this.townSaveT = 0;
+        this.flushSave();
+      }
+    }
     const alpha = this.stepper.alpha;
     const h = w.hero;
     this.hero.update(scaled, h, w.hs, alpha);
@@ -520,6 +795,7 @@ export class Game implements GameApi {
     const bars = this.monsters.sync(w, alpha, scaled, cam.x, cam.z);
     this.telegraphs.update(w, this.clock);
     this.projectiles.update(w);
+    this.loot.update(w, this.clock);
     this.fx.update(scaled);
     const focus = w.unitById(w.hs.focusId);
     const elite = w.units.find((u) => u.id >= 0 && u.alive && u.elite) ?? null;
@@ -583,7 +859,15 @@ export class Game implements GameApi {
                 : e.crit
                   ? '#ffd23f'
                   : '#ffffff';
-        this.overlay.spawn(u?.x ?? e.x, y, u?.z ?? e.z, String(e.amount), color, e.crit);
+        if (this.settings.damageNumbers === 'off' && !e.toHero) break;
+        this.overlay.spawn(
+          u?.x ?? e.x,
+          y,
+          u?.z ?? e.z,
+          this.settings.damageNumbers === 'compact' ? compact(e.amount) : String(e.amount),
+          color,
+          e.crit,
+        );
         break;
       }
       case 'text':
@@ -599,6 +883,63 @@ export class Game implements GameApi {
       case 'bossIntro':
         hudStore.set({ introName: e.name });
         break;
+      case 'reward':
+        this.grantExp(e.exp, e.gold);
+        if (e.boss && this.save && w.bossDef) {
+          const first = recordBossKill(this.save, w.bossDef.id);
+          if (first) hudStore.set({ banner: 'First kill! +2 skill points and new loadout slots' });
+          if (first) this.bannerUntil = this.clock + 4;
+          this.computeBadges();
+          this.flushSave();
+        }
+        break;
+      case 'pickup': {
+        const s = this.save;
+        if (!s) break;
+        if (e.pickup.kind === 'item') {
+          const def = itemMap.get(e.pickup.item.defId);
+          const r = addItem(s, e.pickup.item);
+          const color = {
+            common: '#ffffff',
+            fine: '#7be07b',
+            rare: '#6aa8ff',
+            epic: '#c07bff',
+            legendary: '#ffa43a',
+          }[e.pickup.item.rarity];
+          this.overlay.spawn(
+            w.hero.x,
+            2.9,
+            w.hero.z,
+            def?.name ?? 'Item',
+            color,
+            e.pickup.item.rarity !== 'common',
+          );
+          if (r === 'overflow' || r === 'lost')
+            hudStore.set({
+              banner:
+                r === 'lost'
+                  ? 'Bag and overflow are full!'
+                  : 'Bag full: item sent to the overflow box',
+            });
+          if (r !== 'bag') this.bannerUntil = this.clock + 3;
+        } else {
+          addStack(s, e.pickup.id, e.pickup.n);
+          this.overlay.spawn(
+            w.hero.x,
+            2.7,
+            w.hero.z,
+            `${stackMap.get(e.pickup.id)?.name ?? e.pickup.id} ×${e.pickup.n}`,
+            '#ffe9a8',
+            false,
+          );
+        }
+        this.markDirty();
+        break;
+      }
+      case 'potion':
+        if (this.save) takeStack(this.save, e.id, 1);
+        this.markDirty();
+        break;
       case 'cast':
         if (!e.ok && e.reason === 'noSp')
           this.overlay.spawn(w.hero.x, 2.4, w.hero.z, 'Not enough SP', '#6fa8ff', false);
@@ -613,6 +954,11 @@ export class Game implements GameApi {
     if (this.screen !== 'run') return;
     const r = this.w.run;
     if (r.phase === 'chest') {
+      if (!this.chestApplied && r.chest) {
+        this.chestApplied = true;
+        this.applyDrops(r.chest);
+        this.flushSave();
+      }
       this.screen = 'chest';
       this.skillsEl.hidden = true;
       hudStore.set({ screen: 'chest', result: r.result });
@@ -649,6 +995,24 @@ export class Game implements GameApi {
       portalOpen: !!w.run.portal,
       timer: w.run.elapsed,
       focusName: focus && focus.alive ? focus.name : null,
+      exp: this.save ? expFraction(balance, this.save) : 0,
+      gold: this.save?.hero.gold ?? 0,
+      fpsCounter: this.settings.fpsCounter,
+      potions: (this.build.consumables ?? []).flatMap((id, i) => {
+        const d = id ? stackMap.get(id) : undefined;
+        if (!id || !d) return [];
+        const cdMax = balance.items.potion.cooldown;
+        const group = d.effect?.type === 'sp' ? 'sp' : 'hp';
+        return [
+          {
+            id,
+            name: d.name,
+            count: this.build.stacks?.[id] ?? 0,
+            cd: Math.min(1, w.hs.potionCd[group] / cdMax),
+            slot: i,
+          },
+        ];
+      }),
       boss:
         boss && def
           ? {
