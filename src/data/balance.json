@@ -1,0 +1,54 @@
+{
+  "tickRate": 30,
+  "maxFrameSec": 0.25,
+  "hero": {
+    "moveSpeed": 5.0,
+    "turnRate": 16,
+    "radius": 0.5,
+    "atk": 22,
+    "critChance": 0.12,
+    "critMult": 1.5,
+    "variance": 0.05,
+    "weapon": { "aps": 1.25, "range": 2.2, "windupFraction": 0.4 }
+  },
+  "targeting": { "autoAttackRange": 10, "focusPickRadius": 1.5, "castTargetRange": 12 },
+  "dummies": {
+    "count": 30,
+    "hp": 600,
+    "radius": 0.7,
+    "height": 2.0,
+    "respawnSec": 4,
+    "flashSec": 0.15,
+    "minSpacing": 3.2,
+    "spawnClearRadius": 5,
+    "placeRadius": 26,
+    "seed": 20261124
+  },
+  "arena": { "radius": 32 },
+  "camera": {
+    "fov": 40,
+    "pitchDeg": 55,
+    "distance": 18,
+    "lookAhead": 2,
+    "followRate": 6,
+    "lookAheadRate": 3,
+    "near": 0.5,
+    "far": 140
+  },
+  "joystick": {
+    "zoneFraction": 0.45,
+    "deadZone": 0.08,
+    "maxRadiusPx": 60,
+    "fullSpeedAt": 0.5,
+    "tapMaxMs": 250,
+    "tapMaxPx": 10
+  },
+  "skills": { "globalCooldown": 0.4, "meleeStepMax": 4, "dragStartPx": 14 },
+  "render": {
+    "maxPixelRatio": 2,
+    "damageNumberPool": 64,
+    "damageNumberLife": 0.9,
+    "fxPool": 6,
+    "fxLife": 0.35
+  }
+}

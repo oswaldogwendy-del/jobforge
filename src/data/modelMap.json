@@ -1,0 +1,20 @@
+{
+  "animations": {
+    "file": "character_anims.glb",
+    "idle": "Idle",
+    "run": "Running_A",
+    "attack": "1H_Melee_Attack_Slice_Horizontal"
+  },
+  "looks": {
+    "knight": { "file": "Knight.glb", "scale": 1 },
+    "mage": { "file": "Mage.glb", "scale": 1 },
+    "rogue": { "file": "Rogue.glb", "scale": 1 },
+    "rogue_hooded": { "file": "Rogue_Hooded.glb", "scale": 1 },
+    "barbarian": { "file": "Barbarian.glb", "scale": 1 }
+  },
+  "weapons": {
+    "sword": { "file": "sword_1handed.glb", "slot": "handslot.r" },
+    "shield_round": { "file": "shield_round.glb", "slot": "handslot.l" }
+  },
+  "hero": { "look": "knight", "weapon": "sword", "offhand": "shield_round" }
+}
