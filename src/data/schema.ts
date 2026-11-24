@@ -86,6 +86,24 @@ export const ModelMapSchema = z.object({
   looks: z.record(z.string(), z.object({ file: z.string(), scale: num.positive() })),
   weapons: z.record(z.string(), z.object({ file: z.string(), slot: z.string() })),
   hero: z.object({ look: z.string(), weapon: z.string(), offhand: z.string().optional() }),
+  monsters: z.record(
+    z.string(),
+    z.object({
+      file: z.string(),
+      scale: num.positive(),
+      /** Multiplies the model's colors, so one model can stand in for several monsters. */
+      tint: z.string().optional(),
+      /** Metres above the ground for flying monsters. */
+      hover: num.nonnegative().optional(),
+      anim: z.object({
+        idle: z.string(),
+        move: z.string(),
+        attack: z.string(),
+        hit: z.string(),
+        death: z.string(),
+      }),
+    }),
+  ),
 });
 export type ModelMap = z.infer<typeof ModelMapSchema>;
 

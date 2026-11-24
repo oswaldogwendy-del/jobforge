@@ -158,5 +158,136 @@
       "Walking_C"
     ]
   },
-  "totalKB": 3137
+  "monsters": {
+    "Dog": {
+      "family": "Blob",
+      "joints": 4,
+      "animations": [
+        "Bite_Front",
+        "Dance",
+        "Death",
+        "HitRecieve",
+        "Idle",
+        "Jump",
+        "No",
+        "Walk",
+        "Yes"
+      ]
+    },
+    "GreenBlob": {
+      "family": "Blob",
+      "joints": 4,
+      "animations": [
+        "Bite_Front",
+        "Dance",
+        "Death",
+        "HitRecieve",
+        "Idle",
+        "Jump",
+        "No",
+        "Walk",
+        "Yes"
+      ]
+    },
+    "GreenSpikyBlob": {
+      "family": "Blob",
+      "joints": 4,
+      "animations": [
+        "Bite_Front",
+        "Dance",
+        "Death",
+        "HitRecieve",
+        "Idle",
+        "Jump",
+        "No",
+        "Walk",
+        "Yes"
+      ]
+    },
+    "Mushnub": {
+      "family": "Blob",
+      "joints": 4,
+      "animations": [
+        "Bite_Front",
+        "Dance",
+        "Death",
+        "HitRecieve",
+        "Idle",
+        "Jump",
+        "No",
+        "Walk",
+        "Yes"
+      ]
+    },
+    "PinkBlob": {
+      "family": "Blob",
+      "joints": 4,
+      "animations": [
+        "Bite_Front",
+        "Dance",
+        "Death",
+        "HitRecieve",
+        "Idle",
+        "Jump",
+        "No",
+        "Walk",
+        "Yes"
+      ]
+    },
+    "Bunny": {
+      "family": "Big",
+      "joints": 49,
+      "animations": [
+        "Death",
+        "Duck",
+        "HitReact",
+        "Idle",
+        "Jump",
+        "Jump_Idle",
+        "Jump_Land",
+        "No",
+        "Punch",
+        "Run",
+        "Walk",
+        "Wave",
+        "Weapon",
+        "Yes"
+      ]
+    },
+    "Cactoro": {
+      "family": "Big",
+      "joints": 43,
+      "animations": [
+        "Death",
+        "Duck",
+        "HitReact",
+        "Idle",
+        "Jump",
+        "Jump_Idle",
+        "Jump_Land",
+        "No",
+        "Punch",
+        "Run",
+        "Walk",
+        "Wave",
+        "Weapon",
+        "Yes"
+      ]
+    },
+    "Armabee": {
+      "family": "Flying",
+      "joints": 13,
+      "animations": [
+        "Death",
+        "Fast_Flying",
+        "Flying_Idle",
+        "Headbutt",
+        "HitReact",
+        "No",
+        "Punch",
+        "Yes"
+      ]
+    }
+  },
+  "totalKB": 4229
 }

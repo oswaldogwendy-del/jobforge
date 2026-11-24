@@ -1,9 +1,10 @@
-// Converts the original KayKit downloads in assets-src/ into compressed .glb files in
+// Converts the original downloads in assets-src/ into compressed .glb files in
 // public/assets/models/ (PRD Section 15 pipeline). Run with: npm run assets
 //
-// - Extracts the zip into assets-src/_extracted (gitignored).
-// - Converts characters and weapons to .glb with meshopt compression.
-// - Asserts that every character shares one rig (same bones, same animation names).
+// - Extracts the zips into assets-src/_extracted (gitignored).
+// - Converts KayKit characters and weapons, and the Quaternius monsters the game uses, to .glb
+//   with meshopt compression.
+// - Asserts that every KayKit character shares one rig (same bones, same animation names).
 // - Writes rig-report.json next to the models so the report is visible in review.
 import {
   existsSync,
@@ -25,6 +26,20 @@ const ROOT = new URL('../../', import.meta.url).pathname.replace(/^\/([A-Za-z]:)
 const ZIP = join(ROOT, 'assets-src', 'KayKit-Character-Pack-Adventures-1.0.zip');
 const EXTRACT = join(ROOT, 'assets-src', '_extracted');
 const OUT = join(ROOT, 'public', 'assets', 'models');
+const MONSTER_SRC = join(ROOT, 'assets-src', 'quaternius-ultimate-monsters');
+
+// Quaternius Ultimate Monsters used so far: [family zip, model name]. Each keeps its own clips.
+// Add a line here when a milestone needs another model, then list it in modelMap.json.
+const MONSTERS = [
+  ['Blob', 'GreenBlob'],
+  ['Blob', 'PinkBlob'],
+  ['Blob', 'GreenSpikyBlob'],
+  ['Blob', 'Mushnub'],
+  ['Blob', 'Dog'],
+  ['Big', 'Bunny'],
+  ['Big', 'Cactoro'],
+  ['Flying', 'Armabee'],
+];
 
 // Everything the game can show on a hero in v1 (Section 12 weapon and off-hand types).
 const WEAPONS = [
@@ -69,6 +84,8 @@ const io = new NodeIO()
 
 mkdirSync(OUT, { recursive: true });
 for (const f of readdirSync(OUT)) if (f.endsWith('.glb')) rmSync(join(OUT, f));
+rmSync(join(OUT, 'monsters'), { recursive: true, force: true });
+mkdirSync(join(OUT, 'monsters'), { recursive: true });
 
 async function convert(
   src,
@@ -143,11 +160,45 @@ for (const w of WEAPONS) {
   report.weapons.push(w);
 }
 
+// Quaternius monsters: pull only the needed .gltf files out of each family zip.
+report.monsters = {};
+for (const family of [...new Set(MONSTERS.map(([f]) => f))]) {
+  const wanted = new Set(
+    MONSTERS.filter(([f]) => f === family).map(([, n]) => `${family}/glTF/${n}.gltf`),
+  );
+  const zipPath = join(MONSTER_SRC, `Ultimate-Monsters-${family}.zip`);
+  if (!existsSync(zipPath)) throw new Error(`Missing ${zipPath}`);
+  const entries = unzipSync(new Uint8Array(readFileSync(zipPath)), {
+    filter: (f) => wanted.has(f.name),
+  });
+  for (const [name, data] of Object.entries(entries)) {
+    const model = basename(name, '.gltf');
+    const dir = join(EXTRACT, 'monsters', family);
+    mkdirSync(dir, { recursive: true });
+    const src = join(dir, `${model}.gltf`);
+    writeFileSync(src, data);
+    const doc = await convert(src, `monsters/${model}.glb`);
+    const root = doc.getRoot();
+    report.monsters[model] = {
+      family,
+      joints: root.listSkins()[0]?.listJoints().length ?? 0,
+      animations: root.listAnimations().map((a) => a.getName()),
+    };
+  }
+}
+for (const [family, model] of MONSTERS) {
+  if (!report.monsters[model]) throw new Error(`Monster ${model} not found in the ${family} zip`);
+}
+
 let total = 0;
-for (const f of readdirSync(OUT).filter((f) => f.endsWith('.glb'))) {
+const sizes = [
+  ...readdirSync(OUT).filter((f) => f.endsWith('.glb')),
+  ...readdirSync(join(OUT, 'monsters')).map((f) => `monsters/${f}`),
+];
+for (const f of sizes) {
   const size = statSync(join(OUT, f)).size;
   total += size;
-  console.log(`${f.padEnd(24)} ${(size / 1024).toFixed(0).padStart(6)} KB`);
+  console.log(`${f.padEnd(28)} ${(size / 1024).toFixed(0).padStart(6)} KB`);
 }
 report.totalKB = Math.round(total / 1024);
 writeFileSync(join(OUT, 'rig-report.json'), JSON.stringify(report, null, 2) + '\n');

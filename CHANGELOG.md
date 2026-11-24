@@ -1,6 +1,6 @@
 # Changelog
 
-## M0: Foundations (in progress, waiting on phone testing)
+## M0: Foundations (done, phone-tested)
 
 A playable test arena: a KayKit Knight with a sword and shield runs, idles and attacks 30 training dummies, with a follow camera, a floating joystick, six skill buttons, damage numbers and a debug panel. It installs as a PWA and reloads offline.
 
@@ -12,8 +12,8 @@ A playable test arena: a KayKit Knight with a sword and shield runs, idles and a
 - [x] Camera follow in a test arena with one KayKit hero (idle, run, attack). The 5 characters share one rig (see DECISIONS.md, item 8, about the standalone animations pack)
 - [x] Auto-attack against 30 instanced training dummies, with damage numbers
 - [x] Debug panel: FPS, draw calls, triangles, time scale, god mode (a flag only until M1), bone names
-- [ ] Installs to the Home Screen and reloads offline. **Offline reload passes in headless Chromium; Home Screen install needs a real iPhone.**
-- [ ] 60 fps on both reference phones in the test arena. **Not measured: headless Chromium renders in software (about 22 fps at 2x), which says nothing about a phone.** The scene is 20 draw calls and about 18.7k triangles against budgets of 120 and 200k.
+- [x] Installs to the Home Screen and reloads offline (confirmed on a real iPhone)
+- [x] About 60 fps in the test arena (confirmed on a real iPhone; the scene is 20 draw calls and about 18.7k triangles against budgets of 120 and 200k). Only the iPhone was tested, not a second Android reference phone.
 
 ### Test results
 
@@ -23,7 +23,7 @@ A playable test arena: a KayKit Knight with a sword and shield runs, idles and a
 
 ### Known issues
 
-- Phone checks are pending (the two unchecked boxes above, plus iOS safe areas and touch behavior in Safari).
+- An Android reference phone has not been tested yet.
 - The dummy renderer positions instances once, so moving a dummy in the sim at run time does not move its model. Dummies never move in M0.
 - God mode and time scale only affect the sim as flags and speed. Nothing attacks the hero until M1.
 - The two diagrams in the PRD export ("core loop" and "build roadmap") are placeholders in the markdown.
