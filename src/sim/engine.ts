@@ -664,8 +664,12 @@ export function displaceUnit(
   oz: number,
   kind: 'knockback' | 'pull',
   distance: number,
+  stun = true,
 ): void {
   if (!u.alive || u.isBoss || u.buffs.some((b) => b.immune.includes('knockback'))) return;
+  const k = w.b.combat.knockback;
+  // A target that was just pushed ignores the next push, so basic attacks cannot pin it away.
+  if (kind === 'knockback' && u.kbImmuneT > 0) return;
   let dx = u.x - ox;
   let dz = u.z - oz;
   const d = Math.hypot(dx, dz);
@@ -676,11 +680,47 @@ export function displaceUnit(
     dx /= d;
     dz /= d;
   }
-  const move = kind === 'knockback' ? distance : -Math.min(distance, Math.max(0, d - 1.2));
-  const p = { x: u.x + dx * move, z: u.z + dz * move };
+  let move =
+    kind === 'knockback' ? distance : -Math.min(distance, Math.max(0, d - k.pullKeepDistance));
+  if (kind === 'knockback' && u.elite) move *= k.eliteFactor;
+  if (Math.abs(move) < 1e-6) return;
+  u.kbX = dx * move;
+  u.kbZ = dz * move;
+  u.kbT = 0;
+  u.kbDur = k.duration;
+  w.emit({
+    t: 'fx',
+    shape: 'circle',
+    x: u.x,
+    z: u.z,
+    heading: 0,
+    size: 0.8,
+    angleDeg: 0,
+    width: 0,
+    color: '#d8ceb0',
+  });
+  if (kind === 'knockback') {
+    u.kbImmuneT = k.immuneSec;
+    // Normal monsters flinch (the windup is lost); elites and the hero keep acting.
+    // A charger already mid-dash finishes it. Basic attacks nudge without interrupting.
+    if (stun && u.kind === 'monster' && !u.elite && u.ai?.state !== 'dash') u.hitStunT = k.stunSec;
+  }
+}
+
+/** Advances a knockback slide and its timers. Walls and obstacles stop the slide. */
+export function tickDisplacement(w: SimWorld, u: Unit, dt: number): void {
+  if (u.kbImmuneT > 0) u.kbImmuneT = Math.max(0, u.kbImmuneT - dt);
+  if (u.hitStunT > 0) u.hitStunT = Math.max(0, u.hitStunT - dt);
+  if (u.kbDur <= 0) return;
+  const ease = (t: number): number => 1 - (1 - t / u.kbDur) * (1 - t / u.kbDur);
+  const t1 = Math.min(u.kbDur, u.kbT + dt);
+  const f = ease(t1) - ease(u.kbT);
+  u.kbT = t1;
+  const p = { x: u.x + u.kbX * f, z: u.z + u.kbZ * f };
   w.nav.collide(p, u.r);
   u.x = p.x;
   u.z = p.z;
+  if (t1 >= u.kbDur) u.kbDur = 0;
 }
 
 // --- Dash --------------------------------------------------------------------------------------
@@ -1066,6 +1106,11 @@ export function heroBasicAttack(w: SimWorld, target: Unit): void {
     basic: true,
   };
   dealHit(w, h, target, spec);
+  // Basic attacks nudge the target back a little (distance by weapon type), without a flinch.
+  if (target.alive) {
+    const push = w.b.combat.knockback.basic[type];
+    if (push > 0) displaceUnit(w, target, h.x, h.z, 'knockback', push, false);
+  }
   const extraAtk = sumUnitMods(w, h, 'basicBonusAtk').pct;
   if (extraAtk > 0 && target.alive)
     dealHit(w, h, target, { ...spec, pct: extraAtk, ignoreDef: 1, procs: false });

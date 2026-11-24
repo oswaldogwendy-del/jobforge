@@ -28,6 +28,8 @@ describe('chaser', () => {
     const w2 = world();
     const near = monsterAt(w2, 'jellop', 0, 8);
     const hp = w2.hero.hp;
+    // A stunned hero cannot auto-attack, so its basic-attack pushes do not make the bite whiff.
+    applyStatus(b, w2.rng, w2.hero, 'stun', 999, { now: 0, src: 99, power: 0 });
     run(w2, 6);
     expect(near.ai!.hasAggro).toBe(true);
     expect(w2.hero.hp).toBeLessThan(hp);

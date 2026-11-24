@@ -36,6 +36,7 @@ describe('Knight skills', () => {
     const near = dummyAt(w, 0, 2.5);
     const far = dummyAt(w, 0, 9);
     cast(w, 0);
+    run(w, 0.4);
     expect(lost(near)).toBeGreaterThan(0);
     expect(lost(far)).toBe(0);
     expect(near.z).toBeGreaterThan(2.5 + 1.5);
@@ -51,6 +52,7 @@ describe('Knight skills', () => {
     const a = dummyAt(w, 0, 7, 1000, { def: 100, base: { ...dummyAt(w, 50, 50).base, def: 100 } });
     const out = dummyAt(w, 0, 20);
     cast(w, 0);
+    run(w, 0.4);
     expect(hasStatus(a, 'taunt')).toBe(true);
     expect(a.tauntTarget).toBe(w.hero.id);
     expect(hasStatus(out, 'taunt')).toBe(false);
@@ -594,6 +596,7 @@ describe('primitives the Knight and Mage do not use (fixtures)', () => {
       debuff: false,
     });
     cast(w, 0);
+    run(w, 0.5); // the push is a short slide, not a jump
     expect(a.z).toBeCloseTo(6, 0);
     expect(boss.x).toBe(3);
     expect(immune.x).toBe(-3);

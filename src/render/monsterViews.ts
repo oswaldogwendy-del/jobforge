@@ -45,6 +45,8 @@ interface View {
   height: number;
   ground: number;
   hitT: number;
+  /** Last frame's hit-stun, to play the flinch when a push starts. */
+  wasStunned: boolean;
   inAttack: boolean;
   dead: boolean;
   accum: number;
@@ -231,6 +233,7 @@ export class MonsterViews {
       height,
       ground,
       hitT: 0,
+      wasStunned: false,
       inAttack: false,
       dead: false,
       accum: 0,
@@ -245,6 +248,7 @@ export class MonsterViews {
     v.lastX = u.x;
     v.lastZ = u.z;
     v.hitT = 0;
+    v.wasStunned = false;
     v.inAttack = false;
     v.dead = false;
     v.accum = 0;
@@ -328,6 +332,7 @@ export class MonsterViews {
       const f = v.hitT > 0 ? 0.6 : 0;
       m.emissive.setRGB(f, f * 0.4, f * 0.4);
     });
+    v.wasStunned = u.hitStunT > 0;
     // A staggered boss wobbles.
     v.root.rotation.z = u.staggerT > 0 ? Math.sin(performance.now() * 0.03) * 0.12 : 0;
 
@@ -347,7 +352,9 @@ export class MonsterViews {
           this.play(v, 'attack', 0.08);
         } else if (!windup) {
           v.inAttack = false;
-          if (u.hp < v.lastHp - 0.01 && v.actions.hit && !frozen) this.play(v, 'hit', 0.05);
+          const flinch = u.hitStunT > 0 && !v.wasStunned;
+          if ((u.hp < v.lastHp - 0.01 || flinch) && v.actions.hit && !frozen)
+            this.play(v, 'hit', 0.05);
           else if (
             v.current === v.actions.hit &&
             v.current.time < v.current.getClip().duration - 0.05

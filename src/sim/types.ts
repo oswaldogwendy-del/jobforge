@@ -105,6 +105,15 @@ export interface Unit {
   elite: boolean;
   stagger: number;
   staggerT: number;
+  /** Knockback slide: total displacement, seconds elapsed and total duration. */
+  kbX: number;
+  kbZ: number;
+  kbT: number;
+  kbDur: number;
+  /** Seconds during which a new knockback is ignored. */
+  kbImmuneT: number;
+  /** Hit-stun after a knockback: a normal monster cannot act and loses its windup. */
+  hitStunT: number;
   /** Set by taunt: the unit this one must target. */
   tauntTarget: number;
   tauntT: number;

@@ -165,7 +165,24 @@
     "curseAtk": 0.2,
     "curseMove": 0.2,
     "poisonHealReduce": 0.3,
-    "regenPoisonFactor": 1
+    "regenPoisonFactor": 1,
+    "knockback": {
+      "duration": 0.25,
+      "stunSec": 0.35,
+      "immuneSec": 1.2,
+      "eliteFactor": 0.6,
+      "pullKeepDistance": 1.2,
+      "basic": {
+        "sword": 0.6,
+        "greataxe": 1,
+        "dagger": 0.3,
+        "mace": 0.8,
+        "knuckle": 0.5,
+        "staff": 0.3,
+        "bow": 0.3,
+        "gun": 0.3
+      }
+    }
   },
   "caps": {
     "cdrPct": 40,

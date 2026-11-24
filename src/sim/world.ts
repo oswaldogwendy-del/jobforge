@@ -7,6 +7,7 @@ import { updateMonster } from './ai';
 import { applyDamage, dealHit, forEachEnemyOf, killUnit, nearestEnemy, targetable } from './combat';
 import {
   displaceUnit,
+  tickDisplacement,
   heroBasicAttack,
   rebuildSlots,
   refreshHero,
@@ -763,6 +764,7 @@ export class SimWorld {
       }
     }
     if (changed) refreshUnit(this, u);
+    tickDisplacement(this, u, dt);
     // A debuffed unit's status power (slow etc.) is already folded into moveMult.
   }
 
